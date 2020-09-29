@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +30,13 @@ public class UserResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest
 					().path("/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping
+	public ResponseEntity<UserDTO>updateUser(@Valid @RequestBody UserDTO dto){
+		User user = this.userService.updateUser(dto);
+		UserDTO userAtualizado = new UserDTO(user.getNome(), String.valueOf(user.getSexo()), 
+					user.getTelefone(), user.getDtNascimento(), user.getEmail(), "");
+		return ResponseEntity.ok(userAtualizado);
 	}
 }

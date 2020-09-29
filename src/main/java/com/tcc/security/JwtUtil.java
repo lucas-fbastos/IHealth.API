@@ -1,5 +1,6 @@
 package com.tcc.security;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.tcc.domain.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -32,5 +34,35 @@ public class JwtUtil {
 				.setClaims(userData)
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
+	}
+
+	public boolean tokenValido(String token) {
+		Claims claims = getClaims(token);
+		if(claims!=null) {
+			String userName = (String) claims.get("sub");
+			Date expirationDate = Date.from(Instant.ofEpochMilli((long) claims.get("expiration")));
+			Date now = new Date(System.currentTimeMillis());
+			if(userName!=null && expirationDate != null && now.before(expirationDate)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Claims getClaims(String token) {
+		try {			
+			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+		}catch(Exception e) {
+			return null;
+		}
+		
+	}
+
+	public String getUsername(String token) {
+		Claims claims = getClaims(token);
+		if(claims!=null) {
+			return (String) claims.get("sub");
+		}
+		return null;
 	}
 }
