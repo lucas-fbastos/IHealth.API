@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="doencas_cronicas")
 public class DoencasCronicas implements Serializable{
@@ -26,6 +28,7 @@ public class DoencasCronicas implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="id_dados_medicos")
+	@JsonBackReference
 	private DadosMedicos dadosMedicos;
 
 	public Long getId() {

@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -37,12 +38,15 @@ public class DadosMedicos implements Serializable{
 	private User user;
 
 	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference
 	private Set<DoencasCronicas> doencasCronicas = new HashSet<>();
 	
 	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference
 	private Set<Medicamento> medicamentos = new HashSet<>();
 	
 	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference
 	private Set<Alergia> alergias = new HashSet<>();
 	
 	public Long getId() {

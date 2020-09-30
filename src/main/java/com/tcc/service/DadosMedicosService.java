@@ -41,5 +41,20 @@ public class DadosMedicosService {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
 		}
 	}
+
+	public DadosMedicos getDadosMedicos() {
+		UserSecurity logado = UserService.authenticated();
+		if(logado!=null) {
+			Long id = logado.getId();
+			try {
+				User user = this.userRepository.findById(id).orElseThrow();
+				return this.dadosMedicosRepository.findByUser(user).orElseThrow();
+			}catch(NoSuchElementException e) {
+				throw new NoElementException("Usuário não encontrado");
+			}
+		}else {
+			throw new NoElementException("Usuário inválido, tente logar novamente");
+		}
+	}
 	
 }
