@@ -61,7 +61,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		User user = this.userRepository.findByEmail(username);
 		String token = this.jwtUtil.generateToken(user);
 		res.addHeader("Authorization", "Bearer "+ token);
-		
+		res.addHeader("Content-type", "Application/json");
+		res.getWriter().print("{\"token\":\""+token+"\"}");
 	}
 	
 }
