@@ -2,13 +2,13 @@ package com.tcc.DTO;
 
 public class DadosMedicosDTO {
 
-	private String tipoSanguineo;
+	private Integer tipoSanguineo;
 
-	public String getTipoSanguineo() {
+	public Integer getTipoSanguineo() {
 		return tipoSanguineo;
 	}
 
-	public void setTipoSanguineo(String tipoSanguineo) {
+	public void setTipoSanguineo(Integer tipoSanguineo) {
 		this.tipoSanguineo = tipoSanguineo;
 	}
 	

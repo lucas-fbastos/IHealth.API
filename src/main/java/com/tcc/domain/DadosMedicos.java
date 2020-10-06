@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,8 +28,11 @@ public class DadosMedicos implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
-	private String tipoSanguineo;
+
+	@ManyToOne
+	@JoinColumn(name="id_tipo_sanguineo")
+	@JsonManagedReference
+	private TipoSanguineo tipoSanguineo;
 	
 	private Date dt_atualizacao;
 	
@@ -55,14 +59,6 @@ public class DadosMedicos implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getTipoSanguineo() {
-		return tipoSanguineo;
-	}
-
-	public void setTipoSanguineo(String tipoSanguineo) {
-		this.tipoSanguineo = tipoSanguineo;
 	}
 
 	public Date getDt_atualizacao() {
@@ -100,6 +96,14 @@ public class DadosMedicos implements Serializable{
 	public Set<Alergia> getAlergias() {
 		return alergias;
 	}
+	
+	public TipoSanguineo getTipoSanguineo() {
+		return tipoSanguineo;
+	}
+
+	public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
+		this.tipoSanguineo = tipoSanguineo;
+	}
 
 	public void setAlergias(Set<Alergia> alergias) {
 		this.alergias = alergias;
@@ -109,7 +113,7 @@ public class DadosMedicos implements Serializable{
 		super();
 	}
 
-	public DadosMedicos(Long id, String tipoSanguineo, Date dt_atualizacao, User user) {
+	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, Date dt_atualizacao, User user) {
 		super();
 		this.id = id;
 		this.tipoSanguineo = tipoSanguineo;

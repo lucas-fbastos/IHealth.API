@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.DadosMedicosDTO;
 import com.tcc.domain.DadosMedicos;
+import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.User;
 import com.tcc.repository.DadosMedicosRepository;
+import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
 import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.NoElementException;
@@ -23,6 +25,9 @@ public class DadosMedicosService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
+	@Autowired
+	private TipoSanguineoRepository tipoSanguineoRepository;
+	
 	public DadosMedicos update(DadosMedicosDTO dto) {
 		UserSecurity logado = UserService.authenticated();
 		if(logado!=null) {
@@ -31,11 +36,14 @@ public class DadosMedicosService {
 				User user = this.userRepository.findById(id).orElseThrow();
 				DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
 				dados.setDt_atualizacao(new Date());
-				dados.setTipoSanguineo(dto.getTipoSanguineo());
+				if(dto.getTipoSanguineo()!=null) {
+					TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
+					dados.setTipoSanguineo(tipoSanguineo);					
+				}
 				this.dadosMedicosRepository.save(dados);
 				return dados;
 			}catch(NoSuchElementException e) {
-				throw new NoElementException("Usuário não encontrado");
+				throw new NoElementException("informação não encontrada");
 			}
 		}else {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
