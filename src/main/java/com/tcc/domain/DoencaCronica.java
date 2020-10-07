@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="doencas_cronicas")
-public class DoencasCronicas implements Serializable{
+public class DoencaCronica implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,14 +55,14 @@ public class DoencasCronicas implements Serializable{
 		this.dadosMedicos = dadosMedicos;
 	}
 
-	public DoencasCronicas(Long id, String descDoenca, DadosMedicos dadosMedicos) {
+	public DoencaCronica(Long id, String descDoenca, DadosMedicos dadosMedicos) {
 		super();
 		this.id = id;
 		this.descDoenca = descDoenca;
 		this.dadosMedicos = dadosMedicos;
 	}
 
-	public DoencasCronicas() {
+	public DoencaCronica() {
 		super();
 	}
 
@@ -82,7 +82,7 @@ public class DoencasCronicas implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DoencasCronicas other = (DoencasCronicas) obj;
+		DoencaCronica other = (DoencaCronica) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -108,6 +108,9 @@ public class AlergiaService {
 			List<Alergia> list = this.alergiaRepository.findByDadosMedicos(dados);
 			if(list!=null && !list.isEmpty()) {
 				list = list.stream().filter(m -> m.getId() == idAlergia).collect(Collectors.toList());
+				if(list.isEmpty())
+					throw new NoElementException("Não foram encontradas alergias para atualizar");
+				
 				this.alergiaRepository.delete(list.get(0));
 			}else {
 				throw new NoElementException("Não foram encontradas alergias para atualizar");

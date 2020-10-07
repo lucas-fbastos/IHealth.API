@@ -30,7 +30,7 @@ public class AlergiaResource {
 	@GetMapping
 	public ResponseEntity<?> getAllTiposAlergia(){
 		List<TipoAlergia> alergias = this.alergiaService.getAllTipoAlergia();
-		if(alergias.isEmpty()) {
+		if(!alergias.isEmpty()) {
 			return ResponseEntity.ok(alergias);
 		}else {
 			return ResponseEntity.notFound().build();

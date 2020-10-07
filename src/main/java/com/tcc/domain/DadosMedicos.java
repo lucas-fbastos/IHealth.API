@@ -43,7 +43,7 @@ public class DadosMedicos implements Serializable{
 
 	@OneToMany(mappedBy="dadosMedicos")
 	@JsonManagedReference
-	private Set<DoencasCronicas> doencasCronicas = new HashSet<>();
+	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
 	
 	@OneToMany(mappedBy="dadosMedicos")
 	@JsonManagedReference
@@ -77,11 +77,11 @@ public class DadosMedicos implements Serializable{
 		this.user = user;
 	}
 	
-	public Set<DoencasCronicas> getDoencasCronicas() {
+	public Set<DoencaCronica> getDoencasCronicas() {
 		return doencasCronicas;
 	}
 
-	public void setDoencasCronicas(Set<DoencasCronicas> doencasCronicas) {
+	public void setDoencasCronicas(Set<DoencaCronica> doencasCronicas) {
 		this.doencasCronicas = doencasCronicas;
 	}
 
