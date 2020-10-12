@@ -1,5 +1,6 @@
 package com.tcc.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class MedicamentoService {
 				m.setId(null);
 				m.setDadosMedicos(dados);
 				m.setDescMedicamento(dto.getDesc());
+				m.setDtRegistro(new Date(System.currentTimeMillis()));
 				list.add(m);
 			}
 			this.medicamentoRepository.saveAll(list);

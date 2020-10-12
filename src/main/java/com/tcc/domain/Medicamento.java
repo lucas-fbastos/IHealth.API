@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -31,6 +32,9 @@ public class Medicamento implements Serializable {
 	@JsonBackReference
 	private DadosMedicos dadosMedicos;
 
+	@Column(name="dt_registro")
+	private Date dtRegistro;
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,11 +63,20 @@ public class Medicamento implements Serializable {
 		super();
 	}
 
-	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos) {
+	public Date getDtRegistro() {
+		return dtRegistro;
+	}
+
+	public void setDtRegistro(Date dtRegistro) {
+		this.dtRegistro = dtRegistro;
+	}
+
+	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos, Date dtRegistro) {
 		super();
 		this.id = id;
 		this.descMedicamento = descMedicamento;
 		this.dadosMedicos = dadosMedicos;
+		this.dtRegistro = dtRegistro;
 	}
 
 	@Override

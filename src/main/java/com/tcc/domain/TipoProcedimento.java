@@ -1,60 +1,49 @@
 package com.tcc.domain;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
-@Table(name="tipo_alergia")
-public class TipoAlergia implements Serializable {
+@Table(name="tipo_procedimento")
+public class TipoProcedimento implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
-	@Column(name="desc_tipo")
-	private String descTipo;
+	@Column(name="desc_tipo_procedimento")
+	private String descTipoProcedimeto;
 
-	@OneToMany(mappedBy="tipoAlergia")
-	@JsonBackReference
-	private List<Alergia> alergia;
-	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getDescTipo() {
-		return descTipo;
+	public String getDescTipoProcedimeto() {
+		return descTipoProcedimeto;
 	}
 
-	public void setDescTipo(String descTipo) {
-		this.descTipo = descTipo;
+	public void setDescTipoProcedimeto(String descTipoProcedimeto) {
+		this.descTipoProcedimeto = descTipoProcedimeto;
 	}
 
-	public TipoAlergia() {
-		super();
-	}
-
-	public TipoAlergia(Integer id, String descTipo) {
-		super();
+	public TipoProcedimento(Long id, String descTipoProcedimeto) {
 		this.id = id;
-		this.descTipo = descTipo;
+		this.descTipoProcedimeto = descTipoProcedimeto;
 	}
+
+	public TipoProcedimento() {	}
 
 	@Override
 	public int hashCode() {
@@ -72,7 +61,7 @@ public class TipoAlergia implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TipoAlergia other = (TipoAlergia) obj;
+		TipoProcedimento other = (TipoProcedimento) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
