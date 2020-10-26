@@ -11,14 +11,18 @@ import org.springframework.stereotype.Service;
 import com.tcc.domain.Alergia;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Medicamento;
+import com.tcc.domain.ProcedimentoMedico;
 import com.tcc.domain.TipoAlergia;
+import com.tcc.domain.TipoProcedimento;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.User;
 import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.MedicamentoRepository;
+import com.tcc.repository.ProcedimentoMedicoRepository;
 import com.tcc.repository.TipoAlergiaRepository;
+import com.tcc.repository.TipoProcedimentoRepository;
 import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
 
@@ -46,6 +50,11 @@ public class DBService {
 	@Autowired
 	private AlergiaRepository alergiaRepository;
 	
+	@Autowired
+	private TipoProcedimentoRepository tipoProcedimentoRepository;
+	
+	@Autowired
+	private ProcedimentoMedicoRepository procedimentoMedicoRepository;
 	
 	public void instantiateTestDatabase() throws ParseException {
 		
@@ -79,7 +88,7 @@ public class DBService {
 		this.tipoSanguineoRepository.saveAll(Arrays.asList(ts1,ts2,ts3,ts4,ts5,ts6,ts7,ts8));
 		
 		DadosMedicos dm1 = new DadosMedicos();
-		dm1.setDt_atualizacao(new Date());
+		dm1.setDtAtualizacao(new Date());
 		dm1.setTipoSanguineo(this.tipoSanguineoRepository.findById(1).get());
 		dm1.setUser(u1);
 		dm1 = this.dadosMedicosRepository.save(dm1);
@@ -120,6 +129,71 @@ public class DBService {
 		a1.setDescAlergia("Alergia a amoxilina");
 		a1.setTipoAlergia(ta1);
 		a1 = this.alergiaRepository.save(a1);
+		
+		TipoProcedimento tp1 = new TipoProcedimento();
+		tp1.setDescTipoProcedimeto("Consulta médica");
+		tp1 = this.tipoProcedimentoRepository.save(tp1);
+		
+		TipoProcedimento tp2 = new TipoProcedimento();
+		tp2.setDescTipoProcedimeto("Cirurgia");
+		tp2 = this.tipoProcedimentoRepository.save(tp2);
+		
+		TipoProcedimento tp3 = new TipoProcedimento();
+		tp3.setDescTipoProcedimeto("Exame");
+		tp3 = this.tipoProcedimentoRepository.save(tp3);
+		
+		TipoProcedimento tp4 = new TipoProcedimento();
+		tp4.setDescTipoProcedimeto("Emergência");
+		tp4 = this.tipoProcedimentoRepository.save(tp4);
+		
+		TipoProcedimento tp5 = new TipoProcedimento();
+		tp5.setDescTipoProcedimeto("Sessão de fisioterapia");
+		tp5 = this.tipoProcedimentoRepository.save(tp5);
+		
+		ProcedimentoMedico pm1 = new ProcedimentoMedico();
+		pm1.setDescLocal("Hospital Santa Lúcia");
+		pm1.setDescricao("Consulta no oftalmologista, paga pelo plano de saúde, atestado de 4 dias");
+		pm1.setTitulo("Oftalmologista ");
+		pm1.setDtRegistro(new Date());
+		pm1.setDtProcedimento(new java.sql.Date(System.currentTimeMillis()));
+		pm1.setDtRetorno(new Date(new Date().getTime() + 345600000));
+		pm1.setTipoProcedimento(tp1);
+		pm1.setUser(u1);
+		this.procedimentoMedicoRepository.save(pm1);
+		
+		ProcedimentoMedico pm2 = new ProcedimentoMedico();
+		pm2.setDescLocal("Sabin");
+		pm2.setDescricao("Exame de sangue, glicose e trigliceridios. O exame foi solicitado pelo médico na última consulta");
+		pm2.setTitulo("Exame de Sangue");
+		pm2.setDtRegistro(new Date());
+		java.sql.Date dt = java.sql.Date.valueOf("2007-10-11");
+		pm2.setDtProcedimento(dt);
+		pm2.setTipoProcedimento(tp3);
+		pm2.setUser(u1);
+		this.procedimentoMedicoRepository.save(pm2);
+		
+		ProcedimentoMedico pm3 = new ProcedimentoMedico();
+		pm3.setDescLocal("Hospital Albert Sabin");
+		pm3.setDescricao("Cirurgia de remoção de amidala, paga pelo plano de saúde com cooparticipação, 5 dias de atestado");
+		pm3.setTitulo("Cirurgia amidala");
+		pm3.setDtRegistro(new Date());
+		java.sql.Date dt1 = java.sql.Date.valueOf("2008-08-22");
+		pm3.setDtProcedimento(dt1);
+		pm3.setTipoProcedimento(tp2);
+		pm3.setUser(u1);
+		this.procedimentoMedicoRepository.save(pm3);
+		
+		ProcedimentoMedico pm4 = new ProcedimentoMedico();
+		pm4.setDescLocal("Hospital Luzia");
+		pm4.setDescricao(null);
+		pm4.setTitulo("Prrimeira sessão de fisioterapia");
+		pm4.setDtRegistro(new Date());
+		java.sql.Date dt3 = java.sql.Date.valueOf("2009-11-05");
+		pm4.setDtProcedimento(dt3);
+		pm4.setTipoProcedimento(tp5);
+		pm4.setUser(u1);
+		this.procedimentoMedicoRepository.save(pm4);
+		
 		
 	}
 }

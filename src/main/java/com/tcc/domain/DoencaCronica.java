@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="doencas_cronicas")
+@Table(name="doencas_cronicas", schema="public")
 public class DoencaCronica implements Serializable{
 
 	private static final long serialVersionUID = 1L;

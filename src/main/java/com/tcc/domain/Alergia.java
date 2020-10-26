@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table
+@Table(name="alergia", schema="public")
 public class Alergia {
 
 	@Id

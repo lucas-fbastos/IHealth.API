@@ -10,7 +10,7 @@ public class MedicamentoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo descrição do medicamento")
-	@Size(max=255,min=1,message="Formato inválido para o campo descrição do mecimaneto")
+	@Size(max=255,min=1,message="Formato inválido para o campo descrição do medicamento")
 	private String desc;
 	
 	private Long id;

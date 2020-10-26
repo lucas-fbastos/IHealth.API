@@ -23,7 +23,7 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(NoElementException.class)
 	public ResponseEntity<StandardError> NoElementException(NoElementException e, HttpServletRequest req){
-		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(),System.currentTimeMillis());
+		StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),e.getMessage(),System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	

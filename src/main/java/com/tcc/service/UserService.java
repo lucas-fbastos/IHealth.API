@@ -45,7 +45,7 @@ public class UserService {
 			this.userRepository.save(user);
 			DadosMedicos dados = new DadosMedicos();
 			dados.setUser(user);
-			dados.setDt_atualizacao(new Date());
+			dados.setDtAtualizacao(new Date());
 			this.dadosMedicosRepository.save(dados);
 			return user;
 		}catch(DataIntegrityViolationException e) {

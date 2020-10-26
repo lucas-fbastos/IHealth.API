@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
-@Table(name="dados_medicos")
+@Table(name="dados_medicos", schema="public")
 public class DadosMedicos implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -34,7 +35,8 @@ public class DadosMedicos implements Serializable{
 	@JsonManagedReference
 	private TipoSanguineo tipoSanguineo;
 	
-	private Date dt_atualizacao;
+	@Column(name="dt_atualizacao")
+	private Date dtAtualizacao;
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
@@ -49,6 +51,18 @@ public class DadosMedicos implements Serializable{
 	@JsonManagedReference
 	private Set<Medicamento> medicamentos = new HashSet<>();
 	
+	@Column(name="peso")
+	private Double peso;
+	
+	@Column(name="altura")
+	private Double altura;
+	
+	@Column(name="vl_imc")
+	private Double vlImc;
+	
+	@Column(name="situacao_imc")
+	private String descImc;
+
 	@OneToMany(mappedBy="dadosMedicos")
 	@JsonManagedReference
 	private Set<Alergia> alergias = new HashSet<>();
@@ -61,12 +75,12 @@ public class DadosMedicos implements Serializable{
 		this.id = id;
 	}
 
-	public Date getDt_atualizacao() {
-		return dt_atualizacao;
+	public Date getDtAtualizacao() {
+		return dtAtualizacao;
 	}
 
-	public void setDt_atualizacao(Date dt_atualizacao) {
-		this.dt_atualizacao = dt_atualizacao;
+	public void setDtAtualizacao(Date dtAtualizacao) {
+		this.dtAtualizacao = dtAtualizacao;
 	}
 
 	public User getUser() {
@@ -113,12 +127,53 @@ public class DadosMedicos implements Serializable{
 		super();
 	}
 
-	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, Date dt_atualizacao, User user) {
+	public Double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Double peso) {
+		this.peso = peso;
+	}
+
+	public Double getAltura() {
+		return altura;
+	}
+
+	public void setAltura(Double altura) {
+		this.altura = altura;
+	}
+
+	public Double getVlImc() {
+		return vlImc;
+	}
+
+	public void setVlImc(Double vlImc) {
+		this.vlImc = vlImc;
+	}
+
+	public String getDescImc() {
+		return descImc;
+	}
+
+	public void setDescImc(String descImc) {
+		this.descImc = descImc;
+	}
+
+	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, Date dtAtualizacao, User user,
+			Set<DoencaCronica> doencasCronicas, Set<Medicamento> medicamentos, Double peso, Double altura, Double vlImc,
+			String descImc, Set<Alergia> alergias) {
 		super();
 		this.id = id;
 		this.tipoSanguineo = tipoSanguineo;
-		this.dt_atualizacao = dt_atualizacao;
+		this.dtAtualizacao = dtAtualizacao;
 		this.user = user;
+		this.doencasCronicas = doencasCronicas;
+		this.medicamentos = medicamentos;
+		this.peso = peso;
+		this.altura = altura;
+		this.vlImc = vlImc;
+		this.descImc = descImc;
+		this.alergias = alergias;
 	}
 
 	@Override

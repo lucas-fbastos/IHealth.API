@@ -23,7 +23,7 @@ public class UserDTO extends CredentialsDTO{
 	public String sexo;
 	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Telefone")
-	@Size(min=11, max=11)
+	@Size(min=8, max=11, message="o número de telefone deve ter entre 8 e 11 digitos")
 	public String telefone;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo Data de Nascimento")

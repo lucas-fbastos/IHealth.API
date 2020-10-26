@@ -23,7 +23,7 @@ import com.tcc.DTO.UserDTO;
 import com.tcc.enums.PerfilEnum;
 
 @Entity
-@Table(name="user")
+@Table(name="user", schema="public")
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

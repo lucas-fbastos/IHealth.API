@@ -10,6 +10,7 @@ import com.tcc.DTO.DadosMedicosDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.User;
+import com.tcc.enums.IMCEnum;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
@@ -35,11 +36,14 @@ public class DadosMedicosService {
 			try {
 				User user = this.userRepository.findById(id).orElseThrow();
 				DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
-				dados.setDt_atualizacao(new Date());
+				dados.setDtAtualizacao(new Date());
 				if(dto.getTipoSanguineo()!=null) {
 					TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
 					dados.setTipoSanguineo(tipoSanguineo);					
 				}
+				dados.setAltura(dto.getAltura());
+				dados.setPeso(dto.getPeso());
+				this.calculaImc(dados);
 				this.dadosMedicosRepository.save(dados);
 				return dados;
 			}catch(NoSuchElementException e) {
@@ -64,5 +68,16 @@ public class DadosMedicosService {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
 		}
 	}
+	
+	public void calculaImc(DadosMedicos dados) {
+		if(dados.getAltura() > 0) {
+			Double imc = dados.getPeso()/(dados.getAltura() * dados.getAltura());
+			IMCEnum descImc = IMCEnum.getImcDesc(imc);
+			dados.setDescImc(descImc.getDescricao());
+			dados.setVlImc(imc);
+		}
+	}
+
+	
 	
 }

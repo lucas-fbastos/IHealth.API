@@ -87,6 +87,8 @@ public class AlergiaService {
 					Alergia a = this.alergiaRepository.findById(dto.getId()).orElseThrow();
 					a.setDadosMedicos(dados);
 					a.setDescAlergia(dto.getDescAlergia());
+					TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
+					a.setTipoAlergia(tipoAlergia);
 					list.add(a);
 				}
 				this.alergiaRepository.saveAll(list);
