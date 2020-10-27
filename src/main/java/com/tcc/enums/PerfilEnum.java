@@ -3,7 +3,8 @@ package com.tcc.enums;
 public enum PerfilEnum {
 
 	PENDENTE(1,"ROLE_PENDENTE"),
-	ATIVO(1,"ROLE_ATIVO");
+	ATIVO(2,"ROLE_ATIVO"),
+	MEDICO(3,"ROLE_MEDICO");
 	
 	private int id;
 	private String desc;

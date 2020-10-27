@@ -87,6 +87,11 @@ public class ProcedimentoMedicoService {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
 		}
 	}
+	
+	//vai salvar o procedimento do paciente, qrcodeService vai chamar esse aqui e passa o paciente pelo user do token do qrcode
+	public void save(ProcedimentoMedicoFormDTO dto, User paciente) {
+		
+	}
 
 	public ProcedimentoMedicoFormDTO update(@Valid ProcedimentoMedicoFormDTO dto) {
 		ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(dto.getId()).orElseThrow();

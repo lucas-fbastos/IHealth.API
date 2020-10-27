@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.tcc.domain.Medicamento;
+
 public class MedicamentoDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -33,6 +35,11 @@ public class MedicamentoDTO implements Serializable{
 
 	public MedicamentoDTO() {
 		super();
+	}
+
+	public MedicamentoDTO(Medicamento m) {
+		this.desc = m.getDescMedicamento();
+		this.id = m.getId();
 	}
 	
 	

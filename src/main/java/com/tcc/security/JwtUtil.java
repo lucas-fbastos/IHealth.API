@@ -1,8 +1,10 @@
 package com.tcc.security;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +27,13 @@ public class JwtUtil {
 	
 	public String generateToken(User user) {
 		Map<String, Object> userData = new HashMap<>();
+		List<String> listPerfil = new ArrayList<>();
+		user.getPerfis().forEach(p -> listPerfil.add(p.getDesc()));
 		userData.put("nome", user.getNome());
 		userData.put("dtCadastro", user.getDtCadastro().toString());
 		userData.put("expiration",new Date(System.currentTimeMillis() + this.expiration));
 		userData.put("sub", user.getEmail());
+		userData.put("perfis", listPerfil);
 		
 		return Jwts.builder()
 				.setClaims(userData)
@@ -36,6 +41,26 @@ public class JwtUtil {
 				.compact();
 	}
 
+	public static String generateTokenQRCode(Long id) {
+		Map<String, Object> userData = new HashMap<>();
+		userData.put("sub",id);
+		return Jwts.builder()
+				.setClaims(userData)
+				.setExpiration(new Date(System.currentTimeMillis() + 3600000))
+				.signWith(SignatureAlgorithm.HS512, "SecretApiApplicativo".getBytes())
+				.compact();
+	}
+	
+	public static Long getIdFromToken(String token) {
+		try {
+			Claims claims = Jwts.parser().setSigningKey("SecretApiApplicativo".getBytes()).parseClaimsJws(token).getBody();
+			return (Long) claims.get("id");
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	
 	public boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
 		if(claims!=null) {

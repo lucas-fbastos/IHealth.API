@@ -40,7 +40,19 @@ public enum IMCEnum {
 	}
 	
 	public static IMCEnum getImcDesc(Double imc) {
-		return null;
+		if(imc <=18.4) {
+			return IMCEnum.ABAIXO_PESO;
+		}else if(imc >=18.5 && imc <= 24.9) {
+			return IMCEnum.PESO_NORMAL;
+		}else if(imc >=25.0 && imc <= 29.9) {
+			return IMCEnum.SOBREPESO;
+		}else if(imc >= 30.0 && imc <= 34.9) {
+			return IMCEnum.OBESIDADE_1;
+		}else if(imc >= 35.0 && imc <= 39.9) {
+			return IMCEnum.OBESIDADE_2;
+		}else{
+			return IMCEnum.OBESIDADE_3;
+		}
 	}
 	
 }

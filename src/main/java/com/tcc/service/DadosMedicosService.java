@@ -11,6 +11,7 @@ import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.User;
 import com.tcc.enums.IMCEnum;
+import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
@@ -45,6 +46,13 @@ public class DadosMedicosService {
 				dados.setPeso(dto.getPeso());
 				this.calculaImc(dados);
 				this.dadosMedicosRepository.save(dados);
+				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
+					user.addPerfil(PerfilEnum.ATIVO);
+					user.getPerfis().remove(PerfilEnum.PENDENTE);
+				}else{
+					user.addPerfil(PerfilEnum.PENDENTE);
+					user.getPerfis().remove(PerfilEnum.ATIVO);
+				}
 				return dados;
 			}catch(NoSuchElementException e) {
 				throw new NoElementException("informação não encontrada");
@@ -70,7 +78,7 @@ public class DadosMedicosService {
 	}
 	
 	public void calculaImc(DadosMedicos dados) {
-		if(dados.getAltura() > 0) {
+		if(dados.getAltura() > 0 && dados.getPeso() > 0) {
 			Double imc = dados.getPeso()/(dados.getAltura() * dados.getAltura());
 			IMCEnum descImc = IMCEnum.getImcDesc(imc);
 			dados.setDescImc(descImc.getDescricao());

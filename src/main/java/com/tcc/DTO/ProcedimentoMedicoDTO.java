@@ -3,12 +3,14 @@ package com.tcc.DTO;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.tcc.domain.ProcedimentoMedico;
+
 public class ProcedimentoMedicoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
 	private String titulo;
-	private String desc_local;
+	private String descLocal;
 	private String descricao;
 	private Date dtRegistro;
 	private Date dtRetorno;
@@ -28,11 +30,11 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	public String getDesc_local() {
-		return desc_local;
+	public String getdescLocal() {
+		return descLocal;
 	}
-	public void setDesc_local(String desc_local) {
-		this.desc_local = desc_local;
+	public void setDescLocal(String descLocal) {
+		this.descLocal = descLocal;
 	}
 	public String getDescricao() {
 		return descricao;
@@ -71,12 +73,12 @@ public class ProcedimentoMedicoDTO implements Serializable{
 		this.descTipoProcedimento = descTipoProcedimento;
 	}
 	
-	public ProcedimentoMedicoDTO(Long id, String titulo, String desc_local, String descricao, Date dtRegistro,
+	public ProcedimentoMedicoDTO(Long id, String titulo, String descLocal, String descricao, Date dtRegistro,
 			Date dtRetorno, java.sql.Date dtProcedimento, String nomeUsuario, String descTipoProcedimento) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
-		this.desc_local = desc_local;
+		this.descLocal = descLocal;
 		this.descricao = descricao;
 		this.dtRegistro = dtRegistro;
 		this.dtRetorno = dtRetorno;
@@ -87,6 +89,17 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	
 	public ProcedimentoMedicoDTO() {
 		super();
+	}
+	
+	public ProcedimentoMedicoDTO(ProcedimentoMedico p) {
+		this.descLocal = p.getDescLocal();
+		this.descricao = p.getDescricao();
+		this.descTipoProcedimento = p.getTipoProcedimento().getDescTipoProcedimeto();
+		this.dtProcedimento = p.getDtProcedimento();
+		this.dtRegistro = p.getDtRegistro();
+		this.id = p.getId();
+		this.nomeUsuario = p.getUser().getNome();
+		this.titulo = p.getTitulo();
 	}
 	
 	@Override

@@ -30,6 +30,14 @@ public class UserDTO extends CredentialsDTO{
 	@JsonFormat(pattern="dd-mm-yyyy")
 	public Date dtNascimento;
 	
+	public boolean medico;
+	
+	public boolean isMedico() {
+		return medico;
+	}
+	public void setMedico(boolean medico) {
+		this.medico = medico;
+	}
 	public String getNome() {
 		return nome;
 	}

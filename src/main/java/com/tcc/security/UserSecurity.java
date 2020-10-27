@@ -1,6 +1,8 @@
 package com.tcc.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,7 @@ public class UserSecurity implements UserDetails {
 	private Long   id;
 	private String email;
 	private String senha;
+	private List<String> perfil = new ArrayList<>();
 	private  Collection<? extends GrantedAuthority> authorities;
 	
 	public UserSecurity(Long id, String email, String senha, Set<PerfilEnum> perfis) {
@@ -27,6 +30,7 @@ public class UserSecurity implements UserDetails {
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
+		perfis.forEach(p -> perfil.add(p.getDesc()));
 		this.authorities = perfis.stream().map( p -> new SimpleGrantedAuthority(p.getDesc())).collect(Collectors.toList());
 	}
 	
@@ -34,6 +38,13 @@ public class UserSecurity implements UserDetails {
 		return id;
 	}
 
+	public List<String> getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(List<String> perfil) {
+		this.perfil = perfil;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -40,6 +40,10 @@ public class UserService {
 			user.setDtNascimento(dto.getDtNascimento());
 			user.setPassword(encoder.encode(user.getPassword()));
 			user.addPerfil(PerfilEnum.PENDENTE);
+			
+			if(dto.isMedico())
+				user.addPerfil(PerfilEnum.MEDICO);
+			
 			Date date = new Date();  
 			user.setDtCadastro(date);			
 			this.userRepository.save(user);
