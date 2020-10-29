@@ -1,9 +1,12 @@
 package com.tcc.DTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ProcedimentoMedicoFormDTO {
 	
@@ -20,10 +23,12 @@ public class ProcedimentoMedicoFormDTO {
 	@Size(max=255,min=1,message="Formato inválido para o campo descrição do procedimento")
 	private String descricao;
 	
+	@JsonFormat(pattern="dd-mm-yyyy")
 	private Date dtRetorno;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo data do procedimento")
-	private java.sql.Date dtProcedimento;
+	@JsonFormat(pattern="dd-MM-yyyy")
+	private LocalDate dtProcedimento;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo  tipo do procedimento")
 	private Long idTipoProcedimento;
@@ -60,11 +65,11 @@ public class ProcedimentoMedicoFormDTO {
 		this.dtRetorno = dtRetorno;
 	}
 
-	public java.sql.Date getDtProcedimento() {
+	public LocalDate getDtProcedimento() {
 		return dtProcedimento;
 	}
 
-	public void setDtProcedimento(java.sql.Date dtProcedimento) {
+	public void setDtProcedimento(LocalDate dtProcedimento) {
 		this.dtProcedimento = dtProcedimento;
 	}
 
@@ -84,7 +89,7 @@ public class ProcedimentoMedicoFormDTO {
 		this.id = id;
 	}
 
-	public ProcedimentoMedicoFormDTO(Long id, String titulo, String descLocal, String descricao, Date dtRetorno, java.sql.Date dtProcedimento, Long idTipoProcedimento) {
+	public ProcedimentoMedicoFormDTO(Long id, String titulo, String descLocal, String descricao, Date dtRetorno, LocalDate dtProcedimento, Long idTipoProcedimento) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descLocal = descLocal;

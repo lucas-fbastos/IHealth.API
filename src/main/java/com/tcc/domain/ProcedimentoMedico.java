@@ -1,6 +1,7 @@
 package com.tcc.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -40,12 +41,17 @@ public class ProcedimentoMedico implements Serializable{
 	private Date dtRetorno;
 	
 	@Column(name="dt_procedimento")
-	private java.sql.Date dtProcedimento;
+	private LocalDate dtProcedimento;
 	
 	@ManyToOne
 	@JoinColumn(name="id_user")
 	@JsonManagedReference
 	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name="id_user_pr_saude")
+	@JsonManagedReference
+	private User profissionalSaude;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_procedimento")
@@ -100,11 +106,11 @@ public class ProcedimentoMedico implements Serializable{
 		this.dtRetorno = dtRetorno;
 	}
 
-	public java.sql.Date getDtProcedimento() {
+	public LocalDate getDtProcedimento() {
 		return dtProcedimento;
 	}
 
-	public void setDtProcedimento(java.sql.Date dtProcedimento) {
+	public void setDtProcedimento(LocalDate dtProcedimento) {
 		this.dtProcedimento = dtProcedimento;
 	}
 
@@ -124,12 +130,20 @@ public class ProcedimentoMedico implements Serializable{
 		this.tipoProcedimento = tipoProcedimento;
 	}
 
+	public User getProfissionalSaude() {
+		return profissionalSaude;
+	}
+
+	public void setProfissionalSaude(User profissionalSaude) {
+		this.profissionalSaude = profissionalSaude;
+	}
+
 	public ProcedimentoMedico() {
 		super();
 	}
 
 	public ProcedimentoMedico(Long id, String titulo, String descLocal, String descricao, Date dtRegistro,
-			Date dtRetorno, java.sql.Date dtProcedimento, User user, TipoProcedimento tipoProcedimento) {
+			Date dtRetorno, LocalDate dtProcedimento, User user, TipoProcedimento tipoProcedimento) {
 		super();
 		this.id = id;
 		this.titulo = titulo;

@@ -28,7 +28,7 @@ public class JwtUtil {
 	public String generateToken(User user) {
 		Map<String, Object> userData = new HashMap<>();
 		List<String> listPerfil = new ArrayList<>();
-		user.getPerfis().forEach(p -> listPerfil.add(p.getDesc()));
+		user.getPerfis().forEach(p -> listPerfil.add(p.getDesc().substring(5)));
 		userData.put("nome", user.getNome());
 		userData.put("dtCadastro", user.getDtCadastro().toString());
 		userData.put("expiration",new Date(System.currentTimeMillis() + this.expiration));

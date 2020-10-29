@@ -76,7 +76,7 @@ public class ProcedimentoMedicoService {
 			pm.setDescLocal(dto.getDescLocal());
 			pm.setDescricao(dto.getDescricao());
 			pm.setDtRegistro(new Date());
-			pm.setDtRetorno(new java.sql.Date(System.currentTimeMillis()));
+			pm.setDtRetorno(new java.util.Date(System.currentTimeMillis()));
 			pm.setDtProcedimento(dto.getDtProcedimento());
 			pm.setTipoProcedimento(tp);
 			pm.setDescLocal(dto.getDescLocal());
@@ -88,9 +88,27 @@ public class ProcedimentoMedicoService {
 		}
 	}
 	
-	//vai salvar o procedimento do paciente, qrcodeService vai chamar esse aqui e passa o paciente pelo user do token do qrcode
 	public void save(ProcedimentoMedicoFormDTO dto, User paciente) {
-		
+		UserSecurity logado = UserService.authenticated();
+		if(logado!=null) {
+			Long id = logado.getId();
+			User profissionalSaude = this.userRepository.findById(id).orElseThrow();
+			ProcedimentoMedico pm = new ProcedimentoMedico();
+			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
+			pm.setDescLocal(dto.getDescLocal());
+			pm.setDescricao(dto.getDescricao());
+			pm.setDtRegistro(new Date());
+			pm.setDtRetorno(new java.sql.Date(System.currentTimeMillis()));
+			pm.setDtProcedimento(dto.getDtProcedimento());
+			pm.setTipoProcedimento(tp);
+			pm.setDescLocal(dto.getDescLocal());
+			pm.setTitulo(dto.getTitulo());
+			pm.setUser(paciente);
+			pm.setProfissionalSaude(profissionalSaude);
+			this.procedimentoMedicoRepository.save(pm);
+		}else {
+			throw new NoElementException("Usuário inválido, tente logar novamente");
+		}
 	}
 
 	public ProcedimentoMedicoFormDTO update(@Valid ProcedimentoMedicoFormDTO dto) {

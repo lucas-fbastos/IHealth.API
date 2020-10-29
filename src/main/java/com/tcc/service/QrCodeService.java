@@ -44,6 +44,8 @@ public class QrCodeService {
 		
 	}
 	
+	
+	
 	public DadosUserDTO decodeQRCode(String code) {
 		try {
 			Long id = JwtUtil.getIdFromToken(code);

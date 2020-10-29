@@ -1,8 +1,10 @@
 package com.tcc.DTO;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.ProcedimentoMedico;
 
 public class ProcedimentoMedicoDTO implements Serializable{
@@ -12,9 +14,12 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	private String titulo;
 	private String descLocal;
 	private String descricao;
+	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtRegistro;
+	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtRetorno;
-	private java.sql.Date dtProcedimento;
+	@JsonFormat(pattern="dd-MM-yyyy")
+	private LocalDate dtProcedimento;
 	private String nomeUsuario;
 	private String descTipoProcedimento;
 	
@@ -54,10 +59,10 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	public void setDtRetorno(Date dtRetorno) {
 		this.dtRetorno = dtRetorno;
 	}
-	public java.sql.Date getDtProcedimento() {
+	public LocalDate getDtProcedimento() {
 		return dtProcedimento;
 	}
-	public void setDtProcedimento(java.sql.Date dtProcedimento) {
+	public void setDtProcedimento(LocalDate dtProcedimento) {
 		this.dtProcedimento = dtProcedimento;
 	}
 	public String getNomeUsuario() {
@@ -74,7 +79,7 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	}
 	
 	public ProcedimentoMedicoDTO(Long id, String titulo, String descLocal, String descricao, Date dtRegistro,
-			Date dtRetorno, java.sql.Date dtProcedimento, String nomeUsuario, String descTipoProcedimento) {
+			Date dtRetorno, LocalDate dtProcedimento, String nomeUsuario, String descTipoProcedimento) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -82,7 +87,8 @@ public class ProcedimentoMedicoDTO implements Serializable{
 		this.descricao = descricao;
 		this.dtRegistro = dtRegistro;
 		this.dtRetorno = dtRetorno;
-		this.dtProcedimento = dtProcedimento;
+		this.dtProcedimento = LocalDate.of(dtProcedimento.getYear(), dtProcedimento.getMonth(),
+				dtProcedimento.getDayOfMonth());
 		this.nomeUsuario = nomeUsuario;
 		this.descTipoProcedimento = descTipoProcedimento;
 	}

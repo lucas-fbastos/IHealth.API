@@ -1,6 +1,7 @@
 package com.tcc.service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -155,7 +156,7 @@ public class DBService {
 		pm1.setDescricao("Consulta no oftalmologista, paga pelo plano de saúde, atestado de 4 dias");
 		pm1.setTitulo("Oftalmologista ");
 		pm1.setDtRegistro(new Date());
-		pm1.setDtProcedimento(new java.sql.Date(System.currentTimeMillis()));
+		pm1.setDtProcedimento(LocalDate.now());
 		pm1.setDtRetorno(new Date(new Date().getTime() + 345600000));
 		pm1.setTipoProcedimento(tp1);
 		pm1.setUser(u1);
@@ -166,8 +167,7 @@ public class DBService {
 		pm2.setDescricao("Exame de sangue, glicose e trigliceridios. O exame foi solicitado pelo médico na última consulta");
 		pm2.setTitulo("Exame de Sangue");
 		pm2.setDtRegistro(new Date());
-		java.sql.Date dt = java.sql.Date.valueOf("2007-10-11");
-		pm2.setDtProcedimento(dt);
+		pm2.setDtProcedimento(LocalDate.now());
 		pm2.setTipoProcedimento(tp3);
 		pm2.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm2);
@@ -177,8 +177,8 @@ public class DBService {
 		pm3.setDescricao("Cirurgia de remoção de amidala, paga pelo plano de saúde com cooparticipação, 5 dias de atestado");
 		pm3.setTitulo("Cirurgia amidala");
 		pm3.setDtRegistro(new Date());
-		java.sql.Date dt1 = java.sql.Date.valueOf("2008-08-22");
-		pm3.setDtProcedimento(dt1);
+		
+		pm3.setDtProcedimento(LocalDate.of(2010, 12, 11));
 		pm3.setTipoProcedimento(tp2);
 		pm3.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm3);
@@ -188,8 +188,7 @@ public class DBService {
 		pm4.setDescricao(null);
 		pm4.setTitulo("Prrimeira sessão de fisioterapia");
 		pm4.setDtRegistro(new Date());
-		java.sql.Date dt3 = java.sql.Date.valueOf("2009-11-05");
-		pm4.setDtProcedimento(dt3);
+		pm4.setDtProcedimento(LocalDate.of(2000, 02, 15));
 		pm4.setTipoProcedimento(tp5);
 		pm4.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm4);
