@@ -15,6 +15,14 @@ public class AlergiaDTO implements Serializable{
 	
 	private Long id;
 	
+	private String code;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	@NotEmpty(message="Preenchimento obrigatório para o campo Tipo de Alergia")
 	private Integer idTipoAlergia;
 	

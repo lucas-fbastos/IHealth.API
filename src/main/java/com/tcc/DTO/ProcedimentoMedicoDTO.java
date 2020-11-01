@@ -2,7 +2,6 @@ package com.tcc.DTO;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.ProcedimentoMedico;
@@ -14,20 +13,29 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	private String titulo;
 	private String descLocal;
 	private String descricao;
-	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	private Date dtRegistro;
-	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	private Date dtRetorno;
+	@JsonFormat(pattern="dd-MM-yyyy")
+	private LocalDate dtRegistro;
+	@JsonFormat(pattern="dd-MM-yyyy")
+	private LocalDate dtRetorno;
 	@JsonFormat(pattern="dd-MM-yyyy")
 	private LocalDate dtProcedimento;
 	private String nomeUsuario;
 	private String descTipoProcedimento;
+	private String nomeProfSaude;
 	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	
+	public String getNomeProfSaude() {
+		return nomeProfSaude;
+	}
+	public void setNomeProfSaude(String nomeProfSaude) {
+		this.nomeProfSaude = nomeProfSaude;
 	}
 	public String getTitulo() {
 		return titulo;
@@ -47,16 +55,16 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public Date getDtRegistro() {
+	public LocalDate getDtRegistro() {
 		return dtRegistro;
 	}
-	public void setDtRegistro(Date dtRegistro) {
+	public void setDtRegistro(LocalDate dtRegistro) {
 		this.dtRegistro = dtRegistro;
 	}
-	public Date getDtRetorno() {
+	public LocalDate getDtRetorno() {
 		return dtRetorno;
 	}
-	public void setDtRetorno(Date dtRetorno) {
+	public void setDtRetorno(LocalDate dtRetorno) {
 		this.dtRetorno = dtRetorno;
 	}
 	public LocalDate getDtProcedimento() {
@@ -78,8 +86,8 @@ public class ProcedimentoMedicoDTO implements Serializable{
 		this.descTipoProcedimento = descTipoProcedimento;
 	}
 	
-	public ProcedimentoMedicoDTO(Long id, String titulo, String descLocal, String descricao, Date dtRegistro,
-			Date dtRetorno, LocalDate dtProcedimento, String nomeUsuario, String descTipoProcedimento) {
+	public ProcedimentoMedicoDTO(Long id, String titulo, String descLocal, String descricao, LocalDate dtRegistro,
+			LocalDate dtRetorno, LocalDate dtProcedimento, String nomeUsuario, String descTipoProcedimento, String nmProfSaude) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -90,6 +98,7 @@ public class ProcedimentoMedicoDTO implements Serializable{
 		this.dtProcedimento = LocalDate.of(dtProcedimento.getYear(), dtProcedimento.getMonth(),
 				dtProcedimento.getDayOfMonth());
 		this.nomeUsuario = nomeUsuario;
+		this.nomeProfSaude = nmProfSaude;
 		this.descTipoProcedimento = descTipoProcedimento;
 	}
 	

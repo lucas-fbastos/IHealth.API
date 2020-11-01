@@ -65,6 +65,23 @@ public class AlergiaService {
 		}
 	}
 	
+	public Alergia addAlergia(AlergiaDTO alergia, User paciente) {
+		
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+			
+		try{
+			Alergia a = new Alergia();
+			a.setId(null);
+			a.setDadosMedicos(dados);
+			a.setDescAlergia(alergia.getDescAlergia());
+			TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(alergia.getIdTipoAlergia()).orElseThrow();
+			a.setTipoAlergia(tipoAlergia);
+		    return this.alergiaRepository.save(a);
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Tipo de alergia não encontrado");
+		}
+	}
+	
 	public List<TipoAlergia> getAllTipoAlergia(){
 		try {
 			List<TipoAlergia> tipos = this.tipoAlergiaRepository.findAll();

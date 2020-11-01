@@ -15,6 +15,15 @@ public class DoencaCronicaDTO implements Serializable{
 	@Size(max=255, min=3, message="Tamanho máximo de 255 caracteres e mínimo de 3" )
 	private String descDoenca;
 	private Long id;
+	
+	private String code;
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	public String getDescDoenca() {
 		return descDoenca;
 	}

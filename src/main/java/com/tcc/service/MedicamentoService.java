@@ -52,6 +52,18 @@ public class MedicamentoService {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
 		}
 	}
+	
+	public Medicamento addMedicamentos(MedicamentoDTO dto, User paciente) {
+		
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+			
+		Medicamento m = new Medicamento();
+		m.setId(null);
+		m.setDadosMedicos(dados);
+		m.setDescMedicamento(dto.getDesc());
+		m.setDtRegistro(new Date(System.currentTimeMillis()));
+		return this.medicamentoRepository.save(m);
+	}
 
 	public void deleteMedicamento(Long idMed) {
 		UserSecurity logado = UserService.authenticated();

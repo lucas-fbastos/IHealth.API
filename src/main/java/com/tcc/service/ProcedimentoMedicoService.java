@@ -1,10 +1,8 @@
 package com.tcc.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,10 +41,15 @@ public class ProcedimentoMedicoService {
 			List<ProcedimentoMedicoDTO> dtos = new ArrayList<>();
 			if(procedimentos != null && !procedimentos.isEmpty()) {
 				for(ProcedimentoMedico procedimento : procedimentos) {
+					
+					String nmProfissionalSaude = null;
+					if(procedimento.getProfissionalSaude()!=null)
+						nmProfissionalSaude = procedimento.getProfissionalSaude().getNome();
+					
 					ProcedimentoMedicoDTO dto  = new ProcedimentoMedicoDTO(procedimento.getId(), procedimento.getTitulo(), procedimento.getDescLocal(), 
 														procedimento.getDescricao(), procedimento.getDtRegistro(), procedimento.getDtRetorno(), 
 														procedimento.getDtProcedimento(), procedimento.getUser().getNome(), 
-														procedimento.getTipoProcedimento().getDescTipoProcedimeto());
+														procedimento.getTipoProcedimento().getDescTipoProcedimeto(), nmProfissionalSaude);
 					dtos.add(dto);
 				}
 				return dtos;
@@ -75,8 +78,8 @@ public class ProcedimentoMedicoService {
 			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
 			pm.setDescLocal(dto.getDescLocal());
 			pm.setDescricao(dto.getDescricao());
-			pm.setDtRegistro(new Date());
-			pm.setDtRetorno(new java.util.Date(System.currentTimeMillis()));
+			pm.setDtRegistro(LocalDate.now());
+			pm.setDtRetorno(dto.getDtRetorno());
 			pm.setDtProcedimento(dto.getDtProcedimento());
 			pm.setTipoProcedimento(tp);
 			pm.setDescLocal(dto.getDescLocal());
@@ -97,8 +100,8 @@ public class ProcedimentoMedicoService {
 			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
 			pm.setDescLocal(dto.getDescLocal());
 			pm.setDescricao(dto.getDescricao());
-			pm.setDtRegistro(new Date());
-			pm.setDtRetorno(new java.sql.Date(System.currentTimeMillis()));
+			pm.setDtRegistro(LocalDate.now());
+			pm.setDtRetorno(LocalDate.now());
 			pm.setDtProcedimento(dto.getDtProcedimento());
 			pm.setTipoProcedimento(tp);
 			pm.setDescLocal(dto.getDescLocal());
@@ -111,12 +114,12 @@ public class ProcedimentoMedicoService {
 		}
 	}
 
-	public ProcedimentoMedicoFormDTO update(@Valid ProcedimentoMedicoFormDTO dto) {
+	public ProcedimentoMedicoFormDTO update(ProcedimentoMedicoFormDTO dto) {
 		ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(dto.getId()).orElseThrow();
 		TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
 		pm.setDescLocal(dto.getDescLocal());
 		pm.setDescricao(dto.getDescricao());
-		pm.setDtRetorno(new java.sql.Date(System.currentTimeMillis()));
+		pm.setDtRetorno(dto.getDtRetorno());
 		pm.setDtProcedimento(dto.getDtProcedimento());
 		pm.setTipoProcedimento(tp);
 		pm.setDescLocal(dto.getDescLocal());
@@ -124,6 +127,30 @@ public class ProcedimentoMedicoService {
 		this.procedimentoMedicoRepository.save(pm);
 		return new ProcedimentoMedicoFormDTO(pm.getId(),pm.getTitulo(), pm.getDescLocal(), pm.getDescricao(), pm.getDtRetorno(), 
 				pm.getDtProcedimento(), pm.getTipoProcedimento().getId());
+	}
+	
+	public ProcedimentoMedicoFormDTO update(ProcedimentoMedicoFormDTO dto, User paciente) {
+		UserSecurity logado = UserService.authenticated();
+		if(logado!=null) {
+			Long id = logado.getId();
+			User profissionalSaude = this.userRepository.findById(id).orElseThrow();
+			ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(dto.getId()).orElseThrow();
+			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
+			pm.setDescLocal(dto.getDescLocal());
+			pm.setDescricao(dto.getDescricao());
+			pm.setDtRetorno(dto.getDtRetorno());
+			pm.setDtProcedimento(dto.getDtProcedimento());
+			pm.setTipoProcedimento(tp);
+			pm.setDescLocal(dto.getDescLocal());
+			pm.setTitulo(dto.getTitulo());
+			pm.setProfissionalSaude(profissionalSaude);
+			this.procedimentoMedicoRepository.save(pm);
+			return new ProcedimentoMedicoFormDTO(pm.getId(),pm.getTitulo(), pm.getDescLocal(), pm.getDescricao(), pm.getDtRetorno(), 
+					pm.getDtProcedimento(), pm.getTipoProcedimento().getId());
+		}else {
+			throw new NoElementException("Usuário inválido, tente logar novamente");
+		}
+		
 	}
 
 	public void delete(Long id) {

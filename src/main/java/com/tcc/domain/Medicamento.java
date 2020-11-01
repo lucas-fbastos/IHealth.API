@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="medicamento_user", schema="public")
@@ -33,6 +34,7 @@ public class Medicamento implements Serializable {
 	private DadosMedicos dadosMedicos;
 
 	@Column(name="dt_registro")
+	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtRegistro;
 	
 	public Long getId() {

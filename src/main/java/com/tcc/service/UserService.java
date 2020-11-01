@@ -63,9 +63,8 @@ public class UserService {
 			if(logado!=null) {
 				Long id = logado.getId();
 				User userSalvo = this.userRepository.findById(id).orElseThrow();
-				userSalvo.setEmail(dto.getEmail());
+				
 				userSalvo.setNome(dto.getNome());
-				userSalvo.setSexo(dto.getSexo().charAt(0));
 				userSalvo.setTelefone(dto.getTelefone());
 				userSalvo.setDtNascimento(dto.getDtNascimento());
 				this.userRepository.save(userSalvo);

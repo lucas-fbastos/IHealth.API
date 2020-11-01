@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -36,6 +37,7 @@ public class DadosMedicos implements Serializable{
 	private TipoSanguineo tipoSanguineo;
 	
 	@Column(name="dt_atualizacao")
+	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtAtualizacao;
 	
 	@OneToOne
@@ -53,6 +55,11 @@ public class DadosMedicos implements Serializable{
 	
 	@Column(name="peso")
 	private Double peso;
+	
+	@ManyToOne
+	@JoinColumn(name="id_user_pr_saude")
+	@JsonManagedReference
+	private User profissionalSaude;
 	
 	@Column(name="altura")
 	private Double altura;
@@ -77,6 +84,14 @@ public class DadosMedicos implements Serializable{
 
 	public Date getDtAtualizacao() {
 		return dtAtualizacao;
+	}
+
+	public User getProfissionalSaude() {
+		return profissionalSaude;
+	}
+
+	public void setProfissionalSaude(User profissionalSaude) {
+		this.profissionalSaude = profissionalSaude;
 	}
 
 	public void setDtAtualizacao(Date dtAtualizacao) {

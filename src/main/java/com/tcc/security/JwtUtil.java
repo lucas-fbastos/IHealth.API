@@ -44,9 +44,10 @@ public class JwtUtil {
 	public static String generateTokenQRCode(Long id) {
 		Map<String, Object> userData = new HashMap<>();
 		userData.put("sub",id);
+		Long exp = 3600000l;
+		userData.put("exp",new Date(System.currentTimeMillis() + exp));
 		return Jwts.builder()
 				.setClaims(userData)
-				.setExpiration(new Date(System.currentTimeMillis() + 3600000))
 				.signWith(SignatureAlgorithm.HS512, "SecretApiApplicativo".getBytes())
 				.compact();
 	}
@@ -54,7 +55,7 @@ public class JwtUtil {
 	public static Long getIdFromToken(String token) {
 		try {
 			Claims claims = Jwts.parser().setSigningKey("SecretApiApplicativo".getBytes()).parseClaimsJws(token).getBody();
-			return (Long) claims.get("id");
+			return Long.valueOf(String.valueOf(claims.get("sub")));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			return null;
@@ -68,6 +69,19 @@ public class JwtUtil {
 			Date expirationDate = Date.from(Instant.ofEpochMilli((long) claims.get("expiration")));
 			Date now = new Date(System.currentTimeMillis());
 			if(userName!=null && expirationDate != null && now.before(expirationDate)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean QRCodetokenValido(String token) {
+		Claims claims = Jwts.parser().setSigningKey("SecretApiApplicativo".getBytes()).parseClaimsJws(token).getBody();
+		if(claims!=null) {
+			
+			Date expirationDate = Date.from(Instant.ofEpochMilli((long) claims.get("exp")));
+			Date now = new Date(System.currentTimeMillis());
+			if(expirationDate != null && now.before(expirationDate)) {
 				return true;
 			}
 		}

@@ -2,7 +2,6 @@ package com.tcc.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +34,10 @@ public class ProcedimentoMedico implements Serializable{
 	private String descricao;
 	
 	@Column(name="dt_registro")
-	private Date dtRegistro;
+	private LocalDate dtRegistro;
 	
 	@Column(name="dt_retorno")
-	private Date dtRetorno;
+	private LocalDate dtRetorno;
 	
 	@Column(name="dt_procedimento")
 	private LocalDate dtProcedimento;
@@ -90,19 +89,19 @@ public class ProcedimentoMedico implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public Date getDtRegistro() {
+	public LocalDate getDtRegistro() {
 		return dtRegistro;
 	}
 
-	public void setDtRegistro(Date dtRegistro) {
+	public void setDtRegistro(LocalDate dtRegistro) {
 		this.dtRegistro = dtRegistro;
 	}
 
-	public Date getDtRetorno() {
+	public LocalDate getDtRetorno() {
 		return dtRetorno;
 	}
 
-	public void setDtRetorno(Date dtRetorno) {
+	public void setDtRetorno(LocalDate dtRetorno) {
 		this.dtRetorno = dtRetorno;
 	}
 
@@ -142,8 +141,8 @@ public class ProcedimentoMedico implements Serializable{
 		super();
 	}
 
-	public ProcedimentoMedico(Long id, String titulo, String descLocal, String descricao, Date dtRegistro,
-			Date dtRetorno, LocalDate dtProcedimento, User user, TipoProcedimento tipoProcedimento) {
+	public ProcedimentoMedico(Long id, String titulo, String descLocal, String descricao, LocalDate dtRegistro,
+			LocalDate dtRetorno, LocalDate dtProcedimento, User user, TipoProcedimento tipoProcedimento) {
 		super();
 		this.id = id;
 		this.titulo = titulo;

@@ -1,5 +1,9 @@
 package com.tcc.service;
 
+import java.text.DecimalFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -7,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.DadosMedicosDTO;
+import com.tcc.DTO.DadosMedicosUserDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.User;
@@ -17,6 +22,7 @@ import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
 import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.NoElementException;
+
 
 @Service
 public class DadosMedicosService {
@@ -61,14 +67,68 @@ public class DadosMedicosService {
 			throw new NoElementException("Usuário inválido, tente logar novamente");
 		}
 	}
-
-	public DadosMedicos getDadosMedicos() {
+	
+	public DadosMedicos update(DadosMedicosDTO dto, User paciente) {
 		UserSecurity logado = UserService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
 			try {
 				User user = this.userRepository.findById(id).orElseThrow();
-				return this.dadosMedicosRepository.findByUser(user).orElseThrow();
+				DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+				dados.setDtAtualizacao(new Date());
+				if(dto.getTipoSanguineo()!=null) {
+					TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
+					dados.setTipoSanguineo(tipoSanguineo);					
+				}
+				dados.setAltura(dto.getAltura());
+				dados.setPeso(dto.getPeso());
+				this.calculaImc(dados);
+				this.dadosMedicosRepository.save(dados);
+				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
+					user.addPerfil(PerfilEnum.ATIVO);
+					user.getPerfis().remove(PerfilEnum.PENDENTE);
+				}else{
+					user.addPerfil(PerfilEnum.PENDENTE);
+					user.getPerfis().remove(PerfilEnum.ATIVO);
+				}
+				return dados;
+			}catch(NoSuchElementException e) {
+				throw new NoElementException("informação não encontrada");
+			}
+		}else {
+			throw new NoElementException("Usuário inválido, tente logar novamente");
+		}
+	}
+	
+
+	public DadosMedicosUserDTO getDadosMedicos() {
+		UserSecurity logado = UserService.authenticated();
+		if(logado!=null) {
+			Long id = logado.getId();
+			try {
+				User user = this.userRepository.findById(id).orElseThrow();
+				DadosMedicos dm = this.dadosMedicosRepository.findByUser(user).orElseThrow();
+				DadosMedicosUserDTO dto = new DadosMedicosUserDTO();
+				dto.setAlergias(dm.getAlergias());
+				dto.setAltura(dm.getAltura());
+				dto.setDescImc(dm.getDescImc());
+				dto.setDoencasCronicas(dm.getDoencasCronicas());
+				dto.setDtAtualizacao(dm.getDtAtualizacao());
+				if(dm.getProfissionalSaude()!=null) {
+					dto.setNomeProfissionalSaude(dm.getProfissionalSaude().getNome());					
+				}
+				dto.setId(dm.getId());
+				LocalDate now = LocalDate.now();
+				LocalDate dtNascimentoUser =  Instant.ofEpochMilli(user.getDtNascimento().getTime())
+					      .atZone(ZoneId.systemDefault())
+					      .toLocalDate();
+				Integer idade =  now.getYear() - dtNascimentoUser.getYear();
+				dto.setIdade(idade);
+				dto.setMedicamentos(dm.getMedicamentos());
+				dto.setPeso(dto.getPeso());
+				dto.setTipoSanguineo(dm.getTipoSanguineo());
+				dto.setVlImc(dm.getVlImc());
+				return dto;
 			}catch(NoSuchElementException e) {
 				throw new NoElementException("Usuário não encontrado");
 			}
@@ -79,7 +139,9 @@ public class DadosMedicosService {
 	
 	public void calculaImc(DadosMedicos dados) {
 		if(dados.getAltura() > 0 && dados.getPeso() > 0) {
-			Double imc = dados.getPeso()/(dados.getAltura() * dados.getAltura());
+			Double imc = dados.getPeso()/(dados.getAltura() * dados.getAltura());		
+			DecimalFormat formato = new DecimalFormat("#.##");      
+			imc = Double.valueOf(formato.format(imc).replace(',','.'));
 			IMCEnum descImc = IMCEnum.getImcDesc(imc);
 			dados.setDescImc(descImc.getDescricao());
 			dados.setVlImc(imc);

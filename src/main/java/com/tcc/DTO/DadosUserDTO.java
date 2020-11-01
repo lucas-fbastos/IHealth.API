@@ -3,26 +3,62 @@ package com.tcc.DTO;
 import java.util.List;
 
 import com.tcc.domain.Alergia;
+import com.tcc.domain.DoencaCronica;
+import com.tcc.domain.Medicamento;
+import com.tcc.domain.TipoSanguineo;
 
 public class DadosUserDTO{
 	static final long serialVersionUID = 1L;
 	
+	private Long id;
 	private String nome;
-	private String tipoSanguineo;
+	private TipoSanguineo tipoSanguineo;
 	private Double altura;
 	private Double peso;
-	private Double imc;
-	private String imcDesc;
-	private List<ProcedimentoMedicoDTO> procedimentos;
+	private Double vlImc;
+	private String descImc;
+	private Integer idade;
 	private List<Alergia> alergias;
-	private List<MedicamentoDTO> medicamentos;
-	private List<DoencaCronicaDTO> doencasCronicas;
+	private List<Medicamento> medicamentos;
+	private List<DoencaCronica> doencasCronicas;
+	private String nomeProfissionalSaude;
 	
-	public String getTipoSanguineo() {
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Double getVlImc() {
+		return vlImc;
+	}
+	public void setVlImc(Double vlImc) {
+		this.vlImc = vlImc;
+	}
+	public String getDescImc() {
+		return descImc;
+	}
+	public void setDescImc(String descImc) {
+		this.descImc = descImc;
+	}
+	public String getNomeProfissionalSaude() {
+		return nomeProfissionalSaude;
+	}
+	public void setNomeProfissionalSaude(String nmProfissionalSaude) {
+		this.nomeProfissionalSaude = nmProfissionalSaude;
+	}
+	public TipoSanguineo getTipoSanguineo() {
 		return tipoSanguineo;
 	}
-	public void setTipoSanguineo(String tipoSanguineo) {
+	public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
 		this.tipoSanguineo = tipoSanguineo;
+	}
+	
+	public Integer getIdade() {
+		return idade;
+	}
+	public void setIdade(Integer idade) {
+		this.idade = idade;
 	}
 	public Double getAltura() {
 		return altura;
@@ -36,50 +72,34 @@ public class DadosUserDTO{
 	public void setPeso(Double peso) {
 		this.peso = peso;
 	}
-	public Double getImc() {
-		return imc;
-	}
-	public void setImc(Double imc) {
-		this.imc = imc;
-	}
-	public String getImcDesc() {
-		return imcDesc;
-	}
-	public void setImcDesc(String imcDesc) {
-		this.imcDesc = imcDesc;
-	}
+
 	public String getNome() {
 		return nome;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public List<ProcedimentoMedicoDTO> getProcedimentos() {
-		return procedimentos;
-	}
-	public void setProcedimentos(List<ProcedimentoMedicoDTO> procedimentos) {
-		this.procedimentos = procedimentos;
-	}
+
 	public List<Alergia> getAlergias() {
 		return alergias;
 	}
 	public void setAlergias(List<Alergia> alergias) {
 		this.alergias = alergias;
 	}
-	public List<MedicamentoDTO> getMedicamentos() {
+	public List<Medicamento> getMedicamentos() {
 		return medicamentos;
 	}
-	public void setMedicamentos(List<MedicamentoDTO> medicamentos) {
+	public void setMedicamentos(List<Medicamento> medicamentos) {
 		this.medicamentos = medicamentos;
 	}
-	public List<DoencaCronicaDTO> getDoencasCronicas() {
+	public List<DoencaCronica> getDoencasCronicas() {
 		return doencasCronicas;
 	}
-	public void setDoencasCronicas(List<DoencaCronicaDTO> doencasCronicas) {
+	public void setDoencasCronicas(List<DoencaCronica> doencasCronicas) {
 		this.doencasCronicas = doencasCronicas;
 	}
 	
-	public void addDoencasCronicas(DoencaCronicaDTO doencasCronica) {
+	public void addDoencasCronicas(DoencaCronica doencasCronica) {
 		this.doencasCronicas.add(doencasCronica);
 	}
 	
@@ -87,15 +107,10 @@ public class DadosUserDTO{
 		this.alergias.add(alergia);
 	}
 	
-	public void addMedicamento(MedicamentoDTO medicamento) {
+	public void addMedicamento(Medicamento medicamento) {
 		this.medicamentos.add(medicamento);
 	}
-	
-	public void addProcedimentoMedico(ProcedimentoMedicoDTO procedimento) {
-		this.procedimentos.add(procedimento);
-	}
-	
-	
+
 	public DadosUserDTO() {
 		super();
 	}

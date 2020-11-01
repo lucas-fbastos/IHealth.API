@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.QRCodeException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -35,6 +36,12 @@ public class ResourceExceptionHandler {
 			error.addFields(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	@ExceptionHandler(QRCodeException.class)
+	public ResponseEntity<StandardError> validation(QRCodeException e, HttpServletRequest req){
+		StandardError error = new StandardError(HttpStatus.UNAUTHORIZED.value(),"Token expirado",System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
 	}
 
 }

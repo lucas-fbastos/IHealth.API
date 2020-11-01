@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +30,7 @@ public class DoencaCronicaService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
-	public @Valid List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO) {
+	public List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO) {
 		UserSecurity logado = UserService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
@@ -54,6 +52,21 @@ public class DoencaCronicaService {
 			}
 		}
 		throw new NoElementException("Usuário não encontrado");
+	}
+	
+	public DoencaCronica save(DoencaCronicaDTO doencaDTO, User paciente) {
+		
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();	
+		try{
+			DoencaCronica doenca = new DoencaCronica();
+			doenca.setId(null);
+			doenca.setDadosMedicos(dados);
+			doenca.setDescDoenca(doencaDTO.getDescDoenca());
+			return this.doencaCronicaRepository.save(doenca);
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Informação não encontrada");
+		}
+		
 	}
 
 	public List<DoencaCronica> updateDoenca(List<DoencaCronicaDTO> doencas) {

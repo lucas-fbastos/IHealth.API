@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.DTO.DadosMedicosDTO;
+import com.tcc.DTO.DadosMedicosUserDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.service.DadosMedicosService;
 
@@ -22,8 +23,8 @@ public class DadosMedicosResource {
 	private DadosMedicosService dadosMedicosService;
 	
 	@GetMapping
-	public ResponseEntity<DadosMedicos> getDadosMedicos(){
-		DadosMedicos dados = this.dadosMedicosService.getDadosMedicos();
+	public ResponseEntity<DadosMedicosUserDTO> getDadosMedicos(){
+		DadosMedicosUserDTO dados = this.dadosMedicosService.getDadosMedicos();
 		return ResponseEntity.ok(dados);
 	}
 	

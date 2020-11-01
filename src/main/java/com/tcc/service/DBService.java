@@ -155,9 +155,9 @@ public class DBService {
 		pm1.setDescLocal("Hospital Santa Lúcia");
 		pm1.setDescricao("Consulta no oftalmologista, paga pelo plano de saúde, atestado de 4 dias");
 		pm1.setTitulo("Oftalmologista ");
-		pm1.setDtRegistro(new Date());
+		pm1.setDtRegistro(LocalDate.now());
 		pm1.setDtProcedimento(LocalDate.now());
-		pm1.setDtRetorno(new Date(new Date().getTime() + 345600000));
+		pm1.setDtRetorno(LocalDate.of(2021, 02, 15));
 		pm1.setTipoProcedimento(tp1);
 		pm1.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm1);
@@ -166,7 +166,7 @@ public class DBService {
 		pm2.setDescLocal("Sabin");
 		pm2.setDescricao("Exame de sangue, glicose e trigliceridios. O exame foi solicitado pelo médico na última consulta");
 		pm2.setTitulo("Exame de Sangue");
-		pm2.setDtRegistro(new Date());
+		pm2.setDtRegistro(LocalDate.now());
 		pm2.setDtProcedimento(LocalDate.now());
 		pm2.setTipoProcedimento(tp3);
 		pm2.setUser(u1);
@@ -176,7 +176,7 @@ public class DBService {
 		pm3.setDescLocal("Hospital Albert Sabin");
 		pm3.setDescricao("Cirurgia de remoção de amidala, paga pelo plano de saúde com cooparticipação, 5 dias de atestado");
 		pm3.setTitulo("Cirurgia amidala");
-		pm3.setDtRegistro(new Date());
+		pm3.setDtRegistro(LocalDate.now());
 		
 		pm3.setDtProcedimento(LocalDate.of(2010, 12, 11));
 		pm3.setTipoProcedimento(tp2);
@@ -186,8 +186,8 @@ public class DBService {
 		ProcedimentoMedico pm4 = new ProcedimentoMedico();
 		pm4.setDescLocal("Hospital Luzia");
 		pm4.setDescricao(null);
-		pm4.setTitulo("Prrimeira sessão de fisioterapia");
-		pm4.setDtRegistro(new Date());
+		pm4.setTitulo("Primeira sessão de fisioterapia");
+		pm4.setDtRegistro(LocalDate.now());
 		pm4.setDtProcedimento(LocalDate.of(2000, 02, 15));
 		pm4.setTipoProcedimento(tp5);
 		pm4.setUser(u1);
