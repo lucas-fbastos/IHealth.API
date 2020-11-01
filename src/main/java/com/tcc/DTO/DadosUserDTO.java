@@ -1,5 +1,6 @@
 package com.tcc.DTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tcc.domain.Alergia;
@@ -18,9 +19,9 @@ public class DadosUserDTO{
 	private Double vlImc;
 	private String descImc;
 	private Integer idade;
-	private List<Alergia> alergias;
-	private List<Medicamento> medicamentos;
-	private List<DoencaCronica> doencasCronicas;
+	private List<Alergia> alergias = new ArrayList<>();
+	private List<Medicamento> medicamentos= new ArrayList<>();
+	private List<DoencaCronica> doencasCronicas = new ArrayList<>();
 	private String nomeProfissionalSaude;
 	
 	public Long getId() {
