@@ -94,8 +94,8 @@ public class QrCodeService {
 		return dto;
 	}
 	
-	public DadosUserDTO updateDadosMedicosByQrCode(String code, DadosMedicosDTO form) {
-		User paciente = this.validateQrCodeGetUser(code);
+	public DadosUserDTO updateDadosMedicosByQrCode(DadosMedicosDTO form) {
+		User paciente = this.validateQrCodeGetUser(form.getCode());
 		DadosMedicos dm = this.dadosMedicosService.update(form ,paciente);
 		DadosUserDTO dto = new DadosUserDTO();
 		dto.setAlergias(dm.getAlergias().stream().collect(Collectors.toList()));
