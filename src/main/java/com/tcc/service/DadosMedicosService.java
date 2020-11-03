@@ -125,7 +125,7 @@ public class DadosMedicosService {
 				Integer idade =  now.getYear() - dtNascimentoUser.getYear();
 				dto.setIdade(idade);
 				dto.setMedicamentos(dm.getMedicamentos());
-				dto.setPeso(dto.getPeso());
+				dto.setPeso(dm.getPeso());
 				dto.setTipoSanguineo(dm.getTipoSanguineo());
 				dto.setVlImc(dm.getVlImc());
 				return dto;

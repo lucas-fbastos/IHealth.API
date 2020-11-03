@@ -76,7 +76,7 @@ public class QrCodeService {
 		dto.setNome(paciente.getNome());
 		dto.setTipoSanguineo(dados.getTipoSanguineo());
 		dto.setAltura(dados.getAltura());
-		dto.setPeso(dto.getPeso());
+		dto.setPeso(dados.getPeso());
 		dto.setVlImc(dados.getVlImc());
 		dto.setDescImc(dados.getDescImc());
 		dto.setAlergias(dados.getAlergias().stream().collect(Collectors.toList()));
