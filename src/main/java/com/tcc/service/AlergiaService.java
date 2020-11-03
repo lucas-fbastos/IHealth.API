@@ -70,13 +70,21 @@ public class AlergiaService {
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
 			
 		try{
-			Alergia a = new Alergia();
-			a.setId(null);
-			a.setDadosMedicos(dados);
-			a.setDescAlergia(alergia.getDescAlergia());
-			TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(alergia.getIdTipoAlergia()).orElseThrow();
-			a.setTipoAlergia(tipoAlergia);
-		    return this.alergiaRepository.save(a);
+			UserSecurity logado = UserService.authenticated();
+			if(logado!=null) {
+				Long id = logado.getId();
+				User usuario = this.userRepository.findById(id).orElseThrow();
+				Alergia a = new Alergia();
+				a.setId(null);
+				a.setDadosMedicos(dados);
+				a.setDescAlergia(alergia.getDescAlergia());
+				TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(alergia.getIdTipoAlergia()).orElseThrow();
+				a.setTipoAlergia(tipoAlergia);
+				a.setProfissionalSaude(usuario);
+			    return this.alergiaRepository.save(a);
+			}else {
+				throw new NoElementException("Usuário inválido, tente logar novamente");
+			}
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Tipo de alergia não encontrado");
 		}
@@ -106,6 +114,7 @@ public class AlergiaService {
 					a.setDescAlergia(dto.getDescAlergia());
 					TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
 					a.setTipoAlergia(tipoAlergia);
+					a.setProfissionalSaude(null);
 					list.add(a);
 				}
 				this.alergiaRepository.saveAll(list);

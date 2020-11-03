@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="medicamento_user", schema="public")
@@ -36,6 +37,11 @@ public class Medicamento implements Serializable {
 	@Column(name="dt_registro")
 	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtRegistro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_user_pr_saude")
+	@JsonManagedReference
+	private User profissionalSaude;
 	
 	public Long getId() {
 		return id;
@@ -73,12 +79,26 @@ public class Medicamento implements Serializable {
 		this.dtRegistro = dtRegistro;
 	}
 
-	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos, Date dtRegistro) {
+	public String getProfissionalSaude() {
+		if(profissionalSaude!=null) {
+			return profissionalSaude.getNome();			
+		}else {
+			return null;
+		}
+	}
+
+	public void setProfissionalSaude(User profissionalSaude) {
+		this.profissionalSaude = profissionalSaude;
+	}
+
+	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos, Date dtRegistro,
+			User profissionalSaude) {
 		super();
 		this.id = id;
 		this.descMedicamento = descMedicamento;
 		this.dadosMedicos = dadosMedicos;
 		this.dtRegistro = dtRegistro;
+		this.profissionalSaude = profissionalSaude;
 	}
 
 	@Override

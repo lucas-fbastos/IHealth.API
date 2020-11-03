@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="doencas_cronicas", schema="public")
@@ -30,6 +31,11 @@ public class DoencaCronica implements Serializable{
 	@JoinColumn(name="id_dados_medicos")
 	@JsonBackReference
 	private DadosMedicos dadosMedicos;
+	
+	@ManyToOne
+	@JoinColumn(name="id_user_pr_saude")
+	@JsonManagedReference
+	private User profissionalSaude;
 
 	public Long getId() {
 		return id;
@@ -55,15 +61,28 @@ public class DoencaCronica implements Serializable{
 		this.dadosMedicos = dadosMedicos;
 	}
 
-	public DoencaCronica(Long id, String descDoenca, DadosMedicos dadosMedicos) {
-		super();
-		this.id = id;
-		this.descDoenca = descDoenca;
-		this.dadosMedicos = dadosMedicos;
+	public String getProfissionalSaude() {
+		if(profissionalSaude!=null) {
+			return profissionalSaude.getNome();			
+		}else {
+			return null;
+		}
+	}
+
+	public void setProfissionalSaude(User profissionalSaude) {
+		this.profissionalSaude = profissionalSaude;
 	}
 
 	public DoencaCronica() {
 		super();
+	}
+
+	public DoencaCronica(Long id, String descDoenca, DadosMedicos dadosMedicos, User profissionalSaude) {
+		super();
+		this.id = id;
+		this.descDoenca = descDoenca;
+		this.dadosMedicos = dadosMedicos;
+		this.profissionalSaude = profissionalSaude;
 	}
 
 	@Override

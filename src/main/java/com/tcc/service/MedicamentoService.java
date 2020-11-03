@@ -56,13 +56,20 @@ public class MedicamentoService {
 	public Medicamento addMedicamentos(MedicamentoDTO dto, User paciente) {
 		
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
-			
-		Medicamento m = new Medicamento();
-		m.setId(null);
-		m.setDadosMedicos(dados);
-		m.setDescMedicamento(dto.getDesc());
-		m.setDtRegistro(new Date(System.currentTimeMillis()));
-		return this.medicamentoRepository.save(m);
+		UserSecurity logado = UserService.authenticated();	
+		if(logado!=null) {
+			Long id = logado.getId();
+			User usuario = this.userRepository.findById(id).orElseThrow();
+			Medicamento m = new Medicamento();
+			m.setId(null);
+			m.setDadosMedicos(dados);
+			m.setDescMedicamento(dto.getDesc());
+			m.setDtRegistro(new Date(System.currentTimeMillis()));
+			m.setProfissionalSaude(usuario);
+			return this.medicamentoRepository.save(m);
+		}else {
+			throw new NoElementException("Usuário inválido, tente logar novamente");
+		}
 	}
 
 	public void deleteMedicamento(Long idMed) {
@@ -94,6 +101,7 @@ public class MedicamentoService {
 			for(MedicamentoDTO dto : medicamentos) {
 				Medicamento m = this.medicamentoRepository.findById(dto.getId()).orElseThrow();
 				m.setDadosMedicos(dados);
+				m.setProfissionalSaude(null);
 				m.setDescMedicamento(dto.getDesc());
 				list.add(m);
 			}

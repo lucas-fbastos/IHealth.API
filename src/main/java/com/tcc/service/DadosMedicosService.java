@@ -50,6 +50,7 @@ public class DadosMedicosService {
 				}
 				dados.setAltura(dto.getAltura());
 				dados.setPeso(dto.getPeso());
+				dados.setProfissionalSaude(null);
 				this.calculaImc(dados);
 				this.dadosMedicosRepository.save(dados);
 				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
@@ -59,6 +60,7 @@ public class DadosMedicosService {
 					user.addPerfil(PerfilEnum.PENDENTE);
 					user.getPerfis().remove(PerfilEnum.ATIVO);
 				}
+				this.userRepository.save(user);
 				return dados;
 			}catch(NoSuchElementException e) {
 				throw new NoElementException("informação não encontrada");
@@ -82,15 +84,17 @@ public class DadosMedicosService {
 				}
 				dados.setAltura(dto.getAltura());
 				dados.setPeso(dto.getPeso());
+				dados.setProfissionalSaude(user);
 				this.calculaImc(dados);
 				this.dadosMedicosRepository.save(dados);
 				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
-					user.addPerfil(PerfilEnum.ATIVO);
-					user.getPerfis().remove(PerfilEnum.PENDENTE);
+					paciente.addPerfil(PerfilEnum.ATIVO);
+					paciente.getPerfis().remove(PerfilEnum.PENDENTE);
 				}else{
-					user.addPerfil(PerfilEnum.PENDENTE);
-					user.getPerfis().remove(PerfilEnum.ATIVO);
+					paciente.addPerfil(PerfilEnum.PENDENTE);
+					paciente.getPerfis().remove(PerfilEnum.ATIVO);
 				}
+				this.userRepository.save(paciente);
 				return dados;
 			}catch(NoSuchElementException e) {
 				throw new NoElementException("informação não encontrada");

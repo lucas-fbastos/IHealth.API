@@ -55,14 +55,21 @@ public class DoencaCronicaService {
 	}
 	
 	public DoencaCronica save(DoencaCronicaDTO doencaDTO, User paciente) {
-		
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();	
 		try{
-			DoencaCronica doenca = new DoencaCronica();
-			doenca.setId(null);
-			doenca.setDadosMedicos(dados);
-			doenca.setDescDoenca(doencaDTO.getDescDoenca());
-			return this.doencaCronicaRepository.save(doenca);
+			UserSecurity logado = UserService.authenticated();
+			if(logado!=null) {
+				Long id = logado.getId();
+				User usuario = this.userRepository.findById(id).orElseThrow();
+				DoencaCronica doenca = new DoencaCronica();
+				doenca.setId(null);
+				doenca.setDadosMedicos(dados);
+				doenca.setProfissionalSaude(usuario);
+				doenca.setDescDoenca(doencaDTO.getDescDoenca());
+				return this.doencaCronicaRepository.save(doenca);
+			}else {
+				throw new NoElementException("Usuário inválido, tente logar novamente");
+			}
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Informação não encontrada");
 		}
@@ -81,6 +88,7 @@ public class DoencaCronicaService {
 					DoencaCronica doenca = this.doencaCronicaRepository.findById(dto.getId()).orElseThrow();
 					doenca.setDadosMedicos(dados);
 					doenca.setDescDoenca(dto.getDescDoenca());
+					doenca.setProfissionalSaude(null);
 					list.add(doenca);
 				}
 				this.doencaCronicaRepository.saveAll(list);
