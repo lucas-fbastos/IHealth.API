@@ -3,6 +3,7 @@ package com.tcc.DTO;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class AlergiaDTO implements Serializable{
@@ -17,14 +18,15 @@ public class AlergiaDTO implements Serializable{
 	
 	private String code;
 	
+	@NotNull(message="Preenchimento obrigatório para o campo Tipo de Alergia")
+	private Integer idTipoAlergia;
+	
 	public String getCode() {
 		return code;
 	}
 	public void setCode(String code) {
 		this.code = code;
-	}
-	@NotEmpty(message="Preenchimento obrigatório para o campo Tipo de Alergia")
-	private Integer idTipoAlergia;
+	} 
 	
 	public String getDescAlergia() {
 		return descAlergia;

@@ -2,7 +2,7 @@ package com.tcc.DTO;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.tcc.domain.Medicamento;
@@ -11,7 +11,7 @@ public class MedicamentoDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotNull(message="Preenchimento obrigatório para o campo descrição do medicamento")
+	@NotEmpty(message="Preenchimento obrigatório para o campo descrição do medicamento")
 	@Size(max=255,min=1,message="Formato inválido para o campo descrição do medicamento")
 	private String desc;
 	

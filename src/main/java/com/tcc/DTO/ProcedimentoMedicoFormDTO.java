@@ -2,6 +2,7 @@ package com.tcc.DTO;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,14 +12,14 @@ public class ProcedimentoMedicoFormDTO {
 	
 	private Long id;
 	
-	@NotNull(message="Preenchimento obrigatório para o campo título")
+	@NotEmpty(message="Preenchimento obrigatório para o campo título")
 	@Size(max=255,min=1,message="Formato inválido para o campo título")
 	private String titulo;
 	
 	
 	private String descLocal;
 	
-	@NotNull(message="Preenchimento obrigatório para o campo descrição do procedimento")
+	@NotEmpty(message="Preenchimento obrigatório para o campo descrição do procedimento")
 	@Size(max=255,min=1,message="Formato inválido para o campo descrição do procedimento")
 	private String descricao;
 	
