@@ -35,7 +35,7 @@ public class DashboardResource {
 		return ResponseEntity.ok(items);
 	}
 	
-	@GetMapping("/quantitativos")
+	@GetMapping("/quantitativo")
 	public ResponseEntity<Map<String,Integer>> getQuantitativos(){
 		Map<String,Integer> items = this.dashboardService.getQuantitativos();
 		return ResponseEntity.ok(items);
