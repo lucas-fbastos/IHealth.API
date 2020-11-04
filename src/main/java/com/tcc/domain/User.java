@@ -122,6 +122,14 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	public DadosMedicos getDadosmedicos() {
+		return dadosmedicos;
+	}
+
+	public void setDadosmedicos(DadosMedicos dadosmedicos) {
+		this.dadosmedicos = dadosmedicos;
+	}
+
 	public Set<PerfilEnum> getPerfis() {
 		return perfis.stream().map(p -> PerfilEnum.toEnum(p)).collect(Collectors.toSet());
 	}

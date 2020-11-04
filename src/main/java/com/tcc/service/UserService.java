@@ -84,4 +84,17 @@ public class UserService {
 			return null;
 		}
 	}
+	
+	public User getUserLogado() {
+		try {
+			UserSecurity logado = (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
+			if(logado==null) {
+				throw new NoElementException("Usuário inválido, tente logar novamente");
+			}
+			Long id = logado.getId();
+			return this.userRepository.findById(id).orElseThrow();
+		}catch(Exception e) {
+			return null;
+		}
+	}
 }

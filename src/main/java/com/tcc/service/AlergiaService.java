@@ -18,15 +18,13 @@ import com.tcc.domain.User;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoAlergiaRepository;
-import com.tcc.repository.UserRepository;
-import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.NoElementException;
 
 @Service
 public class AlergiaService {
-
-	@Autowired
-	private UserRepository userRepository;
+	
+	@Autowired 
+	private UserService userService;
 	
 	@Autowired
 	private AlergiaRepository alergiaRepository;
@@ -38,53 +36,40 @@ public class AlergiaService {
 	private DadosMedicosRepository dadosMedicosRepository;
 	
 	public List<Alergia> addAlergia(List<AlergiaDTO> alergias) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
-			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
-			List<Alergia> list = new ArrayList<>();
-			
-			try{
-				for(AlergiaDTO dto : alergias) {
-					Alergia a = new Alergia();
-					a.setId(null);
-					a.setDadosMedicos(dados);
-					a.setDescAlergia(dto.getDescAlergia());
-					TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
-					a.setTipoAlergia(tipoAlergia);
-					list.add(a);
-				}
-			}catch(NoSuchElementException e) {
-				throw new NoElementException("Tipo de alergia não encontrado");
-			}
-			this.alergiaRepository.saveAll(list);
-			return list;
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
-		}
-	}
-	
-	public Alergia addAlergia(AlergiaDTO alergia, User paciente) {
 		
-		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+		User usuario = this.userService.getUserLogado();
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
+		List<Alergia> list = new ArrayList<>();
 			
 		try{
-			UserSecurity logado = UserService.authenticated();
-			if(logado!=null) {
-				Long id = logado.getId();
-				User usuario = this.userRepository.findById(id).orElseThrow();
+			for(AlergiaDTO dto : alergias) {
 				Alergia a = new Alergia();
 				a.setId(null);
 				a.setDadosMedicos(dados);
-				a.setDescAlergia(alergia.getDescAlergia());
-				TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(alergia.getIdTipoAlergia()).orElseThrow();
+				a.setDescAlergia(dto.getDescAlergia());
+				TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
 				a.setTipoAlergia(tipoAlergia);
-				a.setProfissionalSaude(usuario);
-			    return this.alergiaRepository.save(a);
-			}else {
-				throw new NoElementException("Usuário inválido, tente logar novamente");
+				list.add(a);
 			}
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Tipo de alergia não encontrado");
+		}
+		this.alergiaRepository.saveAll(list);
+		return list;
+	}
+	
+	public Alergia addAlergia(AlergiaDTO alergia, User paciente) {
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+		try{
+			User usuario = this.userService.getUserLogado();
+			Alergia a = new Alergia();
+			a.setId(null);
+			a.setDadosMedicos(dados);
+			a.setDescAlergia(alergia.getDescAlergia());
+			TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(alergia.getIdTipoAlergia()).orElseThrow();
+			a.setTipoAlergia(tipoAlergia);
+			a.setProfissionalSaude(usuario);
+			return this.alergiaRepository.save(a);
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Tipo de alergia não encontrado");
 		}
@@ -101,52 +86,41 @@ public class AlergiaService {
 	}
 
 	public List<Alergia> update(@Valid List<AlergiaDTO> alergias) {
-		UserSecurity logado = UserService.authenticated();
+		
 		try {		
-			if(logado!=null) {
-				Long id = logado.getId();
-				User usuario = this.userRepository.findById(id).orElseThrow();
-				DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
-				List<Alergia> list = new ArrayList<>();
-				for(AlergiaDTO dto : alergias) {
-					Alergia a = this.alergiaRepository.findById(dto.getId()).orElseThrow();
-					a.setDadosMedicos(dados);
-					a.setDescAlergia(dto.getDescAlergia());
-					TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
-					a.setTipoAlergia(tipoAlergia);
-					a.setProfissionalSaude(null);
-					list.add(a);
-				}
-				this.alergiaRepository.saveAll(list);
-				return list;
-			}else {
-				throw new NoElementException("Usuário inválido, tente logar novamente");
+			User usuario = this.userService.getUserLogado();
+			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
+			List<Alergia> list = new ArrayList<>();
+			for(AlergiaDTO dto : alergias) {
+				Alergia a = this.alergiaRepository.findById(dto.getId()).orElseThrow();
+				a.setDadosMedicos(dados);
+				a.setDescAlergia(dto.getDescAlergia());
+				TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
+				a.setTipoAlergia(tipoAlergia);
+				a.setProfissionalSaude(null);
+				list.add(a);
 			}
+			this.alergiaRepository.saveAll(list);
+			return list;
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Alergia não encontrada");
 		}
 	}
 
 	public void deleteAlergia(Long idAlergia) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
-			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
-			List<Alergia> list = this.alergiaRepository.findByDadosMedicos(dados);
-			if(list!=null && !list.isEmpty()) {
-				list = list.stream().filter(m -> m.getId() == idAlergia).collect(Collectors.toList());
-				if(list.isEmpty())
-					throw new NoElementException("Não foram encontradas alergias para atualizar");
-				
-				this.alergiaRepository.delete(list.get(0));
-			}else {
-				throw new NoElementException("Não foram encontradas alergias para atualizar");
-			}
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
-		}
 		
+		User usuario = this.userService.getUserLogado();
+		DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
+		List<Alergia> list = this.alergiaRepository.findByDadosMedicos(dados);
+		if(list!=null && !list.isEmpty()) {
+			list = list.stream().filter(m -> m.getId() == idAlergia).collect(Collectors.toList());
+			if(list.isEmpty())
+				throw new NoElementException("Não foram encontradas alergias para atualizar");
+			
+			this.alergiaRepository.delete(list.get(0));
+		}else {
+			throw new NoElementException("Não foram encontradas alergias para atualizar");
+		}
 	}
 
 

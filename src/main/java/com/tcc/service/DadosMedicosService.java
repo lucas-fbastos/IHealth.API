@@ -20,7 +20,6 @@ import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
-import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.NoElementException;
 
 
@@ -36,108 +35,94 @@ public class DadosMedicosService {
 	@Autowired
 	private TipoSanguineoRepository tipoSanguineoRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	public DadosMedicos update(DadosMedicosDTO dto) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			try {
-				User user = this.userRepository.findById(id).orElseThrow();
-				DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
-				dados.setDtAtualizacao(new Date());
-				if(dto.getTipoSanguineo()!=null) {
-					TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
-					dados.setTipoSanguineo(tipoSanguineo);					
-				}
-				dados.setAltura(dto.getAltura());
-				dados.setPeso(dto.getPeso());
-				dados.setProfissionalSaude(null);
-				this.calculaImc(dados);
-				this.dadosMedicosRepository.save(dados);
-				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
-					user.addPerfil(PerfilEnum.ATIVO);
-					user.getPerfis().remove(PerfilEnum.PENDENTE);
-				}else{
-					user.addPerfil(PerfilEnum.PENDENTE);
-					user.getPerfis().remove(PerfilEnum.ATIVO);
-				}
-				this.userRepository.save(user);
-				return dados;
-			}catch(NoSuchElementException e) {
-				throw new NoElementException("informação não encontrada");
+		try {
+			User user = this.userService.getUserLogado();
+			DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
+			dados.setDtAtualizacao(new Date());
+			if(dto.getTipoSanguineo()!=null) {
+				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
+				dados.setTipoSanguineo(tipoSanguineo);					
 			}
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
+			dados.setAltura(dto.getAltura());
+			dados.setPeso(dto.getPeso());
+			dados.setProfissionalSaude(null);
+			this.calculaImc(dados);
+			this.dadosMedicosRepository.save(dados);
+			if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
+				user.addPerfil(PerfilEnum.ATIVO);
+				user.getPerfis().remove(PerfilEnum.PENDENTE);
+			}else{
+				user.addPerfil(PerfilEnum.PENDENTE);
+				user.getPerfis().remove(PerfilEnum.ATIVO);
+			}
+			this.userRepository.save(user);
+			return dados;
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("informação não encontrada");
 		}
 	}
 	
 	public DadosMedicos update(DadosMedicosDTO dto, User paciente) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			try {
-				User user = this.userRepository.findById(id).orElseThrow();
-				DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
-				dados.setDtAtualizacao(new Date());
-				if(dto.getTipoSanguineo()!=null) {
-					TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
-					dados.setTipoSanguineo(tipoSanguineo);					
-				}
-				dados.setAltura(dto.getAltura());
-				dados.setPeso(dto.getPeso());
-				dados.setProfissionalSaude(user);
-				this.calculaImc(dados);
-				this.dadosMedicosRepository.save(dados);
-				if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
-					paciente.addPerfil(PerfilEnum.ATIVO);
-					paciente.getPerfis().remove(PerfilEnum.PENDENTE);
-				}else{
-					paciente.addPerfil(PerfilEnum.PENDENTE);
-					paciente.getPerfis().remove(PerfilEnum.ATIVO);
-				}
-				this.userRepository.save(paciente);
-				return dados;
-			}catch(NoSuchElementException e) {
-				throw new NoElementException("informação não encontrada");
+		try {
+			User user = this.userService.getUserLogado();
+			DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
+			dados.setDtAtualizacao(new Date());
+			if(dto.getTipoSanguineo()!=null) {
+				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
+				dados.setTipoSanguineo(tipoSanguineo);					
 			}
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
+			dados.setAltura(dto.getAltura());
+			dados.setPeso(dto.getPeso());
+			dados.setProfissionalSaude(user);
+			this.calculaImc(dados);
+			this.dadosMedicosRepository.save(dados);
+			if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
+				paciente.addPerfil(PerfilEnum.ATIVO);
+				paciente.getPerfis().remove(PerfilEnum.PENDENTE);
+			}else{
+				paciente.addPerfil(PerfilEnum.PENDENTE);
+				paciente.getPerfis().remove(PerfilEnum.ATIVO);
+			}
+			this.userRepository.save(paciente);
+			return dados;
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("informação não encontrada");
 		}
 	}
 	
 
 	public DadosMedicosUserDTO getDadosMedicos() {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			try {
-				User user = this.userRepository.findById(id).orElseThrow();
-				DadosMedicos dm = this.dadosMedicosRepository.findByUser(user).orElseThrow();
-				DadosMedicosUserDTO dto = new DadosMedicosUserDTO();
-				dto.setAlergias(dm.getAlergias());
-				dto.setAltura(dm.getAltura());
-				dto.setDescImc(dm.getDescImc());
-				dto.setDoencasCronicas(dm.getDoencasCronicas());
-				dto.setDtAtualizacao(dm.getDtAtualizacao());
-				if(dm.getProfissionalSaude()!=null) {
-					dto.setNomeProfissionalSaude(dm.getProfissionalSaude().getNome());					
-				}
-				dto.setId(dm.getId());
-				LocalDate now = LocalDate.now();
-				LocalDate dtNascimentoUser =  Instant.ofEpochMilli(user.getDtNascimento().getTime())
-					      .atZone(ZoneId.systemDefault())
-					      .toLocalDate();
-				Integer idade =  now.getYear() - dtNascimentoUser.getYear();
-				dto.setIdade(idade);
-				dto.setMedicamentos(dm.getMedicamentos());
-				dto.setPeso(dm.getPeso());
-				dto.setTipoSanguineo(dm.getTipoSanguineo());
-				dto.setVlImc(dm.getVlImc());
-				return dto;
-			}catch(NoSuchElementException e) {
-				throw new NoElementException("Usuário não encontrado");
+		
+		try {
+			User user = this.userService.getUserLogado();
+			DadosMedicos dm = this.dadosMedicosRepository.findByUser(user).orElseThrow();
+			DadosMedicosUserDTO dto = new DadosMedicosUserDTO();
+			dto.setAlergias(dm.getAlergias());
+			dto.setAltura(dm.getAltura());
+			dto.setDescImc(dm.getDescImc());
+			dto.setDoencasCronicas(dm.getDoencasCronicas());
+			dto.setDtAtualizacao(dm.getDtAtualizacao());
+			if(dm.getProfissionalSaude()!=null) {
+				dto.setNomeProfissionalSaude(dm.getProfissionalSaude().getNome());					
 			}
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
+			dto.setId(dm.getId());
+			LocalDate now = LocalDate.now();
+			LocalDate dtNascimentoUser =  Instant.ofEpochMilli(user.getDtNascimento().getTime())
+				      .atZone(ZoneId.systemDefault())
+				      .toLocalDate();
+			Integer idade =  now.getYear() - dtNascimentoUser.getYear();
+			dto.setIdade(idade);
+			dto.setMedicamentos(dm.getMedicamentos());
+			dto.setPeso(dm.getPeso());
+			dto.setTipoSanguineo(dm.getTipoSanguineo());
+			dto.setVlImc(dm.getVlImc());
+			return dto;
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Usuário não encontrado");
 		}
 	}
 	
@@ -151,7 +136,5 @@ public class DadosMedicosService {
 			dados.setVlImc(imc);
 		}
 	}
-
-	
 	
 }
