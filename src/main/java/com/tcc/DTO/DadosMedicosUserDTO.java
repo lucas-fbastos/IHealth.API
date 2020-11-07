@@ -1,10 +1,11 @@
 package com.tcc.DTO;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.Alergia;
 import com.tcc.domain.DoencaCronica;
 import com.tcc.domain.Medicamento;
@@ -16,7 +17,10 @@ public class DadosMedicosUserDTO implements Serializable{
 	
 	private Long id;
 	private TipoSanguineo tipoSanguineo;
-	private Date dtAtualizacao;
+	
+	@JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+	private LocalDateTime  dtAtualizacao;
+	
 	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
 	private Set<Medicamento> medicamentos = new HashSet<>();
 	private Double peso;
@@ -45,10 +49,10 @@ public class DadosMedicosUserDTO implements Serializable{
 	public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
 		this.tipoSanguineo = tipoSanguineo;
 	}
-	public Date getDtAtualizacao() {
+	public LocalDateTime  getDtAtualizacao() {
 		return dtAtualizacao;
 	}
-	public void setDtAtualizacao(Date dtAtualizacao) {
+	public void setDtAtualizacao(LocalDateTime  dtAtualizacao) {
 		this.dtAtualizacao = dtAtualizacao;
 	}
 	public Set<DoencaCronica> getDoencasCronicas() {

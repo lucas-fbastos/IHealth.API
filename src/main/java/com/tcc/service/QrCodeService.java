@@ -1,8 +1,6 @@
 package com.tcc.service;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,11 +80,7 @@ public class QrCodeService {
 		dto.setAlergias(dados.getAlergias().stream().collect(Collectors.toList()));
 		dados.getMedicamentos().forEach(m -> dto.addMedicamento(m));
 		dados.getDoencasCronicas().forEach(d-> dto.addDoencasCronicas(d));
-		LocalDate now = LocalDate.now();
-		LocalDate dtNascimentoUser =  Instant.ofEpochMilli(paciente.getDtNascimento().getTime())
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate();
-		Integer idade =  now.getYear() - dtNascimentoUser.getYear();
+		Integer idade =  LocalDate.now().getYear() - paciente.getDtNascimento().getYear();
 		dto.setIdade(idade);
 		if(dados.getProfissionalSaude()!=null) {
 			dto.setNomeProfissionalSaude(dados.getProfissionalSaude().getNome());					

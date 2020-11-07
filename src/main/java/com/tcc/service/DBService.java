@@ -2,6 +2,7 @@ package com.tcc.service;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -66,7 +67,7 @@ public class DBService {
 		u1.setSexo('M');
 		u1.addPerfil(PerfilEnum.PENDENTE);
 		u1.setTelefone("61996253833");
-		u1.setDtNascimento(new java.sql.Date(0L));
+		u1.setDtNascimento(LocalDate.of(1998, 02, 17));
 		u1.setDtCadastro(new Date());
 		u1 = this.usuarioRepository.save(u1);
 		
@@ -89,7 +90,7 @@ public class DBService {
 		this.tipoSanguineoRepository.saveAll(Arrays.asList(ts1,ts2,ts3,ts4,ts5,ts6,ts7,ts8));
 		
 		DadosMedicos dm1 = new DadosMedicos();
-		dm1.setDtAtualizacao(new Date());
+		dm1.setDtAtualizacao(LocalDateTime.now());
 		dm1.setTipoSanguineo(this.tipoSanguineoRepository.findById(1).get());
 		dm1.setUser(u1);
 		dm1 = this.dadosMedicosRepository.save(dm1);

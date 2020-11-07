@@ -1,10 +1,8 @@
 package com.tcc.service;
 
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class DadosMedicosService {
 		try {
 			User user = this.userService.getUserLogado();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
-			dados.setDtAtualizacao(new Date());
+			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
 				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
 				dados.setTipoSanguineo(tipoSanguineo);					
@@ -54,10 +52,10 @@ public class DadosMedicosService {
 			this.dadosMedicosRepository.save(dados);
 			if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
 				user.addPerfil(PerfilEnum.ATIVO);
-				user.getPerfis().remove(PerfilEnum.PENDENTE);
+				user.removePerfil(PerfilEnum.PENDENTE);
 			}else{
 				user.addPerfil(PerfilEnum.PENDENTE);
-				user.getPerfis().remove(PerfilEnum.ATIVO);
+				user.removePerfil(PerfilEnum.ATIVO);
 			}
 			this.userRepository.save(user);
 			return dados;
@@ -70,7 +68,7 @@ public class DadosMedicosService {
 		try {
 			User user = this.userService.getUserLogado();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
-			dados.setDtAtualizacao(new Date());
+			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
 				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
 				dados.setTipoSanguineo(tipoSanguineo);					
@@ -110,11 +108,8 @@ public class DadosMedicosService {
 				dto.setNomeProfissionalSaude(dm.getProfissionalSaude().getNome());					
 			}
 			dto.setId(dm.getId());
-			LocalDate now = LocalDate.now();
-			LocalDate dtNascimentoUser =  Instant.ofEpochMilli(user.getDtNascimento().getTime())
-				      .atZone(ZoneId.systemDefault())
-				      .toLocalDate();
-			Integer idade =  now.getYear() - dtNascimentoUser.getYear();
+			
+			Integer idade =  LocalDate.now().getYear() - user.getDtNascimento().getYear();
 			dto.setIdade(idade);
 			dto.setMedicamentos(dm.getMedicamentos());
 			dto.setPeso(dm.getPeso());

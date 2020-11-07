@@ -1,7 +1,7 @@
 package com.tcc.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,7 +38,7 @@ public class DadosMedicos implements Serializable{
 	
 	@Column(name="dt_atualizacao")
 	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	private Date dtAtualizacao;
+	private LocalDateTime  dtAtualizacao;
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
@@ -82,7 +82,7 @@ public class DadosMedicos implements Serializable{
 		this.id = id;
 	}
 
-	public Date getDtAtualizacao() {
+	public LocalDateTime  getDtAtualizacao() {
 		return dtAtualizacao;
 	}
 
@@ -94,7 +94,7 @@ public class DadosMedicos implements Serializable{
 		this.profissionalSaude = profissionalSaude;
 	}
 
-	public void setDtAtualizacao(Date dtAtualizacao) {
+	public void setDtAtualizacao(LocalDateTime  dtAtualizacao) {
 		this.dtAtualizacao = dtAtualizacao;
 	}
 
@@ -174,7 +174,7 @@ public class DadosMedicos implements Serializable{
 		this.descImc = descImc;
 	}
 
-	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, Date dtAtualizacao, User user,
+	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, LocalDateTime  dtAtualizacao, User user,
 			Set<DoencaCronica> doencasCronicas, Set<Medicamento> medicamentos, Double peso, Double altura, Double vlImc,
 			String descImc, Set<Alergia> alergias) {
 		super();

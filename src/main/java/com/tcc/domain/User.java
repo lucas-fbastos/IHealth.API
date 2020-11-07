@@ -2,6 +2,7 @@ package com.tcc.domain;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class User implements Serializable {
 	private String nome;
 	
 	@Column(name="dt_nascimento")
-	private Date dtNascimento;
+	private LocalDate dtNascimento;
 	
 	@Column(name="dt_cadastro")
 	private java.util.Date dtCadastro;
@@ -74,11 +75,11 @@ public class User implements Serializable {
 		this.nome = nome;
 	}
 
-	public Date getDtNascimento() {
+	public LocalDate getDtNascimento() {
 		return dtNascimento;
 	}
 
-	public void setDtNascimento(Date dtNascimento) {
+	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 
@@ -138,7 +139,11 @@ public class User implements Serializable {
 		perfis.add(perfil.getId());
 	}
 	
-	public User(Long id, String nome, Date dtNascimento, Date dtCadastro, String password, String telefone, char sexo,
+	public void removePerfil(PerfilEnum perfil) {
+		perfis.removeIf(p -> p == perfil.getId());
+	}
+	
+	public User(Long id, String nome, LocalDate dtNascimento, Date dtCadastro, String password, String telefone, char sexo,
 			String email) {
 		super();
 		this.id = id;

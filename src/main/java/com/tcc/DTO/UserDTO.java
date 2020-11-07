@@ -1,6 +1,6 @@
 package com.tcc.DTO;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -24,7 +24,7 @@ public class UserDTO extends CredentialsDTO{
 	public String telefone;
 	
 	@JsonFormat(pattern="dd-mm-yyyy")
-	public Date dtNascimento;
+	public LocalDate dtNascimento;
 	
 	public boolean medico;
 	
@@ -52,15 +52,15 @@ public class UserDTO extends CredentialsDTO{
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public Date getDtNascimento() {
+	public LocalDate getDtNascimento() {
 		return dtNascimento;
 	}
-	public void setDtNascimento(Date dtNascimento) {
+	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 
 	
-	public UserDTO(String nome, String sexo, String telefone, Date dtNascimento, String email, String senha) {
+	public UserDTO(String nome, String sexo, String telefone, LocalDate dtNascimento, String email, String senha) {
 		super(email, senha);
 		this.nome = nome;
 		this.sexo = sexo;

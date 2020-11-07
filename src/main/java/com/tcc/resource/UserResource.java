@@ -52,6 +52,7 @@ public class UserResource {
 		String token = this.jwtUtil.generateToken(user);
 		response.addHeader("Authorization", "Bearer " + token);
 		Map<String,String> retorno = new HashMap<>();
+		retorno.put("token", token);
 		return ResponseEntity.ok(retorno);
 	}
 }

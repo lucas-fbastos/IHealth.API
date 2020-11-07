@@ -1,5 +1,6 @@
 package com.tcc.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -49,7 +50,7 @@ public class UserService {
 			this.userRepository.save(user);
 			DadosMedicos dados = new DadosMedicos();
 			dados.setUser(user);
-			dados.setDtAtualizacao(new Date());
+			dados.setDtAtualizacao(LocalDateTime.now());
 			this.dadosMedicosRepository.save(dados);
 			return user;
 		}catch(DataIntegrityViolationException e) {
