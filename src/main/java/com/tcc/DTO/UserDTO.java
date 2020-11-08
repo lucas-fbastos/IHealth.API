@@ -23,7 +23,7 @@ public class UserDTO extends CredentialsDTO{
 	@Size(min=8, max=11, message="o número de telefone deve ter entre 8 e 11 digitos")
 	public String telefone;
 	
-	@JsonFormat(pattern="dd-mm-yyyy")
+	@JsonFormat(pattern="dd-MM-yyyy")
 	public LocalDate dtNascimento;
 	
 	public boolean medico;
