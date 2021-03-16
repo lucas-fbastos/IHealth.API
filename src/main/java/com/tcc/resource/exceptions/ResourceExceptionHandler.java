@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
-import com.tcc.service.exceptions.QRCodeException;
+import com.tcc.service.exceptions.TemporalidadeException;
+import com.tcc.service.exceptions.UserDeslogadoException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -38,10 +39,16 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 	
-	@ExceptionHandler(QRCodeException.class)
-	public ResponseEntity<StandardError> validation(QRCodeException e, HttpServletRequest req){
-		StandardError error = new StandardError(HttpStatus.UNAUTHORIZED.value(),"Token expirado",System.currentTimeMillis());
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+	@ExceptionHandler(UserDeslogadoException.class)
+	public ResponseEntity<StandardError> StandardError(UserDeslogadoException e, HttpServletRequest req){
+		StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(),"Usuário deslogado",System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+	}
+	
+	@ExceptionHandler(TemporalidadeException.class)
+	public ResponseEntity<StandardError> StandardError(TemporalidadeException e, HttpServletRequest req){
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(),System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 }

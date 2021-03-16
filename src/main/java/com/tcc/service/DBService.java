@@ -1,8 +1,10 @@
 package com.tcc.service;
 
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -11,16 +13,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tcc.domain.Alergia;
+import com.tcc.domain.Clinica;
 import com.tcc.domain.DadosMedicos;
+import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medicamento;
 import com.tcc.domain.ProcedimentoMedico;
 import com.tcc.domain.TipoAlergia;
 import com.tcc.domain.TipoProcedimento;
 import com.tcc.domain.TipoSanguineo;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.AlergiaRepository;
+import com.tcc.repository.ClinicaRepository;
 import com.tcc.repository.DadosMedicosRepository;
+import com.tcc.repository.EspecializacaoRepository;
 import com.tcc.repository.MedicamentoRepository;
 import com.tcc.repository.ProcedimentoMedicoRepository;
 import com.tcc.repository.TipoAlergiaRepository;
@@ -58,9 +64,15 @@ public class DBService {
 	@Autowired
 	private ProcedimentoMedicoRepository procedimentoMedicoRepository;
 	
+	@Autowired
+	private EspecializacaoRepository especializacaoRepository;
+
+	@Autowired
+	private ClinicaRepository clinicaRepository;
+	
 	public void instantiateTestDatabase() throws ParseException {
 		
-		User u1 = new User();
+		Usuario u1 = new Usuario();
 		u1.setEmail("felixbastos.lucas@gmail.com");
 		u1.setNome("lucas felix bastos");
 		u1.setPassword(pe.encode("12345678"));
@@ -132,41 +144,32 @@ public class DBService {
 		a1.setTipoAlergia(ta1);
 		a1 = this.alergiaRepository.save(a1);
 		
-		TipoProcedimento tp1 = new TipoProcedimento();
-		tp1.setDescTipoProcedimeto("Consulta médica");
+		TipoProcedimento tp1 = new TipoProcedimento(null,"Consulta médica", Duration.ofMinutes(40));
 		tp1 = this.tipoProcedimentoRepository.save(tp1);
 		
-		TipoProcedimento tp2 = new TipoProcedimento();
-		tp2.setDescTipoProcedimeto("Cirurgia");
+		TipoProcedimento tp2 = new TipoProcedimento(null,"Cirurgia", Duration.ofMinutes(270));
+		tp2.setDescTipoProcedimento("Cirurgia");
 		tp2 = this.tipoProcedimentoRepository.save(tp2);
 		
-		TipoProcedimento tp3 = new TipoProcedimento();
-		tp3.setDescTipoProcedimeto("Exame");
+		TipoProcedimento tp3 = new TipoProcedimento(null,"Exame", Duration.ofMinutes(30));
 		tp3 = this.tipoProcedimentoRepository.save(tp3);
 		
-		TipoProcedimento tp4 = new TipoProcedimento();
-		tp4.setDescTipoProcedimeto("Emergência");
+		TipoProcedimento tp4 = new TipoProcedimento(null,"Emergência", Duration.ofHours(1));
 		tp4 = this.tipoProcedimentoRepository.save(tp4);
-		
-		TipoProcedimento tp5 = new TipoProcedimento();
-		tp5.setDescTipoProcedimeto("Sessão de fisioterapia");
+	
+		TipoProcedimento tp5 = new TipoProcedimento(null,"Sessão de fisioterapia", Duration.ofMinutes(40));
 		tp5 = this.tipoProcedimentoRepository.save(tp5);
 		
 		ProcedimentoMedico pm1 = new ProcedimentoMedico();
-		pm1.setDescLocal("Hospital Santa Lúcia");
 		pm1.setDescricao("Consulta no oftalmologista, paga pelo plano de saúde, atestado de 4 dias");
-		pm1.setTitulo("Oftalmologista ");
 		pm1.setDtRegistro(LocalDate.now());
 		pm1.setDtProcedimento(LocalDate.now());
-		pm1.setDtRetorno(LocalDate.of(2021, 02, 15));
 		pm1.setTipoProcedimento(tp1);
 		pm1.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm1);
 		
 		ProcedimentoMedico pm2 = new ProcedimentoMedico();
-		pm2.setDescLocal("Sabin");
 		pm2.setDescricao("Exame de sangue, glicose e trigliceridios. O exame foi solicitado pelo médico na última consulta");
-		pm2.setTitulo("Exame de Sangue");
 		pm2.setDtRegistro(LocalDate.now());
 		pm2.setDtProcedimento(LocalDate.now());
 		pm2.setTipoProcedimento(tp3);
@@ -174,9 +177,7 @@ public class DBService {
 		this.procedimentoMedicoRepository.save(pm2);
 		
 		ProcedimentoMedico pm3 = new ProcedimentoMedico();
-		pm3.setDescLocal("Hospital Albert Sabin");
 		pm3.setDescricao("Cirurgia de remoção de amidala, paga pelo plano de saúde com cooparticipação, 5 dias de atestado");
-		pm3.setTitulo("Cirurgia amidala");
 		pm3.setDtRegistro(LocalDate.now());
 		
 		pm3.setDtProcedimento(LocalDate.of(2010, 12, 11));
@@ -185,15 +186,30 @@ public class DBService {
 		this.procedimentoMedicoRepository.save(pm3);
 		
 		ProcedimentoMedico pm4 = new ProcedimentoMedico();
-		pm4.setDescLocal("Hospital Luzia");
 		pm4.setDescricao(null);
-		pm4.setTitulo("Primeira sessão de fisioterapia");
 		pm4.setDtRegistro(LocalDate.now());
 		pm4.setDtProcedimento(LocalDate.of(2000, 02, 15));
 		pm4.setTipoProcedimento(tp5);
 		pm4.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm4);
 		
+		Especializacao e1 = new Especializacao();
+		e1.setDescEspecializacao("Alergista");
+		this.especializacaoRepository.save(e1);
+		
+		Especializacao e2 = new Especializacao();
+		e2.setDescEspecializacao("Dermatologista");
+		this.especializacaoRepository.save(e2);
+		
+		Especializacao e3 = new Especializacao();
+		e3.setDescEspecializacao("Cardiologista");
+		this.especializacaoRepository.save(e3);
+		
+		Clinica c = new Clinica();
+		c.setDtAbertura(LocalTime.of(9, 0));
+		c.setDtEncerramento(LocalTime.of(18, 0));
+		c.setNome("Clinica de Brasília");
+		this.clinicaRepository.save(c);
 		
 	}
 }

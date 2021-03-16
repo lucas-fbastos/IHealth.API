@@ -12,7 +12,7 @@ import com.tcc.DTO.DadosMedicosDTO;
 import com.tcc.DTO.DadosMedicosUserDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.TipoSanguineo;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.enums.IMCEnum;
 import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.DadosMedicosRepository;
@@ -34,11 +34,11 @@ public class DadosMedicosService {
 	private TipoSanguineoRepository tipoSanguineoRepository;
 	
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 	
 	public DadosMedicos update(DadosMedicosDTO dto) {
 		try {
-			User user = this.userService.getUserLogado();
+			Usuario user = this.userService.getUserLogado();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
 			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
@@ -64,9 +64,9 @@ public class DadosMedicosService {
 		}
 	}
 	
-	public DadosMedicos update(DadosMedicosDTO dto, User paciente) {
+	public DadosMedicos update(DadosMedicosDTO dto, Usuario paciente) {
 		try {
-			User user = this.userService.getUserLogado();
+			Usuario user = this.userService.getUserLogado();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
 			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
@@ -96,7 +96,7 @@ public class DadosMedicosService {
 	public DadosMedicosUserDTO getDadosMedicos() {
 		
 		try {
-			User user = this.userService.getUserLogado();
+			Usuario user = this.userService.getUserLogado();
 			DadosMedicos dm = this.dadosMedicosRepository.findByUser(user).orElseThrow();
 			DadosMedicosUserDTO dto = new DadosMedicosUserDTO();
 			dto.setAlergias(dm.getAlergias());

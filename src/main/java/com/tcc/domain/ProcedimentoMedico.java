@@ -24,20 +24,11 @@ public class ProcedimentoMedico implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="titulo_procedimeto")
-	private String titulo;
-	
-	@Column(name="desc_local")
-	private String descLocal;
-	
 	@Column(name="desc_procedimeto")
 	private String descricao;
 	
 	@Column(name="dt_registro")
 	private LocalDate dtRegistro;
-	
-	@Column(name="dt_retorno")
-	private LocalDate dtRetorno;
 	
 	@Column(name="dt_procedimento")
 	private LocalDate dtProcedimento;
@@ -45,12 +36,7 @@ public class ProcedimentoMedico implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_user")
 	@JsonManagedReference
-	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name="id_user_pr_saude")
-	@JsonManagedReference
-	private User profissionalSaude;
+	private Usuario user;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_procedimento")
@@ -65,21 +51,6 @@ public class ProcedimentoMedico implements Serializable{
 		this.id = id;
 	}
 
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescLocal() {
-		return descLocal;
-	}
-
-	public void setDescLocal(String descLocal) {
-		this.descLocal = descLocal;
-	}
 
 	public String getDescricao() {
 		return descricao;
@@ -97,13 +68,6 @@ public class ProcedimentoMedico implements Serializable{
 		this.dtRegistro = dtRegistro;
 	}
 
-	public LocalDate getDtRetorno() {
-		return dtRetorno;
-	}
-
-	public void setDtRetorno(LocalDate dtRetorno) {
-		this.dtRetorno = dtRetorno;
-	}
 
 	public LocalDate getDtProcedimento() {
 		return dtProcedimento;
@@ -113,11 +77,11 @@ public class ProcedimentoMedico implements Serializable{
 		this.dtProcedimento = dtProcedimento;
 	}
 
-	public User getUser() {
+	public Usuario getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Usuario user) {
 		this.user = user;
 	}
 
@@ -129,27 +93,16 @@ public class ProcedimentoMedico implements Serializable{
 		this.tipoProcedimento = tipoProcedimento;
 	}
 
-	public User getProfissionalSaude() {
-		return profissionalSaude;
-	}
-
-	public void setProfissionalSaude(User profissionalSaude) {
-		this.profissionalSaude = profissionalSaude;
-	}
-
 	public ProcedimentoMedico() {
 		super();
 	}
 
-	public ProcedimentoMedico(Long id, String titulo, String descLocal, String descricao, LocalDate dtRegistro,
-			LocalDate dtRetorno, LocalDate dtProcedimento, User user, TipoProcedimento tipoProcedimento) {
+	public ProcedimentoMedico(Long id, String descricao, LocalDate dtRegistro,
+			LocalDate dtProcedimento, Usuario user, TipoProcedimento tipoProcedimento) {
 		super();
 		this.id = id;
-		this.titulo = titulo;
-		this.descLocal = descLocal;
 		this.descricao = descricao;
 		this.dtRegistro = dtRegistro;
-		this.dtRetorno = dtRetorno;
 		this.dtProcedimento = dtProcedimento;
 		this.user = user;
 		this.tipoProcedimento = tipoProcedimento;

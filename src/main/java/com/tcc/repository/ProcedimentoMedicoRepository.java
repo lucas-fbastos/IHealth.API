@@ -11,15 +11,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tcc.domain.ProcedimentoMedico;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 
 @Repository
 public interface ProcedimentoMedicoRepository extends JpaRepository<ProcedimentoMedico, Long>{
 
-	List<ProcedimentoMedico> findByUser(User user);
-	List<ProcedimentoMedico> findByUserOrderByDtProcedimentoDesc(User user); 
-	Page<ProcedimentoMedico> findByUserOrderByDtProcedimentoDesc(User user, Pageable p); 
+	List<ProcedimentoMedico> findByUser(Usuario user);
+	List<ProcedimentoMedico> findByUserOrderByDtProcedimentoDesc(Usuario user); 
+	Page<ProcedimentoMedico> findByUserOrderByDtProcedimentoDesc(Usuario user, Pageable p); 
 	@Query(value = "from ProcedimentoMedico t where dtRegistro BETWEEN :dtInicio AND :dtFim and user = :user")
-	public List<ProcedimentoMedico> getAllBetweenDates(@Param("dtInicio")LocalDate dtRegistroInicio,@Param("dtFim")LocalDate dtRegistroFim,@Param("user") User user);
+	public List<ProcedimentoMedico> getAllBetweenDates(@Param("dtInicio")LocalDate dtRegistroInicio,@Param("dtFim")LocalDate dtRegistroFim,@Param("user") Usuario user);
 
 }

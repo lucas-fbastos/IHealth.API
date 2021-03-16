@@ -3,9 +3,11 @@ package com.tcc.DTO;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tcc.domain.Usuario;
 
 
 
@@ -13,26 +15,39 @@ public class UserDTO extends CredentialsDTO{
 
 	private static final long serialVersionUID = 1L;
 	
+	protected Long idUser;
+	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Nome")
 	@Size(max=255, message="Tamanho máximo de 255 caracteres")
-	public String nome;
+	protected String nome;
 	
-	public String sexo;
+	protected String sexo;
 	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Telefone")
 	@Size(min=8, max=11, message="o número de telefone deve ter entre 8 e 11 digitos")
-	public String telefone;
+	protected String telefone;
 	
 	@JsonFormat(pattern="dd-MM-yyyy")
-	public LocalDate dtNascimento;
+	protected LocalDate dtNascimento;
 	
-	public boolean medico;
+	@NotNull(message="Preenchimento obrigatório para o campo perfil")
+	protected Integer perfil;
 	
-	public boolean isMedico() {
-		return medico;
+	protected EnderecoDTO endereco;
+	
+	protected String cpf;
+	
+	public String getCpf() {
+		return cpf;
 	}
-	public void setMedico(boolean medico) {
-		this.medico = medico;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	public Integer getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(Integer perfil) {
+		this.perfil = perfil;
 	}
 	public String getNome() {
 		return nome;
@@ -58,19 +73,52 @@ public class UserDTO extends CredentialsDTO{
 	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
-
 	
-	public UserDTO(String nome, String sexo, String telefone, LocalDate dtNascimento, String email, String senha) {
-		super(email, senha);
+	public EnderecoDTO getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(EnderecoDTO endereco) {
+		this.endereco = endereco;
+	}
+	
+	public Long getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+	public UserDTO(	String nome, String sexo, String telefone, LocalDate dtNascimento, Integer perfil, EnderecoDTO endereco) {
 		this.nome = nome;
 		this.sexo = sexo;
 		this.telefone = telefone;
 		this.dtNascimento = dtNascimento;
+		this.perfil = perfil;
+		this.endereco = endereco;
+	}
+	public UserDTO(String nome, String sexo, String telefone, LocalDate dtNascimento, String email, 
+			EnderecoDTO enderecoDTO) {
+		super(email,"");
+		this.nome = nome;
+		this.sexo = sexo;
+		this.telefone = telefone;
+		this.dtNascimento = dtNascimento;
+		this.endereco = enderecoDTO;
 	}
 	
 	public UserDTO() {
 		super();
 	}
+	public UserDTO(Usuario usuario) {
+		this.cpf = usuario.getCpf();
+		this.dtNascimento = usuario.getDtNascimento();
+		this.endereco = new EnderecoDTO(usuario.getEndereco());
+		this.idUser = usuario.getId();
+		this.nome = usuario.getNome();
+		this.sexo = String.valueOf(usuario.getSexo());
+		this.telefone = usuario.getTelefone();
+	}
+	
+	
 	
 	
 	

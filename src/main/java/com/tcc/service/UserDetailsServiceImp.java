@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.UserRepository;
 import com.tcc.security.UserSecurity;
 
@@ -18,7 +18,7 @@ public class UserDetailsServiceImp implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User u = this.userRepository.findByEmail(email);
+		Usuario u = this.userRepository.findByEmail(email);
 		if(u == null) {
 			throw new UsernameNotFoundException(email);
 		}

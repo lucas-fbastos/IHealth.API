@@ -14,7 +14,7 @@ import com.tcc.DTO.AlergiaDTO;
 import com.tcc.domain.Alergia;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.TipoAlergia;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoAlergiaRepository;
@@ -24,7 +24,7 @@ import com.tcc.service.exceptions.NoElementException;
 public class AlergiaService {
 	
 	@Autowired 
-	private UserService userService;
+	private UsuarioService userService;
 	
 	@Autowired
 	private AlergiaRepository alergiaRepository;
@@ -37,7 +37,7 @@ public class AlergiaService {
 	
 	public List<Alergia> addAlergia(List<AlergiaDTO> alergias) {
 		
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 		List<Alergia> list = new ArrayList<>();
 			
@@ -58,10 +58,10 @@ public class AlergiaService {
 		return list;
 	}
 	
-	public Alergia addAlergia(AlergiaDTO alergia, User paciente) {
+	public Alergia addAlergia(AlergiaDTO alergia, Usuario paciente) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
 		try{
-			User usuario = this.userService.getUserLogado();
+			Usuario usuario = this.userService.getUserLogado();
 			Alergia a = new Alergia();
 			a.setId(null);
 			a.setDadosMedicos(dados);
@@ -88,7 +88,7 @@ public class AlergiaService {
 	public List<Alergia> update(@Valid List<AlergiaDTO> alergias) {
 		
 		try {		
-			User usuario = this.userService.getUserLogado();
+			Usuario usuario = this.userService.getUserLogado();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 			List<Alergia> list = new ArrayList<>();
 			for(AlergiaDTO dto : alergias) {
@@ -109,7 +109,7 @@ public class AlergiaService {
 
 	public void deleteAlergia(Long idAlergia) {
 		
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 		List<Alergia> list = this.alergiaRepository.findByDadosMedicos(dados);
 		if(list!=null && !list.isEmpty()) {

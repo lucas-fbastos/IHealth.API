@@ -1,6 +1,7 @@
 package com.tcc.domain;
 
 import java.io.Serializable;
+import java.time.Duration;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +21,11 @@ public class TipoProcedimento implements Serializable{
 	private Long id;
 	
 	@Column(name="desc_tipo_procedimento")
-	private String descTipoProcedimeto;
-
+	private String descTipoProcedimento;
+	
+	@Column(name="duracao_procedimento")
+	private Duration duracao;
+	
 	public Long getId() {
 		return id;
 	}
@@ -30,17 +34,27 @@ public class TipoProcedimento implements Serializable{
 		this.id = id;
 	}
 
-	public String getDescTipoProcedimeto() {
-		return descTipoProcedimeto;
+	public String getDescTipoProcedimento() {
+		return descTipoProcedimento;
 	}
 
-	public void setDescTipoProcedimeto(String descTipoProcedimeto) {
-		this.descTipoProcedimeto = descTipoProcedimeto;
+	public void setDescTipoProcedimento(String descTipoProcedimento) {
+		this.descTipoProcedimento = descTipoProcedimento;
 	}
 
-	public TipoProcedimento(Long id, String descTipoProcedimeto) {
+	public Duration getDuracao() {
+		return duracao;
+	}
+
+	public void setDuracao(Duration duracao) {
+		this.duracao = duracao;
+	}
+
+	public TipoProcedimento(Long id, String descTipoProcedimento, Duration duracao) {
+		super();
 		this.id = id;
-		this.descTipoProcedimeto = descTipoProcedimeto;
+		this.descTipoProcedimento = descTipoProcedimento;
+		this.duracao = duracao;
 	}
 
 	public TipoProcedimento() {	}

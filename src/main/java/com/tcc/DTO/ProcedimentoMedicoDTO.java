@@ -10,8 +10,6 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-	private String titulo;
-	private String descLocal;
 	private String descricao;
 	@JsonFormat(pattern="dd-MM-yyyy")
 	private LocalDate dtRegistro;
@@ -21,8 +19,6 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	private LocalDate dtProcedimento;
 	private String nomeUsuario;
 	private String descTipoProcedimento;
-	private String nomeProfSaude;
-	
 	public Long getId() {
 		return id;
 	}
@@ -31,24 +27,6 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	}
 	
 	
-	public String getNomeProfSaude() {
-		return nomeProfSaude;
-	}
-	public void setNomeProfSaude(String nomeProfSaude) {
-		this.nomeProfSaude = nomeProfSaude;
-	}
-	public String getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-	public String getdescLocal() {
-		return descLocal;
-	}
-	public void setDescLocal(String descLocal) {
-		this.descLocal = descLocal;
-	}
 	public String getDescricao() {
 		return descricao;
 	}
@@ -86,19 +64,15 @@ public class ProcedimentoMedicoDTO implements Serializable{
 		this.descTipoProcedimento = descTipoProcedimento;
 	}
 	
-	public ProcedimentoMedicoDTO(Long id, String titulo, String descLocal, String descricao, LocalDate dtRegistro,
-			LocalDate dtRetorno, LocalDate dtProcedimento, String nomeUsuario, String descTipoProcedimento, String nmProfSaude) {
+	public ProcedimentoMedicoDTO(Long id,  String descricao, LocalDate dtRegistro,
+			 LocalDate dtProcedimento, String nomeUsuario, String descTipoProcedimento) {
 		super();
 		this.id = id;
-		this.titulo = titulo;
-		this.descLocal = descLocal;
 		this.descricao = descricao;
 		this.dtRegistro = dtRegistro;
-		this.dtRetorno = dtRetorno;
 		this.dtProcedimento = LocalDate.of(dtProcedimento.getYear(), dtProcedimento.getMonth(),
 				dtProcedimento.getDayOfMonth());
 		this.nomeUsuario = nomeUsuario;
-		this.nomeProfSaude = nmProfSaude;
 		this.descTipoProcedimento = descTipoProcedimento;
 	}
 	
@@ -107,14 +81,12 @@ public class ProcedimentoMedicoDTO implements Serializable{
 	}
 	
 	public ProcedimentoMedicoDTO(ProcedimentoMedico p) {
-		this.descLocal = p.getDescLocal();
 		this.descricao = p.getDescricao();
-		this.descTipoProcedimento = p.getTipoProcedimento().getDescTipoProcedimeto();
+		this.descTipoProcedimento = p.getTipoProcedimento().getDescTipoProcedimento();
 		this.dtProcedimento = p.getDtProcedimento();
 		this.dtRegistro = p.getDtRegistro();
 		this.id = p.getId();
 		this.nomeUsuario = p.getUser().getNome();
-		this.titulo = p.getTitulo();
 	}
 	
 	@Override

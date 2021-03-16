@@ -43,7 +43,7 @@ public class DadosMedicos implements Serializable{
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
 	@JsonBackReference
-	private User user;
+	private Usuario user;
 
 	@OneToMany(mappedBy="dadosMedicos")
 	@JsonManagedReference
@@ -59,7 +59,7 @@ public class DadosMedicos implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_user_pr_saude")
 	@JsonManagedReference
-	private User profissionalSaude;
+	private Usuario profissionalSaude;
 	
 	@Column(name="altura")
 	private Double altura;
@@ -86,11 +86,11 @@ public class DadosMedicos implements Serializable{
 		return dtAtualizacao;
 	}
 
-	public User getProfissionalSaude() {
+	public Usuario getProfissionalSaude() {
 		return profissionalSaude;
 	}
 
-	public void setProfissionalSaude(User profissionalSaude) {
+	public void setProfissionalSaude(Usuario profissionalSaude) {
 		this.profissionalSaude = profissionalSaude;
 	}
 
@@ -98,11 +98,11 @@ public class DadosMedicos implements Serializable{
 		this.dtAtualizacao = dtAtualizacao;
 	}
 
-	public User getUser() {
+	public Usuario getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Usuario user) {
 		this.user = user;
 	}
 	
@@ -174,7 +174,7 @@ public class DadosMedicos implements Serializable{
 		this.descImc = descImc;
 	}
 
-	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, LocalDateTime  dtAtualizacao, User user,
+	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, LocalDateTime  dtAtualizacao, Usuario user,
 			Set<DoencaCronica> doencasCronicas, Set<Medicamento> medicamentos, Double peso, Double altura, Double vlImc,
 			String descImc, Set<Alergia> alergias) {
 		super();

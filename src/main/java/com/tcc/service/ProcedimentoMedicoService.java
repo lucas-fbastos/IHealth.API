@@ -11,7 +11,7 @@ import com.tcc.DTO.ProcedimentoMedicoDTO;
 import com.tcc.DTO.ProcedimentoMedicoFormDTO;
 import com.tcc.domain.ProcedimentoMedico;
 import com.tcc.domain.TipoProcedimento;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.ProcedimentoMedicoRepository;
 import com.tcc.repository.TipoProcedimentoRepository;
 import com.tcc.repository.UserRepository;
@@ -33,23 +33,19 @@ public class ProcedimentoMedicoService {
 
 	public List<ProcedimentoMedicoDTO> getAllByUser(){
 		
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			List<ProcedimentoMedico> procedimentos = this.procedimentoMedicoRepository.findByUserOrderByDtProcedimentoDesc(usuario);
 			List<ProcedimentoMedicoDTO> dtos = new ArrayList<>();
 			if(procedimentos != null && !procedimentos.isEmpty()) {
 				for(ProcedimentoMedico procedimento : procedimentos) {
 					
-					String nmProfissionalSaude = null;
-					if(procedimento.getProfissionalSaude()!=null)
-						nmProfissionalSaude = procedimento.getProfissionalSaude().getNome();
-					
-					ProcedimentoMedicoDTO dto  = new ProcedimentoMedicoDTO(procedimento.getId(), procedimento.getTitulo(), procedimento.getDescLocal(), 
-														procedimento.getDescricao(), procedimento.getDtRegistro(), procedimento.getDtRetorno(), 
+					ProcedimentoMedicoDTO dto  = new ProcedimentoMedicoDTO(procedimento.getId(), procedimento.getDescricao(),
+														procedimento.getDtRegistro(), 
 														procedimento.getDtProcedimento(), procedimento.getUser().getNome(), 
-														procedimento.getTipoProcedimento().getDescTipoProcedimeto(), nmProfissionalSaude);
+														procedimento.getTipoProcedimento().getDescTipoProcedimento());
 					dtos.add(dto);
 				}
 				return dtos;
@@ -70,20 +66,16 @@ public class ProcedimentoMedicoService {
 	}
 	
 	public void save(ProcedimentoMedicoFormDTO dto) {
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			ProcedimentoMedico pm = new ProcedimentoMedico();
 			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
-			pm.setDescLocal(dto.getDescLocal());
 			pm.setDescricao(dto.getDescricao());
 			pm.setDtRegistro(LocalDate.now());
-			pm.setDtRetorno(dto.getDtRetorno());
 			pm.setDtProcedimento(dto.getDtProcedimento());
 			pm.setTipoProcedimento(tp);
-			pm.setDescLocal(dto.getDescLocal());
-			pm.setTitulo(dto.getTitulo());
 			pm.setUser(usuario);
 			this.procedimentoMedicoRepository.save(pm);
 		}else {
@@ -91,74 +83,51 @@ public class ProcedimentoMedicoService {
 		}
 	}
 	
-	public void save(ProcedimentoMedicoFormDTO dto, User paciente) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			User profissionalSaude = this.userRepository.findById(id).orElseThrow();
-			ProcedimentoMedico pm = new ProcedimentoMedico();
-			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
-			pm.setDescLocal(dto.getDescLocal());
-			pm.setDescricao(dto.getDescricao());
-			pm.setDtRegistro(LocalDate.now());
-			pm.setDtRetorno(LocalDate.now());
-			pm.setDtProcedimento(dto.getDtProcedimento());
-			pm.setTipoProcedimento(tp);
-			pm.setDescLocal(dto.getDescLocal());
-			pm.setTitulo(dto.getTitulo());
-			pm.setUser(paciente);
-			pm.setProfissionalSaude(profissionalSaude);
-			this.procedimentoMedicoRepository.save(pm);
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
-		}
+	public void save(ProcedimentoMedicoFormDTO dto, Usuario paciente) {
+		ProcedimentoMedico pm = new ProcedimentoMedico();
+		TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
+		pm.setDescricao(dto.getDescricao());
+		pm.setDtRegistro(LocalDate.now());
+		pm.setDtProcedimento(dto.getDtProcedimento());
+		pm.setTipoProcedimento(tp);
+		pm.setUser(paciente);
+		this.procedimentoMedicoRepository.save(pm);
 	}
 
 	public ProcedimentoMedicoFormDTO update(ProcedimentoMedicoFormDTO dto) {
 		ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(dto.getId()).orElseThrow();
 		TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
-		pm.setDescLocal(dto.getDescLocal());
+		
 		pm.setDescricao(dto.getDescricao());
-		pm.setDtRetorno(dto.getDtRetorno());
+		
 		pm.setDtProcedimento(dto.getDtProcedimento());
 		pm.setTipoProcedimento(tp);
-		pm.setDescLocal(dto.getDescLocal());
-		pm.setTitulo(dto.getTitulo());
+	
 		this.procedimentoMedicoRepository.save(pm);
-		return new ProcedimentoMedicoFormDTO(pm.getId(),pm.getTitulo(), pm.getDescLocal(), pm.getDescricao(), pm.getDtRetorno(), 
+		return new ProcedimentoMedicoFormDTO(pm.getId(), pm.getDescricao(), 
 				pm.getDtProcedimento(), pm.getTipoProcedimento().getId());
 	}
 	
-	public ProcedimentoMedicoFormDTO update(ProcedimentoMedicoFormDTO dto, User paciente) {
-		UserSecurity logado = UserService.authenticated();
-		if(logado!=null) {
-			Long id = logado.getId();
-			User profissionalSaude = this.userRepository.findById(id).orElseThrow();
+	public ProcedimentoMedicoFormDTO update(ProcedimentoMedicoFormDTO dto, Usuario paciente) {
+		
 			ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(dto.getId()).orElseThrow();
 			TipoProcedimento tp = this.tipoProcedimentoRepository.findById(dto.getIdTipoProcedimento()).orElseThrow();
-			pm.setDescLocal(dto.getDescLocal());
 			pm.setDescricao(dto.getDescricao());
-			pm.setDtRetorno(dto.getDtRetorno());
 			pm.setDtProcedimento(dto.getDtProcedimento());
 			pm.setTipoProcedimento(tp);
-			pm.setDescLocal(dto.getDescLocal());
-			pm.setTitulo(dto.getTitulo());
-			pm.setProfissionalSaude(profissionalSaude);
 			this.procedimentoMedicoRepository.save(pm);
-			return new ProcedimentoMedicoFormDTO(pm.getId(),pm.getTitulo(), pm.getDescLocal(), pm.getDescricao(), pm.getDtRetorno(), 
+			return new ProcedimentoMedicoFormDTO(pm.getId(), pm.getDescricao(), 
 					pm.getDtProcedimento(), pm.getTipoProcedimento().getId());
-		}else {
-			throw new NoElementException("Usuário inválido, tente logar novamente");
-		}
+		
 		
 	}
 
 	public void delete(Long id) {
 		ProcedimentoMedico pm = this.procedimentoMedicoRepository.findById(id).orElseThrow();
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long idUser = logado.getId();
-			User usuario = this.userRepository.findById(idUser).orElseThrow();
+			Usuario usuario = this.userRepository.findById(idUser).orElseThrow();
 			if(usuario.equals(pm.getUser())) {
 				this.procedimentoMedicoRepository.delete(pm);
 			}else {

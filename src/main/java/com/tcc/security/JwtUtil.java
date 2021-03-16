@@ -10,7 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +25,7 @@ public class JwtUtil {
 	@Value("${jwt.expiration}")
 	private Long expiration;
 	
-	public String generateToken(User user) {
+	public String generateToken(Usuario user) {
 		Map<String, Object> userData = new HashMap<>();
 		List<String> listPerfil = new ArrayList<>();
 		user.getPerfis().forEach(p -> listPerfil.add(p.getDesc().substring(5)));
@@ -41,17 +41,7 @@ public class JwtUtil {
 				.compact();
 	}
 
-	public static String generateTokenQRCode(Long id) {
-		Map<String, Object> userData = new HashMap<>();
-		userData.put("sub",id);
-		Long exp = 3600000l;
-		userData.put("exp",new Date(System.currentTimeMillis() + exp));
-		return Jwts.builder()
-				.setClaims(userData)
-				.signWith(SignatureAlgorithm.HS512, "SecretApiApplicativo".getBytes())
-				.compact();
-	}
-	
+
 	public static Long getIdFromToken(String token) {
 		try {
 			Claims claims = Jwts.parser().setSigningKey("SecretApiApplicativo".getBytes()).parseClaimsJws(token).getBody();
@@ -75,19 +65,6 @@ public class JwtUtil {
 		return false;
 	}
 	
-	public boolean QRCodetokenValido(String token) {
-		Claims claims = Jwts.parser().setSigningKey("SecretApiApplicativo".getBytes()).parseClaimsJws(token).getBody();
-		if(claims!=null) {
-			
-			Date expirationDate = Date.from(Instant.ofEpochMilli((long) claims.get("exp")));
-			Date now = new Date(System.currentTimeMillis());
-			if(expirationDate != null && now.before(expirationDate)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private Claims getClaims(String token) {
 		try {			
 			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();

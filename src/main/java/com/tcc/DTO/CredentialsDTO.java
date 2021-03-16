@@ -11,7 +11,6 @@ public class CredentialsDTO implements Serializable{
 	@NotEmpty(message="Preenchimento obrigatório para o campo E-mail")
 	private String email;
 	
-	@NotEmpty(message="preenchimento obrigatório para o campo Senha")
 	private String senha;
 	
 	public CredentialsDTO() {}

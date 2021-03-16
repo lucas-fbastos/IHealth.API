@@ -14,7 +14,7 @@ import com.tcc.domain.Alergia;
 import com.tcc.domain.DoencaCronica;
 import com.tcc.domain.Medicamento;
 import com.tcc.domain.ProcedimentoMedico;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.DoencaCronicaRepository;
 import com.tcc.repository.MedicamentoRepository;
@@ -37,12 +37,12 @@ public class DashboardService {
 	private MedicamentoRepository medicamentoRepository;
 	
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 	
 	public Map<String, Object> getProcedimentosPorTipoUltimoMes(){
 		LocalDate dtRegistroFim  = LocalDate.now();
 		LocalDate dtRegistroInicio     = dtRegistroFim.minus(1, ChronoUnit.MONTHS); 
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		List<ProcedimentoMedico> procedimentos = this.procedimentoMedicoRepository.getAllBetweenDates(dtRegistroInicio, dtRegistroFim, usuario);
 		if(procedimentos != null && !procedimentos.isEmpty()) 
 			return this.separaPorTipoProcedimento(procedimentos);
@@ -52,7 +52,7 @@ public class DashboardService {
 	}
 	
 	public Map<String, Integer> getQuantitativos(){
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		List<ProcedimentoMedico> procedimentos = this.procedimentoMedicoRepository.findByUser(usuario);
 		List<Alergia> alergias = this.alergiaRepository.findByDadosMedicos(usuario.getDadosmedicos());
 		List<DoencaCronica> doencas = this.doencaCronicaRepository.findByDadosMedicos(usuario.getDadosmedicos());
@@ -76,7 +76,7 @@ public class DashboardService {
 	}
 	
 	public Map<String, Object> getProcedimentosPorTipoGeral(){
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		List<ProcedimentoMedico> procedimentos = this.procedimentoMedicoRepository.findByUser(usuario);
 		if(procedimentos != null && !procedimentos.isEmpty()) 
 			return this.separaPorTipoProcedimento(procedimentos);
@@ -86,7 +86,7 @@ public class DashboardService {
 	}
 	
 	public Map<String, Object> getAlergiasPorTipoGeral(){
-		User usuario = this.userService.getUserLogado();
+		Usuario usuario = this.userService.getUserLogado();
 		List<Alergia> alergias = this.alergiaRepository.findByDadosMedicos(usuario.getDadosmedicos());
 		if(alergias != null && !alergias.isEmpty()) 
 			return this.separaPorTipoAlergia(alergias);
@@ -100,7 +100,7 @@ public class DashboardService {
 		Map<String,Integer> items = new HashMap<>();
 		for(ProcedimentoMedico p : procedimentos) {
 			if(p.getTipoProcedimento()!=null) {
-				String desctipo = p.getTipoProcedimento().getDescTipoProcedimeto();
+				String desctipo = p.getTipoProcedimento().getDescTipoProcedimento();
 				Set<String> keys = items.keySet();
 				if(!keys.contains(desctipo))
 					items.put(desctipo, 1);

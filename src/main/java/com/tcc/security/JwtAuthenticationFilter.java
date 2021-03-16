@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc.DTO.CredentialsDTO;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.UserRepository;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			) throws IOException, ServletException {
 		
 		String username = ((UserSecurity) auth.getPrincipal()).getUsername();
-		User user = this.userRepository.findByEmail(username);
+		Usuario user = this.userRepository.findByEmail(username);
 		String token = this.jwtUtil.generateToken(user);
 		res.addHeader("Authorization", "Bearer "+ token);
 		res.addHeader("Content-type", "Application/json");

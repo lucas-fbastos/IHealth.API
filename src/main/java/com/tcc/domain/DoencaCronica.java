@@ -35,7 +35,7 @@ public class DoencaCronica implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_user_pr_saude")
 	@JsonManagedReference
-	private User profissionalSaude;
+	private Usuario profissionalSaude;
 
 	public Long getId() {
 		return id;
@@ -69,7 +69,7 @@ public class DoencaCronica implements Serializable{
 		}
 	}
 
-	public void setProfissionalSaude(User profissionalSaude) {
+	public void setProfissionalSaude(Usuario profissionalSaude) {
 		this.profissionalSaude = profissionalSaude;
 	}
 
@@ -77,7 +77,7 @@ public class DoencaCronica implements Serializable{
 		super();
 	}
 
-	public DoencaCronica(Long id, String descDoenca, DadosMedicos dadosMedicos, User profissionalSaude) {
+	public DoencaCronica(Long id, String descDoenca, DadosMedicos dadosMedicos, Usuario profissionalSaude) {
 		super();
 		this.id = id;
 		this.descDoenca = descDoenca;

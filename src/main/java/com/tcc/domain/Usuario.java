@@ -25,7 +25,7 @@ import com.tcc.enums.PerfilEnum;
 
 @Entity
 @Table(name="user", schema="public")
-public class User implements Serializable {
+public class Usuario implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +59,25 @@ public class User implements Serializable {
 	@JsonManagedReference
 	private DadosMedicos dadosmedicos;
 	
+	@OneToOne(mappedBy="usuarioEndereco")
+	@JsonManagedReference
+	private Endereco endereco;
+	
+	@OneToOne(mappedBy="usuario")
+	@JsonManagedReference
+	private Medico medico;
+	
+	@Column(name="nu_cpf")
+	private String cpf;
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -143,7 +162,23 @@ public class User implements Serializable {
 		perfis.removeIf(p -> p == perfil.getId());
 	}
 	
-	public User(Long id, String nome, LocalDate dtNascimento, Date dtCadastro, String password, String telefone, char sexo,
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
+	}
+
+	public Usuario(Long id, String nome, LocalDate dtNascimento, Date dtCadastro, String password, String telefone, char sexo,
 			String email) {
 		super();
 		this.id = id;
@@ -156,7 +191,7 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public User() {	}
+	public Usuario() {	}
 
 	@Override
 	public int hashCode() {
@@ -166,13 +201,14 @@ public class User implements Serializable {
 		return result;
 	}
 	
-	public User(UserDTO dto) {
+	public Usuario(UserDTO dto) {
 		this.dtNascimento = dto.getDtNascimento();
 		this.email= dto.getEmail();
 		this.password = dto.getSenha();
 		this.sexo =  dto.getSexo().charAt(0);
 		this.telefone= dto.getTelefone();
 		this.nome= dto.getNome();
+		
 	}
 
 	@Override
@@ -183,7 +219,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Usuario other = (Usuario) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

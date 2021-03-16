@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tcc.DTO.MedicamentoDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Medicamento;
-import com.tcc.domain.User;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.MedicamentoRepository;
 import com.tcc.repository.UserRepository;
@@ -32,10 +32,10 @@ public class MedicamentoService {
 	
 
 	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos) {
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 			List<Medicamento> list = new ArrayList<>();
 			for(MedicamentoDTO dto : medicamentos) {
@@ -53,13 +53,13 @@ public class MedicamentoService {
 		}
 	}
 	
-	public Medicamento addMedicamentos(MedicamentoDTO dto, User paciente) {
+	public Medicamento addMedicamentos(MedicamentoDTO dto, Usuario paciente) {
 		
 		DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
-		UserSecurity logado = UserService.authenticated();	
+		UserSecurity logado = UsuarioService.authenticated();	
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			Medicamento m = new Medicamento();
 			m.setId(null);
 			m.setDadosMedicos(dados);
@@ -73,10 +73,10 @@ public class MedicamentoService {
 	}
 
 	public void deleteMedicamento(Long idMed) {
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 			List<Medicamento> list = this.medicamentoRepository.findByDadosMedicos(dados);
 			if(list!=null && !list.isEmpty()) {
@@ -92,10 +92,10 @@ public class MedicamentoService {
 	
 	
 	public List<Medicamento> update(List<MedicamentoDTO> medicamentos){
-		UserSecurity logado = UserService.authenticated();
+		UserSecurity logado = UsuarioService.authenticated();
 		if(logado!=null) {
 			Long id = logado.getId();
-			User usuario = this.userRepository.findById(id).orElseThrow();
+			Usuario usuario = this.userRepository.findById(id).orElseThrow();
 			DadosMedicos dados = this.dadosMedicosRepository.findByUser(usuario).orElseThrow();
 			List<Medicamento> list = new ArrayList<>();
 			for(MedicamentoDTO dto : medicamentos) {

@@ -12,19 +12,9 @@ public class ProcedimentoMedicoFormDTO {
 	
 	private Long id;
 	
-	@NotEmpty(message="Preenchimento obrigatório para o campo título")
-	@Size(max=255,min=1,message="Formato inválido para o campo título")
-	private String titulo;
-	
-	
-	private String descLocal;
-	
 	@NotEmpty(message="Preenchimento obrigatório para o campo descrição do procedimento")
 	@Size(max=255,min=1,message="Formato inválido para o campo descrição do procedimento")
 	private String descricao;
-	
-	@JsonFormat(pattern="dd-mm-yyyy")
-	private LocalDate dtRetorno;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo data do procedimento")
 	@JsonFormat(pattern="dd-MM-yyyy")
@@ -43,36 +33,12 @@ public class ProcedimentoMedicoFormDTO {
 		this.code = code;
 	}
 
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescLocal() {
-		return descLocal;
-	}
-
-	public void setDescLocal(String descLocal) {
-		this.descLocal = descLocal;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public LocalDate getDtRetorno() {
-		return dtRetorno;
-	}
-
-	public void setDtRetorno(LocalDate dtRetorno) {
-		this.dtRetorno = dtRetorno;
 	}
 
 	public LocalDate getDtProcedimento() {
@@ -99,12 +65,9 @@ public class ProcedimentoMedicoFormDTO {
 		this.id = id;
 	}
 
-	public ProcedimentoMedicoFormDTO(Long id, String titulo, String descLocal, String descricao, LocalDate dtRetorno, LocalDate dtProcedimento, Long idTipoProcedimento) {
+	public ProcedimentoMedicoFormDTO(Long id, String descricao, LocalDate dtProcedimento, Long idTipoProcedimento) {
 		this.id = id;
-		this.titulo = titulo;
-		this.descLocal = descLocal;
 		this.descricao = descricao;
-		this.dtRetorno = dtRetorno;
 		this.dtProcedimento = dtProcedimento;
 		this.idTipoProcedimento = idTipoProcedimento;
 	}
