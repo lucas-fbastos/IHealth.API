@@ -93,6 +93,10 @@ public class UsuarioService {
 	
 	public void updatePassword(UpdatePasswordFormDTO form) {
 		Usuario u = this.getUserLogado();
+		if(u.getPerfis().contains(PerfilEnum.PENDENTE)) {
+			u.removePerfil(PerfilEnum.PENDENTE);
+			u.addPerfil(PerfilEnum.ATIVO);
+		}
 		if(form.getPassword().equals(form.getPasswordConfirmation())) {
 			u.setPassword(this.encoder.encode(form.getPassword()));
 			this.userRepository.save(u);

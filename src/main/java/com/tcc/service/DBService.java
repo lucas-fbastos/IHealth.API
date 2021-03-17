@@ -81,6 +81,8 @@ public class DBService {
 		u1.setTelefone("61996253833");
 		u1.setDtNascimento(LocalDate.of(1998, 02, 17));
 		u1.setDtCadastro(new Date());
+		u1.addPerfil(PerfilEnum.ADMINISTRADOR);
+		u1.addPerfil(PerfilEnum.PENDENTE);
 		u1 = this.usuarioRepository.save(u1);
 		
 		TipoSanguineo ts1 = new TipoSanguineo();
