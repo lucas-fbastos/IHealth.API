@@ -23,7 +23,7 @@ public class ApplicationConfig {
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
 		
-		if (!"create-drop".equals(strategy)) {
+		if (!"create".equals(strategy)) {
 			return false;
 		}
 		

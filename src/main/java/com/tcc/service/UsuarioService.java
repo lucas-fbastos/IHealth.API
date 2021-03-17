@@ -52,7 +52,7 @@ public class UsuarioService {
 			user.addPerfil(PerfilEnum.PENDENTE);
 			user.addPerfil(PerfilEnum.values()[dto.getPerfil()]);
 			user.setDtCadastro(new Date());			
-			
+			user.setCpf(dto.getCpf());
 			this.userRepository.save(user);
 			
 			if(user.getPerfis().contains(PerfilEnum.PACIENTE)) {
@@ -66,8 +66,9 @@ public class UsuarioService {
 				Endereco e = new Endereco(dto.getEndereco());
 				e.setUsuarioEndereco(user);
 				this.enderecoRepository.save(e);
+				user.setEndereco(e);
 			}
-		
+			
 			return user;
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Já existe um usuário com esse E-mail cadastrado. E-mail: "+dto.getEmail());
