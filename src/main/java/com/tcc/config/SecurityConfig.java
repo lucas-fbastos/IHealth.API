@@ -1,6 +1,8 @@
 package com.tcc.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			http.headers().frameOptions().disable();
 		}
 		
-		http.cors().and().csrf().disable();
+		http.csrf().disable();
+		http.cors();
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET, URLS_LIBERADAS_GET).permitAll()
 			.antMatchers(HttpMethod.POST,URLS_LIBERADAS_POST).permitAll()
@@ -78,12 +81,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	
 	
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-		return source;
-	}
+	 @Bean
+	    public CorsConfigurationSource corsConfigurationSource() {
+	        final CorsConfiguration configuration = new CorsConfiguration();
+	        List<String> origins = new ArrayList<>();
+	        origins.add("*");
+	        List<String> methods = new ArrayList<>();
+	        methods.add("HEAD");
+	        methods.add("GET");
+	        methods.add("POST");
+	        methods.add("PUT");
+	        methods.add("DELETE");
+	        methods.add("PATCH");
+	        methods.add("OPTIONS");
+	        
+	       configuration.setAllowedOrigins(origins);
+	       configuration.setAllowedMethods(methods);
+	       configuration.setAllowCredentials(true);
+	       configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+	       final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	       source.registerCorsConfiguration("/**", configuration);
+	       return source;
+	    }
 	
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {

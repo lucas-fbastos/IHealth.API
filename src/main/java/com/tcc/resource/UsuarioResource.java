@@ -57,6 +57,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok(retorno);
 	}
 	
+	
 	@PutMapping("/password")
 	public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordFormDTO dto){
 		this.userService.updatePassword(dto);
