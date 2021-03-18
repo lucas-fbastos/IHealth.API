@@ -30,11 +30,25 @@ public class PacienteService {
 		Paciente p = new Paciente();
 		p.setDescConvenio(dto.getDescConvenio());
 		p.setNuInscricaoConvenio(dto.getNuInscricaoConvenio());
+		u = this.usuarioService.removePendente(u);
 		p.setUsuario(u);
+		p.setCompartilhaDados(dto.isCompartilhaDados());
 		try {
 			return this.repository.save(p);
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Erro ao cadastrar paciente");
+		}
+	}
+	
+	public void update(PacienteDTO dto) {
+		Paciente p = this.repository.findById(dto.getIdPaciente()).orElseThrow();
+		p.setCompartilhaDados(dto.isCompartilhaDados());
+		p.setDescConvenio(dto.getDescConvenio());
+		p.setNuInscricaoConvenio(dto.getNuInscricaoConvenio());
+		try {
+			this.repository.save(p);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Erro ao atualizar paciente");
 		}
 	}
 	

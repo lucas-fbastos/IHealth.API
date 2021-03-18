@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="paciente",schema="public")
@@ -43,9 +43,20 @@ public class Paciente implements Serializable{
 
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
-	@JsonManagedReference
+	@JsonBackReference
 	private Usuario usuario;
 	
+	@Column(name="bol_compartilha_dados")
+	private Boolean compartilhaDados;
+	
+	public Boolean isCompartilhaDados() {
+		return compartilhaDados;
+	}
+
+	public void setCompartilhaDados(Boolean compartilhaDados) {
+		this.compartilhaDados = compartilhaDados;
+	}
+
 	public Long getId() {
 		return id;
 	}

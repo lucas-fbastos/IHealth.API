@@ -1,18 +1,23 @@
 package com.tcc.DTO;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
 
-public class MedicoDTO extends UserDTO {
+public class MedicoDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private String crm;
 	private Set<Especializacao> especializacoes;
+	private String nome;
+	private String telefone;
+	private String cpf;
+	private Long idUser;
 	
 	public Long getId() {
 		return id;
@@ -43,9 +48,25 @@ public class MedicoDTO extends UserDTO {
 		this.crm = crm;
 	}
 	
-	
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	public Long getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
 	public MedicoDTO(Long id,Set<Especializacao> especializacoes,String crm, Usuario usuario) {
-		super(usuario);
 		this.id = id;
 		this.nome = usuario.getNome();
 		this.crm = crm;
@@ -55,7 +76,6 @@ public class MedicoDTO extends UserDTO {
 	}
 	
 	public MedicoDTO(Medico medico) {
-		super(medico.getUsuario());
 		this.crm = medico.getCrm();
 		this.especializacoes = medico.getEspecializacoes();
 		this.id = medico.getId();

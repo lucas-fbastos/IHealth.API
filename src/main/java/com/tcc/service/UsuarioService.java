@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tcc.DTO.MedicoDTO;
+import com.tcc.DTO.PacienteDTO;
 import com.tcc.DTO.UpdatePasswordFormDTO;
 import com.tcc.DTO.UserDTO;
 import com.tcc.domain.DadosMedicos;
@@ -49,7 +51,7 @@ public class UsuarioService {
 			user.setNome(dto.getNome());
 			user.setDtNascimento(dto.getDtNascimento());
 			user.setPassword(encoder.encode("12345678"));
-			user.addPerfil(PerfilEnum.PENDENTE);
+			user.addPerfil(PerfilEnum.PRIMEIRO_ACESSO);
 			user.addPerfil(PerfilEnum.values()[dto.getPerfil()]);
 			user.setDtCadastro(new Date());			
 			user.setCpf(dto.getCpf());
@@ -93,9 +95,10 @@ public class UsuarioService {
 	
 	public void updatePassword(UpdatePasswordFormDTO form) {
 		Usuario u = this.getUserLogado();
-		if(u.getPerfis().contains(PerfilEnum.PENDENTE)) {
-			u.removePerfil(PerfilEnum.PENDENTE);
-			u.addPerfil(PerfilEnum.ATIVO);
+		if(u.getPerfis().contains(PerfilEnum.PRIMEIRO_ACESSO)) {
+			u.removePerfil(PerfilEnum.PRIMEIRO_ACESSO);
+			if(!u.getPerfis().contains(PerfilEnum.ATIVO) && !u.getPerfis().contains(PerfilEnum.PENDENTE))
+				u.addPerfil(PerfilEnum.PENDENTE);
 		}
 		if(form.getPassword().equals(form.getPasswordConfirmation())) {
 			u.setPassword(this.encoder.encode(form.getPassword()));
@@ -120,5 +123,37 @@ public class UsuarioService {
 
 	public Usuario getById(Long userId) {
 		return this.userRepository.findById(userId).orElseThrow();
+	}
+	
+	public UserDTO getDadosUser() {
+		Usuario u = getUserLogado();
+		UserDTO dto = new UserDTO(u);
+		u.getPerfis().forEach(p -> {
+			switch(p) {
+				case PACIENTE:
+					dto.setPaciente(new PacienteDTO(u.getPaciente()));
+					break;
+				case MEDICO:
+					dto.setMedico(new MedicoDTO(u.getMedico()));
+					break;
+			default:
+				break;
+			}
+		});
+		return dto;
+	}
+
+	public Usuario removePendente(Usuario u) {
+		u.removePerfil(PerfilEnum.PENDENTE);
+		u.addPerfil(PerfilEnum.ATIVO);
+		this.userRepository.save(u);
+		return u;
+	}
+	
+	public Usuario adicionaPendente(Usuario u) {
+		u.removePerfil(PerfilEnum.ATIVO);
+		u.addPerfil(PerfilEnum.PENDENTE);
+		this.userRepository.save(u);
+		return u;
 	}
 }

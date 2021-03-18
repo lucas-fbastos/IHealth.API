@@ -67,6 +67,10 @@ public class Usuario implements Serializable {
 	@JsonManagedReference
 	private Medico medico;
 	
+	@OneToOne(mappedBy="usuario")
+	@JsonManagedReference
+	private Paciente paciente;
+	
 	@Column(name="nu_cpf")
 	private String cpf;
 	
@@ -178,6 +182,14 @@ public class Usuario implements Serializable {
 		this.medico = medico;
 	}
 
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
 	public Usuario(Long id, String nome, LocalDate dtNascimento, Date dtCadastro, String password, String telefone, char sexo,
 			String email) {
 		super();
@@ -227,7 +239,6 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-	
 	
 	
 }

@@ -63,4 +63,9 @@ public class UsuarioResource {
 		this.userService.updatePassword(dto);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@GetMapping("/dadosUsuario")
+	public ResponseEntity<UserDTO> getDadosUser(){
+		return ResponseEntity.ok(this.userService.getDadosUser());
+	}
 }

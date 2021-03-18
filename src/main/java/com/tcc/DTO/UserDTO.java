@@ -15,28 +15,44 @@ public class UserDTO extends CredentialsDTO{
 
 	private static final long serialVersionUID = 1L;
 	
-	protected Long idUser;
+	private Long idUser;
 	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Nome")
 	@Size(max=255, message="Tamanho máximo de 255 caracteres")
-	protected String nome;
+	private String nome;
 	
-	protected String sexo;
+	private String sexo;
 	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Telefone")
 	@Size(min=8, max=11, message="o número de telefone deve ter entre 8 e 11 digitos")
-	protected String telefone;
+	private String telefone;
 	
 	@JsonFormat(pattern="dd-MM-yyyy")
-	protected LocalDate dtNascimento;
+	private LocalDate dtNascimento;
 	
 	@NotNull(message="Preenchimento obrigatório para o campo perfil")
-	protected Integer perfil;
+	private Integer perfil;
 	
-	protected EnderecoDTO endereco;
+	private EnderecoDTO endereco;
 	
-	protected String cpf;
+	private String cpf;
 	
+	private MedicoDTO medico;
+	
+	private PacienteDTO paciente;
+
+	public MedicoDTO getMedico() {
+		return medico;
+	}
+	public void setMedico(MedicoDTO medico) {
+		this.medico = medico;
+	}
+	public PacienteDTO getPaciente() {
+		return paciente;
+	}
+	public void setPaciente(PacienteDTO paciente) {
+		this.paciente = paciente;
+	}
 	public String getCpf() {
 		return cpf;
 	}
@@ -108,6 +124,7 @@ public class UserDTO extends CredentialsDTO{
 	public UserDTO() {
 		super();
 	}
+	
 	public UserDTO(Usuario usuario) {
 		this.cpf = usuario.getCpf();
 		this.dtNascimento = usuario.getDtNascimento();

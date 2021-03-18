@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.tcc.DTO.MedicoDTO;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
-import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.MedicoRepository;
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
@@ -54,8 +53,8 @@ public class MedicoService {
 		Medico m = new Medico();
 		m.setCrm(dto.getCrm());
 		m.setEspecializacoes(dto.getEspecializacoes());
+		u = this.usuarioService.removePendente(u);
 		m.setUsuario(u);
-		u.addPerfil(PerfilEnum.MEDICO);
 		try {
 			return this.repository.save(m);
 		}catch(DataIntegrityViolationException e) {

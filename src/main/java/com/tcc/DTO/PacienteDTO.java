@@ -1,12 +1,13 @@
 package com.tcc.DTO;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.tcc.domain.Paciente;
 
 
 
-public class PacienteDTO extends UserDTO {
+public class PacienteDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,8 +17,19 @@ public class PacienteDTO extends UserDTO {
 	private String nuInscricaoConvenio;
 	private String nuTelefone;
 	private EnderecoDTO endereco;
+	private String nome;
+	private Long idUser;
+	private String cpf;
+	private String telefone;
+	private String sexo;
+	private Boolean compartilhaDados;
 	
-	
+	public Boolean isCompartilhaDados() {
+		return compartilhaDados;
+	}
+	public void setCompartilhaDados(Boolean compartilhaDados) {
+		this.compartilhaDados = compartilhaDados;
+	}
 	public Long getIdPaciente() {
 		return idPaciente;
 	}
@@ -30,7 +42,12 @@ public class PacienteDTO extends UserDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
 	public LocalDate getDtNascimento() {
 		return dtNascimento;
 	}
@@ -66,7 +83,24 @@ public class PacienteDTO extends UserDTO {
 		
 	}
 	
-	
+	public Long getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
 	public PacienteDTO(Paciente paciente) {
 		this.descConvenio = paciente.getDescConvenio();
 		this.dtNascimento = paciente.getDtNascimento();
