@@ -21,6 +21,8 @@ public class UserDTO extends CredentialsDTO{
 	@Size(max=255, message="Tamanho máximo de 255 caracteres")
 	private String nome;
 	
+	@NotEmpty(message="Preenchimento obrigatório para o campo Sexo")
+	@Size(max=1, message="Tamanho máximo de 1 caracter")
 	private String sexo;
 	
 	@NotEmpty(message="Preenchimento obrigatório para o campo Telefone")
@@ -128,7 +130,8 @@ public class UserDTO extends CredentialsDTO{
 	public UserDTO(Usuario usuario) {
 		this.cpf = usuario.getCpf();
 		this.dtNascimento = usuario.getDtNascimento();
-		this.endereco = new EnderecoDTO(usuario.getEndereco());
+		if(usuario.getEndereco()!=null)
+			this.endereco = new EnderecoDTO(usuario.getEndereco());
 		this.idUser = usuario.getId();
 		this.nome = usuario.getNome();
 		this.sexo = String.valueOf(usuario.getSexo());
