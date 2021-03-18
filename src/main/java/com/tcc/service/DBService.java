@@ -77,12 +77,11 @@ public class DBService {
 		u1.setNome("lucas felix bastos");
 		u1.setPassword(pe.encode("12345678"));
 		u1.setSexo('M');
-		u1.addPerfil(PerfilEnum.PENDENTE);
+		u1.addPerfil(PerfilEnum.PRIMEIRO_ACESSO);
 		u1.setTelefone("61996253833");
 		u1.setDtNascimento(LocalDate.of(1998, 02, 17));
 		u1.setDtCadastro(new Date());
 		u1.addPerfil(PerfilEnum.ADMINISTRADOR);
-		u1.addPerfil(PerfilEnum.PENDENTE);
 		u1 = this.usuarioRepository.save(u1);
 		
 		TipoSanguineo ts1 = new TipoSanguineo();
