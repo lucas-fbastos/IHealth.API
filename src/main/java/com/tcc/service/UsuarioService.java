@@ -118,11 +118,19 @@ public class UsuarioService {
 	
 	public Usuario getUserLogado() {
 		UserSecurity logado = authenticated();
-		return this.userRepository.findById(logado.getId()).orElseThrow();
+		try {
+			return this.userRepository.findById(logado.getId()).orElseThrow();			
+		}catch (NoSuchElementException e) {
+			throw new NoElementException("Usuário não encontrado");
+		}
 	}
 
 	public Usuario getById(Long userId) {
-		return this.userRepository.findById(userId).orElseThrow();
+		try {
+			return this.userRepository.findById(userId).orElseThrow();			
+		}catch (NoSuchElementException e) {
+			throw new NoElementException("Usuário não encontrado");
+		}
 	}
 	
 	public UserDTO getDadosUser() {

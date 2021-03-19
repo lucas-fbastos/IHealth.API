@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.DTO.MedicoDTO;
+import com.tcc.DTO.MedicoFormDTO;
 import com.tcc.domain.Medico;
 import com.tcc.service.MedicoService;
 
@@ -40,12 +41,12 @@ public class MedicoResource {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<Medico> save(@RequestBody MedicoDTO dto){
+	public ResponseEntity<Medico> save(@RequestBody MedicoFormDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.medicoService.save(dto));
 	}
 	
 	@PutMapping()
-	public ResponseEntity<Void> update(@RequestBody MedicoDTO dto){
+	public ResponseEntity<Void> update(@RequestBody MedicoFormDTO dto){
 		this.medicoService.update(dto);
 		return ResponseEntity.noContent().build();
 	}
