@@ -33,6 +33,7 @@ public class JwtUtil {
 		userData.put("dtCadastro", user.getDtCadastro().toString());
 		userData.put("expiration",new Date(System.currentTimeMillis() + this.expiration));
 		userData.put("sub", user.getEmail());
+		userData.put("id", user.getId());
 		userData.put("perfis", listPerfil);
 		
 		return Jwts.builder()

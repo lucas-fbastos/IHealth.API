@@ -16,7 +16,6 @@ public class PacienteDTO implements Serializable{
 	private String descConvenio;
 	private String nuInscricaoConvenio;
 	private String nuTelefone;
-	private EnderecoDTO endereco;
 	private String nome;
 	private Long idUser;
 	private String cpf;
@@ -72,12 +71,6 @@ public class PacienteDTO implements Serializable{
 	public void setNuTelefone(String nuTelefone) {
 		this.nuTelefone = nuTelefone;
 	}
-	public EnderecoDTO getEndereco() {
-		return endereco;
-	}
-	public void setEndereco(EnderecoDTO endereco) {
-		this.endereco = endereco;
-	}
 	
 	public PacienteDTO() {
 		
@@ -104,7 +97,6 @@ public class PacienteDTO implements Serializable{
 	public PacienteDTO(Paciente paciente) {
 		this.descConvenio = paciente.getDescConvenio();
 		this.dtNascimento = paciente.getDtNascimento();
-		this.endereco = new EnderecoDTO(paciente.getEndereco());
 		this.idPaciente = paciente.getId();
 		this.nome = paciente.getUsuario().getNome();
 		this.nuInscricaoConvenio = paciente.getNuInscricaoConvenio();

@@ -3,7 +3,6 @@ package com.tcc.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,10 +36,6 @@ public class Paciente implements Serializable{
 	@Column(name="nu_telefone")
 	private String nuTelefone;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_id", referencedColumnName = "id")
-	private Endereco endereco;
-
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
 	@JsonBackReference
@@ -96,14 +91,6 @@ public class Paciente implements Serializable{
 
 	public void setNuTelefone(String nuTelefone) {
 		this.nuTelefone = nuTelefone;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 
 	public Usuario getUsuario() {

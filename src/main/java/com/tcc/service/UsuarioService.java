@@ -128,7 +128,7 @@ public class UsuarioService {
 	public UserDTO getDadosUser() {
 		Usuario u = getUserLogado();
 		UserDTO dto = new UserDTO(u);
-		u.getPerfis().forEach(p -> {
+		for(PerfilEnum p : u.getPerfis()) {
 			switch(p) {
 				case PACIENTE:
 					dto.setPaciente(new PacienteDTO(u.getPaciente()));
@@ -139,7 +139,7 @@ public class UsuarioService {
 			default:
 				break;
 			}
-		});
+		}
 		return dto;
 	}
 

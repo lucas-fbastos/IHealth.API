@@ -1,6 +1,7 @@
 package com.tcc.DTO;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.Usuario;
+import com.tcc.enums.PerfilEnum;
 
 
 
@@ -34,6 +36,8 @@ public class UserDTO extends CredentialsDTO{
 	
 	@NotNull(message="Preenchimento obrigatório para o campo perfil")
 	private Integer perfil;
+	
+	private Set<PerfilEnum> perfisCadastrados;
 	
 	private EnderecoDTO endereco;
 	
@@ -105,6 +109,13 @@ public class UserDTO extends CredentialsDTO{
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
 	}
+	
+	public Set<PerfilEnum> getPerfisCadastrados() {
+		return perfisCadastrados;
+	}
+	public void setPerfisCadastrados(Set<PerfilEnum> perfisCadastrados) {
+		this.perfisCadastrados = perfisCadastrados;
+	}
 	public UserDTO(	String nome, String sexo, String telefone, LocalDate dtNascimento, Integer perfil, EnderecoDTO endereco) {
 		this.nome = nome;
 		this.sexo = sexo;
@@ -136,6 +147,7 @@ public class UserDTO extends CredentialsDTO{
 		this.nome = usuario.getNome();
 		this.sexo = String.valueOf(usuario.getSexo());
 		this.telefone = usuario.getTelefone();
+		this.perfisCadastrados = usuario.getPerfis();
 	}
 	
 	
