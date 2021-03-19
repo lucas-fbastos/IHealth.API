@@ -35,7 +35,12 @@ public class JwtUtil {
 		userData.put("sub", user.getEmail());
 		userData.put("id", user.getId());
 		userData.put("perfis", listPerfil);
-		
+		Long idPerfil = null;
+		if(user.getPaciente()!=null)
+			idPerfil=user.getPaciente().getId();
+		else if(user.getMedico()!=null)
+			idPerfil = user.getMedico().getId();
+		userData.put("idPerfil", idPerfil);
 		return Jwts.builder()
 				.setClaims(userData)
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
