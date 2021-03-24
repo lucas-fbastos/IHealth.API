@@ -14,5 +14,8 @@ public interface ConsultaRepository extends JpaRepository<Consulta,Long>{
 
 	@Query(value = "from Consulta C where dtInicio BETWEEN :dtI AND :dtF")
 	public List<Consulta> getAllBetweenDates(@Param("dtI")LocalDateTime dtIncio,@Param("dtF")LocalDateTime dtFim );
+	
+	@Query(value = "from Consulta c join fetch c.medico medico where dtInicio BETWEEN :dtI AND :dtF AND medico.id = :idMedico")
+	public List<Consulta> getAllBetweenDatesByMedico(@Param("dtI")LocalDateTime dtIncio,@Param("dtF")LocalDateTime dtFim, @Param("idMedico") Long idMedico );
 
 }

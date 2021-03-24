@@ -2,6 +2,7 @@ package com.tcc.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,11 +53,20 @@ public class MedicoService {
 		return dto;
 	}
 	
-	public MedicoDTO getById(Long id){
-		Medico m = this.repository.findById(id).orElseThrow();
+	public MedicoDTO getDTOById(Long id){
+		Medico m = getById(id);
 		return new MedicoDTO(m.getId(),m.getEspecializacoes(),m.getCrm(),m.getUsuario());
 	}
 
+	public Medico getById(Long id){
+		try {
+			return this.repository.findById(id).orElseThrow();			
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Médico não encontrado");
+		}
+		
+	}
+	
 	public Medico save(MedicoFormDTO dto) {
 		Usuario u = this.usuarioService.getById(dto.getIdUser());
 		Medico m = new Medico();

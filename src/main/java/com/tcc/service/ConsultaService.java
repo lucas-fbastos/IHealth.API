@@ -19,6 +19,7 @@ import com.tcc.DTO.MedicoDTO;
 import com.tcc.DTO.PacienteDTO;
 import com.tcc.domain.Clinica;
 import com.tcc.domain.Consulta;
+import com.tcc.domain.Medico;
 import com.tcc.domain.TipoProcedimento;
 import com.tcc.enums.TemporalidadeEnum;
 import com.tcc.repository.ConsultaRepository;
@@ -35,24 +36,34 @@ public class ConsultaService {
 	private ClinicaService clinicaService;
 	
 	@Autowired
+	private MedicoService medicoService;
+		
+	@Autowired
 	private TipoProcedimentoService tipoProcedimentoService;
 	
 	
 	public List<LocalTime> getHorariosLivres(AgendamentoDTO agendamento) {
-		
 		Clinica clinica = this.clinicaService.getDadosClinica();
 		TipoProcedimento tp = this.tipoProcedimentoService.getById(agendamento.getIdTipoProcedimento());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		formatter = formatter.withLocale( Locale.ROOT );  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+		formatter = formatter.withLocale( Locale.ROOT );  
 		LocalDate date = LocalDate.parse(agendamento.getData(), formatter);
-		List<LocalTime> horariosGeral = this.getHorariosGeral(clinica.getDtAbertura(), clinica.getDtEncerramento(), tp.getDuracao());
-		LocalDateTime abertura = LocalDateTime.of( date, clinica.getDtAbertura());
-		LocalDateTime encerramento = LocalDateTime.of(date, clinica.getDtEncerramento());
-		
-		List<Consulta> consultaList = this.consultaRepository.getAllBetweenDates(abertura, encerramento);
-		List<LocalTime> consultas = this.extraiDatas(consultaList); 
-
-		return this.comparaDatas(consultas,horariosGeral);
+		if(agendamento.getIdMedico()!=null) {
+			Medico medico = this.medicoService.getById(agendamento.getIdMedico());
+			List<LocalTime> horariosMedico = this.getHorariosGeral(medico.getHrEntrada(), medico.getHrSaida(), tp.getDuracao());
+			LocalDateTime entrada = LocalDateTime.of( date, medico.getHrEntrada());
+			LocalDateTime saida = LocalDateTime.of(date, medico.getHrSaida());
+			List<Consulta> consultaList = this.consultaRepository.getAllBetweenDatesByMedico(entrada, saida,medico.getId());
+			List<LocalTime> consultas = this.extraiDatas(consultaList); 
+			return this.comparaDatas(consultas,horariosMedico);
+		}else {
+			List<LocalTime> horariosGeral = this.getHorariosGeral(clinica.getDtAbertura(), clinica.getDtEncerramento(), tp.getDuracao());
+			LocalDateTime abertura = LocalDateTime.of( date, clinica.getDtAbertura());
+			LocalDateTime encerramento = LocalDateTime.of(date, clinica.getDtEncerramento());
+			List<Consulta> consultaList = this.consultaRepository.getAllBetweenDates(abertura, encerramento);
+			List<LocalTime> consultas = this.extraiDatas(consultaList); 
+			return this.comparaDatas(consultas,horariosGeral);
+		}
 
 	}
 

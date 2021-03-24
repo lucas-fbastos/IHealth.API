@@ -1,5 +1,6 @@
 package com.tcc.domain;
 
+import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="medico",schema ="public")
@@ -27,8 +28,14 @@ public class Medico {
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
-	@JsonManagedReference
+	@JsonBackReference
 	private Usuario usuario;
+	
+	@Column(name="hr_entrada")
+	private LocalTime hrEntrada;
+	
+	@Column(name="hr_saida")
+	private LocalTime hrSaida;
 	
 	@ManyToMany
 	private Set<Especializacao> especializacoes;
@@ -72,6 +79,22 @@ public class Medico {
 		this.especializacoes = especializacoes;
 	}
 	
+	public LocalTime getHrEntrada() {
+		return hrEntrada;
+	}
+
+	public void setHrEntrada(LocalTime hrEntrada) {
+		this.hrEntrada = hrEntrada;
+	}
+
+	public LocalTime getHrSaida() {
+		return hrSaida;
+	}
+
+	public void setHrSaida(LocalTime hrSaida) {
+		this.hrSaida = hrSaida;
+	}
+
 	public Medico() {}
 	
 }

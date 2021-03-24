@@ -37,7 +37,7 @@ public class MedicoResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<MedicoDTO> getById(@PathVariable Long id){
-		return ResponseEntity.ok(this.medicoService.getById(id));
+		return ResponseEntity.ok(this.medicoService.getDTOById(id));
 	}
 	
 	@PostMapping()
