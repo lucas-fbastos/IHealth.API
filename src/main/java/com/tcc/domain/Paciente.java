@@ -1,7 +1,6 @@
 package com.tcc.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +22,6 @@ public class Paciente implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="dt_nascimento")
-	private LocalDate dtNascimento;
 	
 	@Column(name="desc_convenio")
 	private String descConvenio;
@@ -61,14 +57,6 @@ public class Paciente implements Serializable{
 	}
 
 
-	public LocalDate getDtNascimento() {
-		return dtNascimento;
-	}
-
-	public void setDtNascimento(LocalDate dtNascimento) {
-		this.dtNascimento = dtNascimento;
-	}
-
 	public String getDescConvenio() {
 		return descConvenio;
 	}
@@ -101,10 +89,9 @@ public class Paciente implements Serializable{
 		this.usuario = usuario;
 	}
 
-	public Paciente(Long id, String nomePaciente, String cpf, LocalDate dtNascimento, String descConvenio,
+	public Paciente(Long id, String nomePaciente, String cpf, String descConvenio,
 			String nuInscricaoConvenio, String nuTelefone) {
 		this.id = id;
-		this.dtNascimento = dtNascimento;
 		this.descConvenio = descConvenio;
 		this.nuInscricaoConvenio = nuInscricaoConvenio;
 		this.nuTelefone = nuTelefone;

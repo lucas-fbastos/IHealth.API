@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,7 +33,6 @@ public class UserDTO extends CredentialsDTO{
 	@JsonFormat(pattern="dd-MM-yyyy")
 	private LocalDate dtNascimento;
 	
-	@NotNull(message="Preenchimento obrigatório para o campo perfil")
 	private Integer perfil;
 	
 	private Set<PerfilEnum> perfisCadastrados;

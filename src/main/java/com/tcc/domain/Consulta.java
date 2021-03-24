@@ -35,7 +35,7 @@ public class Consulta implements Serializable {
 	private Paciente paciente;
 	
 	@Column(name="dt_consulta_inicio")
-	private LocalDateTime dtIncio;
+	private LocalDateTime dtInicio;
 	
 	@Column(name="dt_consulta_fim")
 	private LocalDateTime dtFim;
@@ -76,11 +76,11 @@ public class Consulta implements Serializable {
 	}
 
 	public LocalDateTime getDtIncio() {
-		return dtIncio;
+		return dtInicio;
 	}
 
 	public void setDtIncio(LocalDateTime dtIncio) {
-		this.dtIncio = dtIncio;
+		this.dtInicio = dtIncio;
 	}
 
 	public LocalDateTime getDtFim() {
@@ -103,14 +103,14 @@ public class Consulta implements Serializable {
 		super();
 	}
 
-	public Consulta(Long id, TipoProcedimento tipoProcedimento, Medico medico, Paciente paciente, LocalDateTime dtIncio,
+	public Consulta(Long id, TipoProcedimento tipoProcedimento, Medico medico, Paciente paciente, LocalDateTime dtInicio,
 			LocalDateTime dtFim, Boolean confirmada) {
 		super();
 		this.id = id;
 		this.tipoProcedimento = tipoProcedimento;
 		this.medico = medico;
 		this.paciente = paciente;
-		this.dtIncio = dtIncio;
+		this.dtInicio = dtInicio;
 		this.dtFim = dtFim;
 		this.confirmada = confirmada;
 	}

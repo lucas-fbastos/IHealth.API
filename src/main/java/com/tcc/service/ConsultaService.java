@@ -4,8 +4,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +42,12 @@ public class ConsultaService {
 		
 		Clinica clinica = this.clinicaService.getDadosClinica();
 		TipoProcedimento tp = this.tipoProcedimentoService.getById(agendamento.getIdTipoProcedimento());
-		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		formatter = formatter.withLocale( Locale.ROOT );  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+		LocalDate date = LocalDate.parse(agendamento.getData(), formatter);
 		List<LocalTime> horariosGeral = this.getHorariosGeral(clinica.getDtAbertura(), clinica.getDtEncerramento(), tp.getDuracao());
-		LocalDateTime abertura = LocalDateTime.of(LocalDate.now(), clinica.getDtAbertura());
-		LocalDateTime encerramento = LocalDateTime.of(LocalDate.now(), clinica.getDtEncerramento());
+		LocalDateTime abertura = LocalDateTime.of( date, clinica.getDtAbertura());
+		LocalDateTime encerramento = LocalDateTime.of(date, clinica.getDtEncerramento());
 		
 		List<Consulta> consultaList = this.consultaRepository.getAllBetweenDates(abertura, encerramento);
 		List<LocalTime> consultas = this.extraiDatas(consultaList); 
@@ -77,12 +81,13 @@ public class ConsultaService {
 
 
 	private List<LocalTime> getHorariosGeral(LocalTime dtAbertura, LocalTime dtEncerramento, Duration duracaoProcedimento) {
-		long tempoAberto = Duration.between(dtEncerramento, dtAbertura).toMinutes();
-		long qtdHorarios = Math.round(tempoAberto / (duracaoProcedimento.getSeconds()*60));
+		long tempoAberto = Duration.between(dtAbertura,dtEncerramento ).toMinutes();
+		long qtdHorarios = Math.round(tempoAberto / (duracaoProcedimento.getSeconds()/60));
 		List<LocalTime> horarios = new ArrayList<>();
-		
+		horarios.add(dtAbertura);
 		for(int i=0;i<qtdHorarios;i++) {
-			horarios.add(dtAbertura.plus(duracaoProcedimento));
+			dtAbertura = dtAbertura.plus(duracaoProcedimento);
+			horarios.add(dtAbertura);
 		}
 		return horarios;
 	}

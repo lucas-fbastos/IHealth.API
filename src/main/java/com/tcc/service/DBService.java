@@ -7,27 +7,32 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.tcc.domain.Alergia;
 import com.tcc.domain.Clinica;
 import com.tcc.domain.DadosMedicos;
+import com.tcc.domain.Endereco;
 import com.tcc.domain.Especializacao;
-import com.tcc.domain.Medicamento;
+import com.tcc.domain.Medico;
+import com.tcc.domain.Paciente;
 import com.tcc.domain.ProcedimentoMedico;
 import com.tcc.domain.TipoAlergia;
 import com.tcc.domain.TipoProcedimento;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.Usuario;
 import com.tcc.enums.PerfilEnum;
-import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.ClinicaRepository;
 import com.tcc.repository.DadosMedicosRepository;
+import com.tcc.repository.EnderecoRepository;
 import com.tcc.repository.EspecializacaoRepository;
-import com.tcc.repository.MedicamentoRepository;
+import com.tcc.repository.MedicoRepository;
+import com.tcc.repository.PacienteRepository;
 import com.tcc.repository.ProcedimentoMedicoRepository;
 import com.tcc.repository.TipoAlergiaRepository;
 import com.tcc.repository.TipoProcedimentoRepository;
@@ -50,13 +55,7 @@ public class DBService {
 	private TipoSanguineoRepository tipoSanguineoRepository;
 	
 	@Autowired
-	private MedicamentoRepository medicamentoRepository;
-	
-	@Autowired
 	private TipoAlergiaRepository tipoAlergiaRepository;
-	
-	@Autowired
-	private AlergiaRepository alergiaRepository;
 	
 	@Autowired
 	private TipoProcedimentoRepository tipoProcedimentoRepository;
@@ -70,7 +69,54 @@ public class DBService {
 	@Autowired
 	private ClinicaRepository clinicaRepository;
 	
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private MedicoRepository medicoRepository;
+	
+	@Autowired
+	private PacienteRepository pacienteRepository;
+	
+	
+	
 	public void instantiateTestDatabase() throws ParseException {
+		
+		deleteUsersIfExists();
+		
+		Especializacao e1 = new Especializacao();
+		e1.setDescEspecializacao("Alergista");
+		this.especializacaoRepository.save(e1);
+		
+		Especializacao e2 = new Especializacao();
+		e2.setDescEspecializacao("Dermatologista");
+		this.especializacaoRepository.save(e2);
+		
+		Especializacao e3 = new Especializacao();
+		e3.setDescEspecializacao("Cardiologista");
+		this.especializacaoRepository.save(e3);
+		
+		Especializacao e4 = new Especializacao();
+		e4.setDescEspecializacao("Pneumologista");
+		this.especializacaoRepository.save(e4);
+		
+		Especializacao e5 = new Especializacao();
+		e5.setDescEspecializacao("Pediatra");
+		this.especializacaoRepository.save(e5);
+		
+		Especializacao e6 = new Especializacao();
+		e6.setDescEspecializacao("Ortopedista");
+		this.especializacaoRepository.save(e6);
+		
+		Especializacao e7 = new Especializacao();
+		e7.setDescEspecializacao("Neurologista");
+		this.especializacaoRepository.save(e7);
+		
+		Especializacao e8 = new Especializacao();
+		e8.setDescEspecializacao("Oftamologista");
+		this.especializacaoRepository.save(e8);
+		
 		
 		Usuario u1 = new Usuario();
 		u1.setEmail("felixbastos.lucas@gmail.com");
@@ -83,6 +129,76 @@ public class DBService {
 		u1.setDtCadastro(new Date());
 		u1.addPerfil(PerfilEnum.ADMINISTRADOR);
 		u1 = this.usuarioRepository.save(u1);
+		
+		Endereco endereco = new Endereco();
+		endereco.setDescBairro("cruzeiro");
+		endereco.setDescComplemento("ap 101");
+		endereco.setDescRua("rua 12");
+		endereco.setNumero(501);
+		endereco.setNoCidade("Brasília");
+		endereco.setUsuarioEndereco(u1);
+		endereco.setNoEstado("DF");
+		endereco = this.enderecoRepository.save(endereco);
+		
+		Usuario u2 = new Usuario();
+		u2.setEmail("medico@teste.com");
+		u2.setNome("João");
+		u2.setPassword(pe.encode("12345678"));
+		u2.setSexo('M');
+		u2.addPerfil(PerfilEnum.PRIMEIRO_ACESSO);
+		u2.setTelefone("619999999999");
+		u2.setDtNascimento(LocalDate.of(1990, 01, 14));
+		u2.setDtCadastro(new Date());
+		u2.addPerfil(PerfilEnum.MEDICO);
+		u2 = this.usuarioRepository.save(u2);
+		
+		Endereco enderecoMedico = new Endereco();
+		enderecoMedico.setDescBairro("cruzeiro");
+		enderecoMedico.setDescComplemento("ap 211");
+		enderecoMedico.setDescRua("rua 20");
+		enderecoMedico.setNumero(901);
+		enderecoMedico.setNoCidade("Brasília");
+		enderecoMedico.setUsuarioEndereco(u2);
+		enderecoMedico.setNoEstado("DF");
+		enderecoMedico = this.enderecoRepository.save(enderecoMedico);
+		
+		Medico m = new Medico();
+		m.setCrm("1010101010101-DF");
+		m.setUsuario(u2);
+		Set<Especializacao> especializacoes = new HashSet<>();
+		especializacoes.add(e1);
+		m.setEspecializacoes(especializacoes);
+		m = this.medicoRepository.save(m);
+		
+		Usuario u3 = new Usuario();
+		u3.setEmail("paciente@teste.com");
+		u3.setNome("Letícia");
+		u3.setPassword(pe.encode("12345678"));
+		u3.setSexo('F');
+		u3.addPerfil(PerfilEnum.PRIMEIRO_ACESSO);
+		u3.setTelefone("61988888888");
+		u3.setDtNascimento(LocalDate.of(1999, 11, 8));
+		u3.setDtCadastro(new Date());
+		u3.addPerfil(PerfilEnum.PACIENTE);
+		u3 = this.usuarioRepository.save(u3);
+		
+		Endereco enderecoPaciente = new Endereco();
+		enderecoPaciente.setDescBairro("taguatinga");
+		enderecoMedico.setDescComplemento("casa 1");
+		enderecoPaciente.setDescRua("rua 2");
+		enderecoPaciente.setNumero(108);
+		enderecoPaciente.setNoCidade("Brasília");
+		enderecoPaciente.setUsuarioEndereco(u3);
+		enderecoPaciente.setNoEstado("DF");
+		enderecoPaciente = this.enderecoRepository.save(enderecoPaciente);
+		
+		Paciente p = new Paciente();
+		p.setCompartilhaDados(true);
+		p.setDescConvenio("AMIL");
+		p.setNuInscricaoConvenio("1414214214");
+		p.setNuTelefone("6194166452");
+		p.setUsuario(u3);
+		p = this.pacienteRepository.save(p);
 		
 		TipoSanguineo ts1 = new TipoSanguineo();
 		ts1.setDescricaoTipoSanguineo("A+");
@@ -105,23 +221,8 @@ public class DBService {
 		DadosMedicos dm1 = new DadosMedicos();
 		dm1.setDtAtualizacao(LocalDateTime.now());
 		dm1.setTipoSanguineo(this.tipoSanguineoRepository.findById(1).get());
-		dm1.setUser(u1);
+		dm1.setUser(u3);
 		dm1 = this.dadosMedicosRepository.save(dm1);
-		
-		Medicamento m2 = new Medicamento();
-		m2.setDadosMedicos(dm1);
-		m2.setDescMedicamento("loratadina");
-		m2 = this.medicamentoRepository.save(m2);
-		
-		Medicamento m3 = new Medicamento();
-		m3.setDadosMedicos(dm1);
-		m3.setDescMedicamento("paracetamol");
-		m3 = this.medicamentoRepository.save(m3);
-		
-		Medicamento m1 = new Medicamento();
-		m1.setDadosMedicos(dm1);
-		m1.setDescMedicamento("doralgina");
-		m1 = this.medicamentoRepository.save(m1);
 		
 		TipoAlergia ta1 = new TipoAlergia();
 		ta1.setDescTipo("Medicamento");
@@ -138,12 +239,6 @@ public class DBService {
 		TipoAlergia ta4 = new TipoAlergia();
 		ta4.setDescTipo("Outros");
 		ta4 = this.tipoAlergiaRepository.save(ta4);
-		
-		Alergia a1 = new Alergia();
-		a1.setDadosMedicos(dm1);
-		a1.setDescAlergia("Alergia a amoxilina");
-		a1.setTipoAlergia(ta1);
-		a1 = this.alergiaRepository.save(a1);
 		
 		TipoProcedimento tp1 = new TipoProcedimento(null,"Consulta médica", Duration.ofMinutes(40));
 		tp1 = this.tipoProcedimentoRepository.save(tp1);
@@ -194,23 +289,38 @@ public class DBService {
 		pm4.setUser(u1);
 		this.procedimentoMedicoRepository.save(pm4);
 		
-		Especializacao e1 = new Especializacao();
-		e1.setDescEspecializacao("Alergista");
-		this.especializacaoRepository.save(e1);
-		
-		Especializacao e2 = new Especializacao();
-		e2.setDescEspecializacao("Dermatologista");
-		this.especializacaoRepository.save(e2);
-		
-		Especializacao e3 = new Especializacao();
-		e3.setDescEspecializacao("Cardiologista");
-		this.especializacaoRepository.save(e3);
-		
 		Clinica c = new Clinica();
 		c.setDtAbertura(LocalTime.of(9, 0));
 		c.setDtEncerramento(LocalTime.of(18, 0));
 		c.setNome("Clinica de Brasília");
 		this.clinicaRepository.save(c);
+		Endereco endereco1 = new Endereco();
+		endereco1.setDescBairro("cruzeiro");
+		endereco1.setDescComplemento("sala 10");
+		endereco1.setDescRua("rua 1");
+		endereco1.setNumero(105);
+		endereco1.setNoCidade("Brasília");
+		endereco1.setClinicaEndereco(c);
+		endereco1.setNoEstado("DF");
+		endereco1 = this.enderecoRepository.save(endereco1);
 		
+	}
+
+	private void deleteUsersIfExists() {
+		List<Usuario> users = this.usuarioRepository.findAll();
+		if(users!=null) {
+			for(Usuario u : users) {
+				if(u.getEndereco()!=null)
+					this.enderecoRepository.delete(u.getEndereco());
+				if(u.getDadosmedicos()!=null)
+					this.dadosMedicosRepository.delete(u.getDadosmedicos());
+				if(u.getMedico()!=null)
+					this.medicoRepository.delete(u.getMedico());
+				if(u.getPaciente()!=null)
+					this.pacienteRepository.delete(u.getPaciente());
+				this.usuarioRepository.delete(u);
+			}
+			
+		}
 	}
 }

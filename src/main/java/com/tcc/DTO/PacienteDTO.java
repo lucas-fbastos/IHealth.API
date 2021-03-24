@@ -1,7 +1,6 @@
 package com.tcc.DTO;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.tcc.domain.Paciente;
 
@@ -12,7 +11,6 @@ public class PacienteDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long idPaciente;
-	private LocalDate dtNascimento;
 	private String descConvenio;
 	private String nuInscricaoConvenio;
 	private String nuTelefone;
@@ -47,12 +45,7 @@ public class PacienteDTO implements Serializable{
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
-	public LocalDate getDtNascimento() {
-		return dtNascimento;
-	}
-	public void setDtNascimento(LocalDate dtNascimento) {
-		this.dtNascimento = dtNascimento;
-	}
+	
 	public String getDescConvenio() {
 		return descConvenio;
 	}
@@ -96,7 +89,6 @@ public class PacienteDTO implements Serializable{
 	}
 	public PacienteDTO(Paciente paciente) {
 		this.descConvenio = paciente.getDescConvenio();
-		this.dtNascimento = paciente.getDtNascimento();
 		this.idPaciente = paciente.getId();
 		this.nome = paciente.getUsuario().getNome();
 		this.nuInscricaoConvenio = paciente.getNuInscricaoConvenio();

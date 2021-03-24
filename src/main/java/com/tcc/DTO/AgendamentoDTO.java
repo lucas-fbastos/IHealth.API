@@ -1,23 +1,21 @@
 package com.tcc.DTO;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AgendamentoDTO {
 
 	@JsonFormat(pattern="dd-MM-yyyy")
-	private LocalDate data;
+	private String data;
 
 	private Long idMedico;
 
 	private Long idTipoProcedimento;
 	
-	public LocalDate getData() {
+	public String getData() {
 		return data;
 	}
 	
-	public void setData(LocalDate data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
@@ -40,7 +38,7 @@ public class AgendamentoDTO {
 
 	public AgendamentoDTO() {}
 
-	public AgendamentoDTO(LocalDate data, Long idMedico, Long idTipoProcedimento) {
+	public AgendamentoDTO(String data, Long idMedico, Long idTipoProcedimento) {
 		super();
 		this.data = data;
 		this.idMedico = idMedico;

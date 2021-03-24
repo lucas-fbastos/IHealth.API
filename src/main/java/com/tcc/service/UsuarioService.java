@@ -24,6 +24,7 @@ import com.tcc.repository.UserRepository;
 import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.ObjetoInvalidoException;
 import com.tcc.service.exceptions.UserDeslogadoException;
 
 @Service
@@ -43,7 +44,11 @@ public class UsuarioService {
 	
 	public Usuario saveUser(UserDTO dto) {
 		
+		
 		try {
+			if(dto.getPerfil()==null)
+				throw new ObjetoInvalidoException("O campo perfil deve ser preenchido");
+			
 			Usuario user = new Usuario(dto);
 			
 			user.setId(null);
@@ -85,7 +90,16 @@ public class UsuarioService {
 			userSalvo.setDtNascimento(dto.getDtNascimento());
 			
 			this.userRepository.save(userSalvo);
+			Endereco endereco = userSalvo.getEndereco();
+			endereco.setDescBairro(dto.getEndereco().getDescBairro());
+			endereco.setDescComplemento(dto.getEndereco().getDescComplemento());
+			endereco.setDescRua(dto.getEndereco().getDescRua());
+			endereco.setNoCidade(dto.getEndereco().getNoCidade());
+			endereco.setNoEstado(dto.getEndereco().getNoEstado());
+			endereco.setNuCep(dto.getEndereco().getNuCep());
+			endereco.setNumero(dto.getEndereco().getNumero());
 			
+			this.enderecoRepository.save(endereco);
 			return userSalvo;
 			
 		}catch(NoSuchElementException e) {
@@ -139,10 +153,12 @@ public class UsuarioService {
 		for(PerfilEnum p : u.getPerfis()) {
 			switch(p) {
 				case PACIENTE:
-					dto.setPaciente(new PacienteDTO(u.getPaciente()));
+					if(u.getPaciente()!=null)
+						dto.setPaciente(new PacienteDTO(u.getPaciente()));
 					break;
 				case MEDICO:
-					dto.setMedico(new MedicoDTO(u.getMedico()));
+					if(u.getMedico()!=null)
+						dto.setMedico(new MedicoDTO(u.getMedico()));
 					break;
 			default:
 				break;
