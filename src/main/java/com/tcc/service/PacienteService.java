@@ -1,5 +1,7 @@
 package com.tcc.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.tcc.domain.Paciente;
 import com.tcc.domain.Usuario;
 import com.tcc.repository.PacienteRepository;
 import com.tcc.service.exceptions.DataIntegrityException;
+import com.tcc.service.exceptions.NoElementException;
 
 @Service
 public class PacienteService {
@@ -21,8 +24,12 @@ public class PacienteService {
 	
 	
 	public PacienteDTO getById(Long id) {
-		Paciente p = this.repository.findById(id).orElseThrow();
-		return new PacienteDTO(p);
+		try {
+			Paciente p = this.repository.findById(id).orElseThrow();
+			return new PacienteDTO(p);			
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Paciente não encontrado");
+		}
 	}
 	
 	public Paciente save(PacienteDTO dto) {

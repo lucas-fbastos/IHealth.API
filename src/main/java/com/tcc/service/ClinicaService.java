@@ -3,6 +3,7 @@ package com.tcc.service;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -73,6 +74,10 @@ public class ClinicaService {
 	}
 	
 	public Clinica getById(Long id) {
-		return this.repository.findById(id).orElseThrow();
+		try {
+			return this.repository.findById(id).orElseThrow();			
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Clinica não encontrada");
+		}
 	}
 }
