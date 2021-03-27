@@ -88,6 +88,7 @@ public class UsuarioService {
 			userSalvo.setNome(dto.getNome());
 			userSalvo.setTelefone(dto.getTelefone());
 			userSalvo.setDtNascimento(dto.getDtNascimento());
+			userSalvo.setCpf(dto.getCpf());
 			
 			this.userRepository.save(userSalvo);
 			Endereco endereco = userSalvo.getEndereco();

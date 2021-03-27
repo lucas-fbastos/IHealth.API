@@ -44,7 +44,7 @@ public class UserDTO extends CredentialsDTO{
 	private MedicoDTO medico;
 	
 	private PacienteDTO paciente;
-
+	
 	public MedicoDTO getMedico() {
 		return medico;
 	}
@@ -137,7 +137,9 @@ public class UserDTO extends CredentialsDTO{
 	}
 	
 	public UserDTO(Usuario usuario) {
+		super();
 		this.cpf = usuario.getCpf();
+		this.setEmail(usuario.getEmail());
 		this.dtNascimento = usuario.getDtNascimento();
 		if(usuario.getEndereco()!=null)
 			this.endereco = new EnderecoDTO(usuario.getEndereco());
