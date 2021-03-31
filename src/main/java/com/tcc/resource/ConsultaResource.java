@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,12 @@ public class ConsultaResource {
 		return ResponseEntity.ok(
 				this.service.getHorariosLivres(agendamento));
 		
+	}
+	
+	@PutMapping("/confirmaConsulta/{id}")
+	public ResponseEntity<Void> confirmaConsulta(@PathVariable Long id){
+		this.service.confirmaConsulta(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@GetMapping("/temporalidade/{id}")

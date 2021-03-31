@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,7 @@ public class ConsultaService {
 		if(consultas!=null && !consultas.isEmpty())
 			return consultas.stream().map(c -> new ConsultaDTO(c.getId(),
 											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),c.getDtFim(),
-											c.getTipoProcedimento()))
+											c.getTipoProcedimento(), c.getObservacao()))
 							  .collect(Collectors.toList());
 		else 
 			throw new NoElementException("Não existem consultas para hoje");
@@ -146,6 +147,21 @@ public class ConsultaService {
 			 return list;
 		}else {
 			throw new TemporalidadeException("Temporalidade inválida");
+		}
+	}
+
+	public Consulta getById(Long id) {
+		Optional<Consulta> cOp = this.consultaRepository.findById(id);
+		if(cOp.isPresent())
+			return cOp.get();
+		throw new NoElementException("Consulta não encontrada");
+	}
+
+	public void confirmaConsulta(Long id) {
+		Consulta c = getById(id);
+		if(!c.isConfirmada()) {
+			c.setConfirmada(Boolean.TRUE);
+			this.consultaRepository.save(c);
 		}
 	}
 }

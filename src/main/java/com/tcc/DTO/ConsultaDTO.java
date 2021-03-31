@@ -12,6 +12,7 @@ public class ConsultaDTO {
 	private LocalDateTime dtInicio;
 	private LocalDateTime dtFim;
 	private TipoProcedimento procedimento;
+	private String observacao;
 	
 	public Long getId() {
 		return id;
@@ -50,12 +51,18 @@ public class ConsultaDTO {
 		this.procedimento = procedimento;
 	}
 	
+	public String getObservacao() {
+		return observacao;
+	}
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
 	public ConsultaDTO() {
 		
 	}
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
-			TipoProcedimento procedimento) {
+			TipoProcedimento procedimento, String observacao) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -63,7 +70,9 @@ public class ConsultaDTO {
 		this.dtInicio = dtInicio;
 		this.dtFim = dtFim;
 		this.procedimento = procedimento;
+		this.observacao = observacao;
 	}
+	
 	
 	
 	

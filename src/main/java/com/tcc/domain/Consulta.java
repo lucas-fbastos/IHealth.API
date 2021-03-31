@@ -43,6 +43,9 @@ public class Consulta implements Serializable {
 	@Column(name="bol_confirmada")
 	private Boolean confirmada;
 
+	@Column(name="observacao")
+	private String observacao;
+	
 	public Long getId() {
 		return id;
 	}
@@ -97,6 +100,14 @@ public class Consulta implements Serializable {
 
 	public void setConfirmada(Boolean confirmada) {
 		this.confirmada = confirmada;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	public Consulta() {

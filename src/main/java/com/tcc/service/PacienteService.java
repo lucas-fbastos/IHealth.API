@@ -1,12 +1,15 @@
 package com.tcc.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.PacienteDTO;
+import com.tcc.DTO.PacienteFilter;
 import com.tcc.domain.Paciente;
 import com.tcc.domain.Usuario;
 import com.tcc.repository.PacienteRepository;
@@ -21,6 +24,15 @@ public class PacienteService {
 	
 	@Autowired 
 	private UsuarioService usuarioService;
+	
+	
+	public List<PacienteDTO> filter(PacienteFilter filter) {
+		List<Paciente> pacientes = this.repository.findByUsuario_nomeContains(filter.getNomePaciente());
+		if(pacientes!=null && !pacientes.isEmpty())
+			return pacientes.stream().map(p -> new PacienteDTO(p)).collect(Collectors.toList());
+		else
+			throw new NoElementException("Paciente não encontrado");
+	}
 	
 	
 	public PacienteDTO getById(Long id) {
