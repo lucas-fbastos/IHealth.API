@@ -12,6 +12,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.AgendamentoDTO;
@@ -21,9 +25,11 @@ import com.tcc.DTO.PacienteDTO;
 import com.tcc.domain.Clinica;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.Medico;
+import com.tcc.domain.Paciente;
 import com.tcc.domain.TipoProcedimento;
 import com.tcc.enums.TemporalidadeEnum;
 import com.tcc.repository.ConsultaRepository;
+import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
 import com.tcc.service.exceptions.TemporalidadeException;
 
@@ -42,6 +48,8 @@ public class ConsultaService {
 	@Autowired
 	private TipoProcedimentoService tipoProcedimentoService;
 	
+	@Autowired
+	private PacienteService pacienteService;
 	
 	public List<LocalTime> getHorariosLivres(AgendamentoDTO agendamento) {
 		Clinica clinica = this.clinicaService.getDadosClinica();
@@ -68,6 +76,29 @@ public class ConsultaService {
 
 	}
 
+	public Page<ConsultaDTO> findAll(Pageable p) {
+	    Page<Consulta> consultas = this.consultaRepository.findAll(p); 
+	    return toPageDTO(p,consultas);
+	}
+	
+	public Page<ConsultaDTO> findAllByMedico(Pageable p, Long idMedico) {
+	    Page<Consulta> consultas = this.consultaRepository.findAllByMedico_id(p,idMedico); 
+	    return toPageDTO(p,consultas);
+	}
+	
+	public Page<ConsultaDTO> findAllByPaciente(Pageable p, Long idPaciente) {
+	    Page<Consulta> consultas = this.consultaRepository.findAllByPaciente_id(p,idPaciente); 
+	    return toPageDTO(p,consultas);
+	}
+	
+	private Page<ConsultaDTO> toPageDTO(Pageable p, Page<Consulta> consultas){
+		 if(!consultas.isEmpty()) {
+		    return new PageImpl<ConsultaDTO>(
+		    		consultas.getContent().stream().map(c -> new ConsultaDTO(c)).collect(Collectors.toList()), p, consultas.getTotalElements());
+		 }else {
+		  	throw new NoElementException("Não existem consultas cadastradas para os parametros informados");
+		 }
+	}
 
 	private List<LocalTime> extraiDatas(List<Consulta> consultaList) {
 		if( consultaList!= null && !consultaList.isEmpty())
@@ -162,6 +193,27 @@ public class ConsultaService {
 		if(!c.isConfirmada()) {
 			c.setConfirmada(Boolean.TRUE);
 			this.consultaRepository.save(c);
+		}
+	}
+
+
+	public ConsultaDTO save(ConsultaDTO dto) {
+		Paciente p = this.pacienteService.getById(dto.getIdPaciente());
+		Medico m = this.medicoService.getById(dto.getIdMedico());
+		Consulta c = new Consulta();
+		c.setDtIncio(dto.getDtInicio());
+		TipoProcedimento tp = this.tipoProcedimentoService.getById(dto.getTipoProcedimentoId()); 
+		c.setTipoProcedimento(tp);
+		c.setDtFim(dto.getDtInicio().plus(tp.getDuracao()));
+		c.setObservacao(dto.getObservacao());
+		c.setMedico(m);
+		c.setPaciente(p);
+		c.setConfirmada(Boolean.FALSE);
+		try {
+			c = this.consultaRepository.save(c);
+			return new ConsultaDTO(c);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Erro ao cadastrar consulta");
 		}
 	}
 }

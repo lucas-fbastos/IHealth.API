@@ -2,10 +2,16 @@ package com.tcc.service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,7 +84,7 @@ public class UsuarioService {
 			
 			return user;
 		}catch(DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Já existe um usuário com esse E-mail cadastrado. E-mail: "+dto.getEmail());
+			throw new DataIntegrityException("Erro ao cadastrar usuário, violação de regra");
 		}
 	}
 	
@@ -180,5 +186,18 @@ public class UsuarioService {
 		u.addPerfil(PerfilEnum.PENDENTE);
 		this.userRepository.save(u);
 		return u;
+	}
+
+	public Page<UserDTO> getAllAuxiliares(Pageable p) {
+		Set<Integer> perfils = new HashSet<>();
+		perfils.add(PerfilEnum.AUXILIAR.getId());
+		perfils.add(PerfilEnum.ADMINISTRADOR.getId());
+		Page<Usuario> usuarios = this.userRepository.findAllByPerfisIn(p,perfils);
+		 if(!usuarios.isEmpty()) {
+		    return new PageImpl<UserDTO>(
+		    		usuarios.getContent().stream().map(u -> new UserDTO(u)).collect(Collectors.toList()), p, usuarios.getTotalElements());
+		}else {
+		  	throw new NoElementException("Não existem consultas cadastradas para os parametros informados");
+		}
 	}
 }

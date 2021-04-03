@@ -64,10 +64,19 @@ public class ClinicaService {
 		c.setDtAbertura(abertura);
 		c.setDtEncerramento(encerramento);
 		c.setNome(dto.getNome());
-		if(dto.getEndereco()!=null)
+		Endereco endereco = c.getEndereco();
+		if(dto.getEndereco()!=null) {	
+			if(c.getEndereco()!= null && dto.getEndereco().getId() == null)
+				throw new DataIntegrityException("Violação na atualização de endereço");
 			c.setEndereco(new Endereco(dto.getEndereco()));
+		}else {
+			c.setEndereco(null);
+		}
 		try {
-			return this.repository.save(c);
+			c = this.repository.save(c);
+			if(c.getEndereco()==null && endereco !=null)
+				this.enderecoRepository.delete(endereco);
+			return c;	
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Erro ao salvar Clinica");
 		}

@@ -3,6 +3,10 @@ package com.tcc.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +33,11 @@ public class PacienteResource {
 		return ResponseEntity.ok(this.pacienteService.filter(pacienteFilter));
 	}
 		
+	@GetMapping
+	public ResponseEntity<Page<PacienteDTO>> getAll(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC, value = 10) Pageable p){
+		return ResponseEntity.ok(this.pacienteService.findAll(p));
+	}
+	
 	@PostMapping
 	public ResponseEntity<Paciente> save(@RequestBody PacienteDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.pacienteService.save(dto));

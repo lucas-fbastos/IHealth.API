@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.PacienteDTO;
@@ -34,10 +37,17 @@ public class PacienteService {
 			throw new NoElementException("Paciente não encontrado");
 	}
 	
-	
-	public PacienteDTO getById(Long id) {
+	public Paciente getById(Long id) {
 		try {
-			Paciente p = this.repository.findById(id).orElseThrow();
+			return this.repository.findById(id).orElseThrow();			
+		}catch(NoSuchElementException e) {
+			throw new NoElementException("Paciente não encontrado");
+		}
+	}
+	
+	public PacienteDTO getByIdDTO(Long id) {
+		try {
+			Paciente p = getById(id);
 			return new PacienteDTO(p);			
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Paciente não encontrado");
@@ -60,7 +70,7 @@ public class PacienteService {
 	}
 	
 	public void update(PacienteDTO dto) {
-		Paciente p = this.repository.findById(dto.getIdPaciente()).orElseThrow();
+		Paciente p = getById(dto.getIdPaciente());
 		p.setCompartilhaDados(dto.isCompartilhaDados());
 		p.setDescConvenio(dto.getDescConvenio());
 		p.setNuInscricaoConvenio(dto.getNuInscricaoConvenio());
@@ -68,6 +78,20 @@ public class PacienteService {
 			this.repository.save(p);
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Erro ao atualizar paciente");
+		}
+	}
+
+	public Page<PacienteDTO> findAll(Pageable p) {
+		Page<Paciente> pacientes = this.repository.findAll(p); 
+		return toPageDTO(p,pacientes);
+	}
+		
+	private Page<PacienteDTO> toPageDTO(Pageable p, Page<Paciente> pacientes){
+		 if(!pacientes.isEmpty()) {
+		    return new PageImpl<PacienteDTO>(
+		    		pacientes.getContent().stream().map(paciente -> new PacienteDTO(paciente)).collect(Collectors.toList()), p, pacientes.getTotalElements());
+		}else {
+		  	throw new NoElementException("Não existem pacientes cadastrados para os parametros informados");
 		}
 	}
 	
