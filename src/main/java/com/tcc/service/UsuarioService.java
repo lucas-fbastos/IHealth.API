@@ -197,7 +197,7 @@ public class UsuarioService {
 		    return new PageImpl<UserDTO>(
 		    		usuarios.getContent().stream().map(u -> new UserDTO(u)).collect(Collectors.toList()), p, usuarios.getTotalElements());
 		}else {
-		  	throw new NoElementException("Não existem consultas cadastradas para os parametros informados");
+		  	throw new NoElementException("Não existem usuários cadastrados para os parametros informados");
 		}
 	}
 }

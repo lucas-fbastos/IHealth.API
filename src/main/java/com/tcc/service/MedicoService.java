@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.MedicoDTO;
@@ -111,6 +114,16 @@ public class MedicoService {
 		Set<Especializacao> especializacoesSet = especializacoes.stream().collect(Collectors.toSet());
 		m.setEspecializacoes(especializacoesSet);
 		this.repository.save(m);
+	}
+
+	public Page<MedicoDTO> getAllPaginado(Pageable p) {
+		Page<Medico> medicos = this.repository.findAll(p);
+		 if(!medicos.isEmpty()) {
+		    return new PageImpl<MedicoDTO>(
+		    		medicos.getContent().stream().map(m -> new MedicoDTO(m)).collect(Collectors.toList()), p, medicos.getTotalElements());
+		}else {
+		  	throw new NoElementException("Não existem médicos cadastrados");
+		}
 	}
 	
 }
