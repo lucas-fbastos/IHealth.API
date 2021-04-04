@@ -1,5 +1,6 @@
 package com.tcc.service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.MedicoDTO;
 import com.tcc.DTO.MedicoFormDTO;
+import com.tcc.domain.Clinica;
 import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
@@ -19,6 +21,7 @@ import com.tcc.repository.EspecializacaoRepository;
 import com.tcc.repository.MedicoRepository;
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.ObjetoInvalidoException;
 
 @Service
 public class MedicoService {
@@ -29,6 +32,8 @@ public class MedicoService {
 	@Autowired
 	private EspecializacaoRepository especializacaoRepository;
 	
+	@Autowired
+	private ClinicaService clinicaService;
 	
 	@Autowired 
 	private UsuarioService usuarioService;
@@ -68,6 +73,7 @@ public class MedicoService {
 	}
 	
 	public Medico save(MedicoFormDTO dto) {
+		validaHorario(dto.getHrEntrada(),dto.getHrSaida());
 		Usuario u = this.usuarioService.getById(dto.getIdUser());
 		Medico m = new Medico();
 		m.setCrm(dto.getCrm());
@@ -76,6 +82,8 @@ public class MedicoService {
 		m.setEspecializacoes(especializacoesSet);
 		u = this.usuarioService.removePendente(u);
 		m.setUsuario(u);
+		m.setHrEntrada(dto.getHrEntrada());
+		m.setHrSaida(dto.getHrSaida());
 		try {
 			return this.repository.save(m);
 		}catch(DataIntegrityViolationException e) {
@@ -83,9 +91,21 @@ public class MedicoService {
 		}
 	}
 
+	private void validaHorario(LocalTime hrEntrada, LocalTime hrSaida) {
+		if(hrEntrada!=null && hrSaida !=null) {
+			Clinica c = this.clinicaService.getDadosClinica();
+			if(c.getDtAbertura().isAfter(hrEntrada) || c.getDtEncerramento().isBefore(hrSaida))
+				throw new ObjetoInvalidoException("Horários de entrada e/ou saída fora dos horários de funcionamento");
+		}
+		
+	}
+
 	public void update(MedicoFormDTO dto) {
+		validaHorario(dto.getHrEntrada(),dto.getHrSaida());
 		Usuario u = this.usuarioService.getById(dto.getIdUser());
 		Medico m = u.getMedico();
+		m.setHrEntrada(dto.getHrEntrada());
+		m.setHrSaida(dto.getHrSaida());
 		m.setCrm(dto.getCrm());
 		List<Especializacao> especializacoes = this.especializacaoRepository.findByIdIn(dto.getEspecializacoes());
 		Set<Especializacao> especializacoesSet = especializacoes.stream().collect(Collectors.toSet());

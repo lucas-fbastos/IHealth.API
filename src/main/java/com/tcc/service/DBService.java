@@ -168,6 +168,8 @@ public class DBService {
 		Set<Especializacao> especializacoes = new HashSet<>();
 		especializacoes.add(e1);
 		m.setEspecializacoes(especializacoes);
+		m.setHrEntrada(LocalTime.of(9, 0));
+		m.setHrSaida(LocalTime.of(18, 0));
 		m = this.medicoRepository.save(m);
 		
 		Usuario u3 = new Usuario();

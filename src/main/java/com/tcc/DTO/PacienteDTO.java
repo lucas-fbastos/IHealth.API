@@ -97,6 +97,7 @@ public class PacienteDTO implements Serializable{
 		this.cpf = paciente.getUsuario().getCpf();
 		this.telefone = paciente.getUsuario().getTelefone();
 		this.sexo = String.valueOf(paciente.getUsuario().getSexo());
+		this.compartilhaDados = paciente.isCompartilhaDados();
 	}
 	
 	

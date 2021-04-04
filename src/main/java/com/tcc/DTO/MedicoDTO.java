@@ -79,6 +79,8 @@ public class MedicoDTO implements Serializable{
 		this.crm = medico.getCrm();
 		this.especializacoes = medico.getEspecializacoes();
 		this.id = medico.getId();
+		this.nome = medico.getUsuario().getNome();
+		this.telefone = medico.getUsuario().getTelefone();
 	}
 	
 	

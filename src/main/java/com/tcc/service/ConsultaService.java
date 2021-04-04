@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,6 @@ public class ConsultaService {
 		Clinica clinica = this.clinicaService.getDadosClinica();
 		TipoProcedimento tp = this.tipoProcedimentoService.getById(agendamento.getIdTipoProcedimento());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		formatter = formatter.withLocale( Locale.ROOT );  
 		LocalDate date = LocalDate.parse(agendamento.getData(), formatter);
 		if(agendamento.getIdMedico()!=null) {
 			Medico medico = this.medicoService.getById(agendamento.getIdMedico());
@@ -109,17 +107,11 @@ public class ConsultaService {
 
 
 	private List<LocalTime> comparaDatas(List<LocalTime> consultaList, List<LocalTime> horariosGeral) {
-		List<LocalTime> horariosLivres = new ArrayList<>();
 		if(consultaList.isEmpty())
 			return horariosGeral;
 		
-		for(LocalTime h : horariosGeral) {
-			for(LocalTime c : consultaList) {
-				if(!c.toString().equals(h.toString())) 
-					horariosLivres.add(h);	
-			}
-		}
-		return horariosLivres;
+		return horariosGeral.stream().filter(h -> !consultaList.contains(h)).collect(Collectors.toList());	
+		
 	}
 
 
@@ -202,8 +194,9 @@ public class ConsultaService {
 		Medico m = this.medicoService.getById(dto.getIdMedico());
 		Consulta c = new Consulta();
 		c.setDtIncio(dto.getDtInicio());
-		TipoProcedimento tp = this.tipoProcedimentoService.getById(dto.getTipoProcedimentoId()); 
+		TipoProcedimento tp = this.tipoProcedimentoService.getById(dto.getIdTipoProcedimento()); 
 		c.setTipoProcedimento(tp);
+		c.setDtIncio(dto.getDtInicio());
 		c.setDtFim(dto.getDtInicio().plus(tp.getDuracao()));
 		c.setObservacao(dto.getObservacao());
 		c.setMedico(m);

@@ -2,7 +2,9 @@ package com.tcc.DTO;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.TipoProcedimento;
 
@@ -11,17 +13,16 @@ public class ConsultaDTO {
 	private Long id;
 	private PacienteDTO paciente;
 	private MedicoDTO medico;
+	@JsonFormat(pattern="dd-MM-YYYY HH:mm:ss")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDateTime dtInicio;
 	private LocalDateTime dtFim;
 	private TipoProcedimento procedimento;
 	private String observacao;
-	@JsonIgnore
-	private String dtConsulta;
-	@JsonIgnore
-	private Long tipoProcedimentoId;
-	@JsonIgnore
+	private Long idTipoProcedimento;
+	
 	private Long idPaciente;
-	@JsonIgnore
+	
 	private Long idMedico;
 	
 	public Long getId() {
@@ -81,12 +82,12 @@ public class ConsultaDTO {
 	}
 	
 	
-	public Long getTipoProcedimentoId() {
-		return tipoProcedimentoId;
+	public Long getIdTipoProcedimento() {
+		return idTipoProcedimento;
 	}
 	
-	public void setTipoProcedimentoId(Long tipoProcedimentoId) {
-		this.tipoProcedimentoId = tipoProcedimentoId;
+	public void setIdTipoProcedimento(Long idTipoProcedimento) {
+		this.idTipoProcedimento = idTipoProcedimento;
 	}
 	
 	public ConsultaDTO() {
@@ -108,17 +109,9 @@ public class ConsultaDTO {
 	public void setIdMedico(Long idMedico) {
 		this.idMedico = idMedico;
 	}
-	
-	public String getDtConsulta() {
-		return dtConsulta;
-	}
-
-	public void setDtConsulta(String dtConsulta) {
-		this.dtConsulta = dtConsulta;
-	}
-
+		
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
-			TipoProcedimento procedimento, String observacao, Long tipoProcedimentoId) {
+			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento) {
 		
 		this.id = id;
 		this.paciente = paciente;
@@ -127,7 +120,7 @@ public class ConsultaDTO {
 		this.dtFim = dtFim;
 		this.procedimento = procedimento;
 		this.observacao = observacao;
-		this.tipoProcedimentoId = tipoProcedimentoId;
+		this.idTipoProcedimento = idTipoProcedimento;
 	}
 	
 	

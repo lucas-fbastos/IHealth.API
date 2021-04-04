@@ -47,7 +47,7 @@ public class ConsultaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/temporalidade/{id}")
+	@GetMapping("/temporalidade/{indiceTemporalidade}")
 	public ResponseEntity<List<ConsultaDTO>> getConsultasTemporalidade(@PathVariable Integer indiceTemporalidade){
 		return ResponseEntity.ok(this.service.getConsultasPorTempo(indiceTemporalidade));
 	}

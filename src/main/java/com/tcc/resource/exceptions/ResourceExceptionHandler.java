@@ -53,7 +53,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(ObjetoInvalidoException.class)
-	public ResponseEntity<StandardError> StandardError(MethodArgumentNotValidException e, HttpServletRequest req){
+	public ResponseEntity<StandardError> StandardError(ObjetoInvalidoException e, HttpServletRequest req){
 		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(),System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
