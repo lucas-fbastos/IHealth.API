@@ -13,8 +13,7 @@ public class ConsultaDTO {
 	private Long id;
 	private PacienteDTO paciente;
 	private MedicoDTO medico;
-	@JsonFormat(pattern="dd-MM-YYYY HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dtInicio;
 	private LocalDateTime dtFim;
 	private TipoProcedimento procedimento;
