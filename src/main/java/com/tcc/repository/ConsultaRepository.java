@@ -24,5 +24,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta,Long>{
 	public Page<Consulta> findAllByMedico_id(Pageable p, Long idMedico);
 
 	public Page<Consulta> findAllByPaciente_id(Pageable p, Long idPaciente);
+	
+	public Page<Consulta> findAllByMedico_idAndDtInicioGreaterThanEqualAndDtFimLessThanEqual(Pageable p, Long idMedico,LocalDateTime dtIncio, LocalDateTime dtFim);
 
 }

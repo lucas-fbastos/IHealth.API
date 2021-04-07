@@ -209,4 +209,11 @@ public class ConsultaService {
 			throw new DataIntegrityException("Erro ao cadastrar consulta");
 		}
 	}
+
+	public Page<ConsultaDTO> findAllByMedico(Pageable p, Long idMedico, Integer indiceTemporalidade) {
+		List<LocalDateTime> list = getDatasByTemporalidade(TemporalidadeEnum.values()[indiceTemporalidade]);
+		Page<Consulta> consultas = this.consultaRepository.findAllByMedico_idAndDtInicioGreaterThanEqualAndDtFimLessThanEqual(
+					p,idMedico,list.get(0),					list.get(1)); 
+		return toPageDTO(p,consultas);
+	}
 }

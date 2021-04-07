@@ -2,8 +2,6 @@ package com.tcc.DTO;
 
 import java.time.LocalDateTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.TipoProcedimento;

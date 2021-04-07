@@ -57,4 +57,13 @@ public class ConsultaResource {
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(this.service.save(dto));
 	}
+	
+	@GetMapping("/porMedico/{idMedico}/{indiceTemporalidade}")
+	public ResponseEntity<Page<ConsultaDTO>> getAllByMedico(@PathVariable Long idMedico, @PathVariable Integer indiceTemporalidade,
+			@PageableDefault(sort = {"id", "dtInicio"}, direction = Sort.Direction.ASC, value = 10) Pageable p
+																){
+		return ResponseEntity.ok(this.service.findAllByMedico(p, idMedico, indiceTemporalidade));
+	}
+	
+	
 }
