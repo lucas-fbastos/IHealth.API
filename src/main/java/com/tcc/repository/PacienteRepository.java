@@ -10,5 +10,5 @@ import com.tcc.domain.Paciente;
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente,Long>{
 
-	List<Paciente> findByUsuario_nomeContains(String nome);
+	List<Paciente> findByUsuario_nomeContainsIgnoreCase(String nome);
 }

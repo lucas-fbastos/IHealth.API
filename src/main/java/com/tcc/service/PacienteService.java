@@ -30,7 +30,7 @@ public class PacienteService {
 	
 	
 	public List<PacienteDTO> filter(PacienteFilter filter) {
-		List<Paciente> pacientes = this.repository.findByUsuario_nomeContains(filter.getNomePaciente());
+		List<Paciente> pacientes = this.repository.findByUsuario_nomeContainsIgnoreCase(filter.getNomePaciente());
 		if(pacientes!=null && !pacientes.isEmpty())
 			return pacientes.stream().map(p -> new PacienteDTO(p)).collect(Collectors.toList());
 		else
