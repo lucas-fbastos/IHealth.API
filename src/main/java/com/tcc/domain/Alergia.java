@@ -32,11 +32,6 @@ public class Alergia {
 	@JoinColumn(name="id_tipo")
 	@JsonManagedReference
 	private TipoAlergia tipoAlergia;
-	
-	@ManyToOne
-	@JoinColumn(name="id_user_pr_saude")
-	@JsonManagedReference
-	private Usuario profissionalSaude;
 
 	public Long getId() {
 		return id;
@@ -70,26 +65,12 @@ public class Alergia {
 		this.tipoAlergia = tipoAlergia;
 	}
 
-	public String getProfissionalSaude() {
-		if(profissionalSaude!=null) {
-			return profissionalSaude.getNome();			
-		}else {
-			return null;
-		}
-	}
-
-	public void setProfissionalSaude(Usuario profissionalSaude) {
-		this.profissionalSaude = profissionalSaude;
-	}
-
-	public Alergia(Long id, DadosMedicos dadosMedicos, String descAlergia, TipoAlergia tipoAlergia,
-			Usuario profissionalSaude) {
+	public Alergia(Long id, DadosMedicos dadosMedicos, String descAlergia, TipoAlergia tipoAlergia) {
 		super();
 		this.id = id;
 		this.dadosMedicos = dadosMedicos;
 		this.descAlergia = descAlergia;
 		this.tipoAlergia = tipoAlergia;
-		this.profissionalSaude = profissionalSaude;
 	}
 
 	public Alergia(){ 	}

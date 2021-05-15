@@ -21,7 +21,6 @@ import com.tcc.domain.Endereco;
 import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Paciente;
-import com.tcc.domain.ProcedimentoMedico;
 import com.tcc.domain.TipoAlergia;
 import com.tcc.domain.TipoProcedimento;
 import com.tcc.domain.TipoSanguineo;
@@ -33,7 +32,6 @@ import com.tcc.repository.EnderecoRepository;
 import com.tcc.repository.EspecializacaoRepository;
 import com.tcc.repository.MedicoRepository;
 import com.tcc.repository.PacienteRepository;
-import com.tcc.repository.ProcedimentoMedicoRepository;
 import com.tcc.repository.TipoAlergiaRepository;
 import com.tcc.repository.TipoProcedimentoRepository;
 import com.tcc.repository.TipoSanguineoRepository;
@@ -60,8 +58,6 @@ public class DBService {
 	@Autowired
 	private TipoProcedimentoRepository tipoProcedimentoRepository;
 	
-	@Autowired
-	private ProcedimentoMedicoRepository procedimentoMedicoRepository;
 	
 	@Autowired
 	private EspecializacaoRepository especializacaoRepository;
@@ -223,7 +219,7 @@ public class DBService {
 		DadosMedicos dm1 = new DadosMedicos();
 		dm1.setDtAtualizacao(LocalDateTime.now());
 		dm1.setTipoSanguineo(this.tipoSanguineoRepository.findById(1).get());
-		dm1.setUser(u3);
+		dm1.setPaciente(p);
 		dm1 = this.dadosMedicosRepository.save(dm1);
 		
 		TipoAlergia ta1 = new TipoAlergia();
@@ -257,40 +253,7 @@ public class DBService {
 	
 		TipoProcedimento tp5 = new TipoProcedimento(null,"Sessão de fisioterapia", Duration.ofMinutes(40));
 		tp5 = this.tipoProcedimentoRepository.save(tp5);
-		
-		ProcedimentoMedico pm1 = new ProcedimentoMedico();
-		pm1.setDescricao("Consulta no oftalmologista, paga pelo plano de saúde, atestado de 4 dias");
-		pm1.setDtRegistro(LocalDate.now());
-		pm1.setDtProcedimento(LocalDate.now());
-		pm1.setTipoProcedimento(tp1);
-		pm1.setUser(u1);
-		this.procedimentoMedicoRepository.save(pm1);
-		
-		ProcedimentoMedico pm2 = new ProcedimentoMedico();
-		pm2.setDescricao("Exame de sangue, glicose e trigliceridios. O exame foi solicitado pelo médico na última consulta");
-		pm2.setDtRegistro(LocalDate.now());
-		pm2.setDtProcedimento(LocalDate.now());
-		pm2.setTipoProcedimento(tp3);
-		pm2.setUser(u1);
-		this.procedimentoMedicoRepository.save(pm2);
-		
-		ProcedimentoMedico pm3 = new ProcedimentoMedico();
-		pm3.setDescricao("Cirurgia de remoção de amidala, paga pelo plano de saúde com cooparticipação, 5 dias de atestado");
-		pm3.setDtRegistro(LocalDate.now());
-		
-		pm3.setDtProcedimento(LocalDate.of(2010, 12, 11));
-		pm3.setTipoProcedimento(tp2);
-		pm3.setUser(u1);
-		this.procedimentoMedicoRepository.save(pm3);
-		
-		ProcedimentoMedico pm4 = new ProcedimentoMedico();
-		pm4.setDescricao(null);
-		pm4.setDtRegistro(LocalDate.now());
-		pm4.setDtProcedimento(LocalDate.of(2000, 02, 15));
-		pm4.setTipoProcedimento(tp5);
-		pm4.setUser(u1);
-		this.procedimentoMedicoRepository.save(pm4);
-		
+				
 		Clinica c = new Clinica();
 		c.setDtAbertura(LocalTime.of(9, 0));
 		c.setDtEncerramento(LocalTime.of(18, 0));

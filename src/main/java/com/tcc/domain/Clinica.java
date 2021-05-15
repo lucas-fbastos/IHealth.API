@@ -30,6 +30,16 @@ public class Clinica {
 	@Column(name="hr_encerramento")
 	private LocalTime dtEncerramento;
 	
+	@Column(name="desc_visao")
+	private String descVisao;
+	
+	@Column(name="desc_missao")
+	private String descMissao;
+	
+	@Column(name="desc_valores")
+	private String descValores;
+	
+	
 	@OneToOne(mappedBy="clinicaEndereco",cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Endereco endereco;
@@ -74,12 +84,49 @@ public class Clinica {
 		this.endereco = endereco;
 	}
 
+	public String getDescVisao() {
+		return descVisao;
+	}
+
+	public void setDescVisao(String descVisao) {
+		this.descVisao = descVisao;
+	}
+
+	public String getDescMissao() {
+		return descMissao;
+	}
+
+	public void setDescMissao(String descMissao) {
+		this.descMissao = descMissao;
+	}
+
+	public String getDescValores() {
+		return descValores;
+	}
+
+	public void setDescValores(String descValores) {
+		this.descValores = descValores;
+	}
+
 	public Clinica(Long id, String nome, LocalTime dtAbertura, LocalTime dtEncerramento, Endereco endereco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.dtAbertura = dtAbertura;
 		this.dtEncerramento = dtEncerramento;
+		this.endereco = endereco;
+	}
+	
+	public Clinica(Long id, String nome, LocalTime dtAbertura, LocalTime dtEncerramento, String descVisao,
+			String descMissao, String descValores, Endereco endereco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.dtAbertura = dtAbertura;
+		this.dtEncerramento = dtEncerramento;
+		this.descVisao = descVisao;
+		this.descMissao = descMissao;
+		this.descValores = descValores;
 		this.endereco = endereco;
 	}
 

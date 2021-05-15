@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.tcc.enums.StatusConsultaEnum;
+
 @Entity
 @Table(name="consulta",schema="public")
 public class Consulta implements Serializable {
@@ -39,6 +41,9 @@ public class Consulta implements Serializable {
 	
 	@Column(name="dt_consulta_fim")
 	private LocalDateTime dtFim;
+	
+	@Column(name="status_consulta")
+	private Integer statusConsulta;
 	
 	@Column(name="bol_confirmada")
 	private Boolean confirmada;
@@ -108,6 +113,15 @@ public class Consulta implements Serializable {
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+	
+	public StatusConsultaEnum getStatusConsulta() {
+		return StatusConsultaEnum.toEnum(this.statusConsulta);
+	}
+
+	
+	public void setStatusConsulta(Integer statusConsulta) {
+		this.statusConsulta = statusConsulta;
 	}
 
 	public Consulta() {

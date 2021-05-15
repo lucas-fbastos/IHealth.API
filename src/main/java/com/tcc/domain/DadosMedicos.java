@@ -41,9 +41,9 @@ public class DadosMedicos implements Serializable{
 	private LocalDateTime  dtAtualizacao;
 	
 	@OneToOne
-	@JoinColumn(name="id_user", referencedColumnName="id")
+	@JoinColumn(name="id_paciente", referencedColumnName="id")
 	@JsonBackReference
-	private Usuario user;
+	private Paciente paciente;
 
 	@OneToMany(mappedBy="dadosMedicos")
 	@JsonManagedReference
@@ -55,12 +55,7 @@ public class DadosMedicos implements Serializable{
 	
 	@Column(name="peso")
 	private Double peso;
-	
-	@ManyToOne
-	@JoinColumn(name="id_user_pr_saude")
-	@JsonManagedReference
-	private Usuario profissionalSaude;
-	
+		
 	@Column(name="altura")
 	private Double altura;
 	
@@ -86,24 +81,16 @@ public class DadosMedicos implements Serializable{
 		return dtAtualizacao;
 	}
 
-	public Usuario getProfissionalSaude() {
-		return profissionalSaude;
-	}
-
-	public void setProfissionalSaude(Usuario profissionalSaude) {
-		this.profissionalSaude = profissionalSaude;
-	}
-
 	public void setDtAtualizacao(LocalDateTime  dtAtualizacao) {
 		this.dtAtualizacao = dtAtualizacao;
 	}
 
-	public Usuario getUser() {
-		return user;
+	public Paciente getPaciente() {
+		return paciente;
 	}
 
-	public void setUser(Usuario user) {
-		this.user = user;
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 	
 	public Set<DoencaCronica> getDoencasCronicas() {
@@ -174,14 +161,14 @@ public class DadosMedicos implements Serializable{
 		this.descImc = descImc;
 	}
 
-	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, LocalDateTime  dtAtualizacao, Usuario user,
+	public DadosMedicos(Long id, TipoSanguineo tipoSanguineo, LocalDateTime  dtAtualizacao, Paciente paciente,
 			Set<DoencaCronica> doencasCronicas, Set<Medicamento> medicamentos, Double peso, Double altura, Double vlImc,
 			String descImc, Set<Alergia> alergias) {
 		super();
 		this.id = id;
 		this.tipoSanguineo = tipoSanguineo;
 		this.dtAtualizacao = dtAtualizacao;
-		this.user = user;
+		this.paciente = paciente;
 		this.doencasCronicas = doencasCronicas;
 		this.medicamentos = medicamentos;
 		this.peso = peso;

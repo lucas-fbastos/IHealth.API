@@ -18,6 +18,36 @@ public class ClinicaDTO {
 	
 	private EnderecoDTO endereco;
 
+	private String missao;
+	
+	private String valores;
+	
+	private String visao;
+	
+	public String getMissao() {
+		return missao;
+	}
+
+	public void setMissao(String missao) {
+		this.missao = missao;
+	}
+
+	public String getValores() {
+		return valores;
+	}
+
+	public void setValores(String valores) {
+		this.valores = valores;
+	}
+
+	public String getVisao() {
+		return visao;
+	}
+
+	public void setVisao(String visao) {
+		this.visao = visao;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -64,6 +94,19 @@ public class ClinicaDTO {
 		this.dtAbertura = dtAbertura;
 		this.dtEncerramento = dtEncerramento;
 		this.endereco = endereco;
+	}
+
+	public ClinicaDTO(Long id, String nome,	String dtAbertura, String dtEncerramento, EnderecoDTO endereco, String missao, String valores,
+			String visao) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.dtAbertura = dtAbertura;
+		this.dtEncerramento = dtEncerramento;
+		this.endereco = endereco;
+		this.missao = missao;
+		this.valores = valores;
+		this.visao = visao;
 	}
 
 	public ClinicaDTO() {	}

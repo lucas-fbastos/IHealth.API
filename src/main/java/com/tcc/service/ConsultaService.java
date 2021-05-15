@@ -21,15 +21,18 @@ import com.tcc.DTO.AgendamentoDTO;
 import com.tcc.DTO.ConsultaDTO;
 import com.tcc.DTO.MedicoDTO;
 import com.tcc.DTO.PacienteDTO;
+import com.tcc.DTO.filter.ConsultaFilter;
 import com.tcc.domain.Clinica;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Paciente;
 import com.tcc.domain.TipoProcedimento;
+import com.tcc.enums.StatusConsultaEnum;
 import com.tcc.enums.TemporalidadeEnum;
 import com.tcc.repository.ConsultaRepository;
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.ObjetoInvalidoException;
 import com.tcc.service.exceptions.TemporalidadeException;
 
 @Service
@@ -49,7 +52,7 @@ public class ConsultaService {
 	
 	@Autowired
 	private PacienteService pacienteService;
-	
+		
 	public List<LocalTime> getHorariosLivres(AgendamentoDTO agendamento) {
 		Clinica clinica = this.clinicaService.getDadosClinica();
 		TipoProcedimento tp = this.tipoProcedimentoService.getById(agendamento.getIdTipoProcedimento());
@@ -134,7 +137,7 @@ public class ConsultaService {
 		if(consultas!=null && !consultas.isEmpty())
 			return consultas.stream().map(c -> new ConsultaDTO(c.getId(),
 											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),c.getDtFim(),
-											c.getTipoProcedimento(), c.getObservacao()))
+											c.getTipoProcedimento(), c.getObservacao(),c.getStatusConsulta().getDescStatus()))
 							  .collect(Collectors.toList());
 		else 
 			throw new NoElementException("Não existem consultas para hoje");
@@ -184,6 +187,7 @@ public class ConsultaService {
 		Consulta c = getById(id);
 		if(!c.isConfirmada()) {
 			c.setConfirmada(Boolean.TRUE);
+			c.setStatusConsulta(StatusConsultaEnum.CONFIRMADA.getId());
 			this.consultaRepository.save(c);
 		}
 	}
@@ -201,7 +205,8 @@ public class ConsultaService {
 		c.setObservacao(dto.getObservacao());
 		c.setMedico(m);
 		c.setPaciente(p);
-		c.setConfirmada(Boolean.FALSE);
+		c.setConfirmada(false);
+		c.setStatusConsulta(StatusConsultaEnum.PENDENTE.getId());
 		try {
 			c = this.consultaRepository.save(c);
 			return new ConsultaDTO(c);
@@ -213,7 +218,46 @@ public class ConsultaService {
 	public Page<ConsultaDTO> findAllByMedico(Pageable p, Long idMedico, Integer indiceTemporalidade) {
 		List<LocalDateTime> list = getDatasByTemporalidade(TemporalidadeEnum.values()[indiceTemporalidade]);
 		Page<Consulta> consultas = this.consultaRepository.findAllByMedico_idAndDtInicioGreaterThanEqualAndDtFimLessThanEqual(
-					p,idMedico,list.get(0),					list.get(1)); 
+					p,idMedico,list.get(0),	list.get(1)); 
 		return toPageDTO(p,consultas);
 	}
+
+	public void cancelaConsulta(Long id) {
+		Consulta c = getById(id);
+		c.setConfirmada(false);
+		c.setStatusConsulta(StatusConsultaEnum.CANCELADA.getId());
+		this.consultaRepository.save(c);
+		
+	}
+	
+	public Page<ConsultaDTO> filter(Pageable page, ConsultaFilter filter ) {
+		Page<Consulta> consultas = this.consultaRepository.findByPacienteAndDates(filter, page);
+		return toPageDTO(page,consultas);
+	}
+
+	public Consulta verificaAtendimento(Long idConsulta){
+		Consulta c = getById(idConsulta);
+		switch(c.getStatusConsulta()) {
+			case PENDENTE:
+				throw new ObjetoInvalidoException("Consulta precisa ser confirmada");
+			case CANCELADA:
+				throw new ObjetoInvalidoException("a consulta se encontra cancelada");
+			case EM_ANDAMENTO:
+				return c;
+			case CONFIRMADA:
+				return iniciarConsulta(c);
+			default:
+				throw new ObjetoInvalidoException("Consulta não possui um status válido");
+		}
+	}
+
+	private Consulta iniciarConsulta(Consulta c) {
+		c.setStatusConsulta(StatusConsultaEnum.EM_ANDAMENTO.getId());
+		return consultaRepository.save(c);
+	}
+
+
+
+	
+	
 }

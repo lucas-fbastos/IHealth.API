@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import com.tcc.domain.Consulta;
 
 
-public interface ConsultaRepository extends JpaRepository<Consulta,Long>{
+public interface ConsultaRepository extends JpaRepository<Consulta,Long>, ConsultaCriteriaRepository{
 
 	@Query(value = "from Consulta C where dtInicio BETWEEN :dtI AND :dtF")
 	public List<Consulta> getAllBetweenDates(@Param("dtI")LocalDateTime dtIncio,@Param("dtF")LocalDateTime dtFim );

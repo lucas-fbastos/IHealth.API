@@ -29,14 +29,7 @@ public class DadosMedicosUserDTO implements Serializable{
 	private String descImc;
 	private Set<Alergia> alergias = new HashSet<>();
 	private Integer idade;
-	private String nomeProfissionalSaude;
-		
-	public String getNomeProfissionalSaude() {
-		return nomeProfissionalSaude;
-	}
-	public void setNomeProfissionalSaude(String nomeProfissionalSaude) {
-		this.nomeProfissionalSaude = nomeProfissionalSaude;
-	}
+
 	public Long getId() {
 		return id;
 	}

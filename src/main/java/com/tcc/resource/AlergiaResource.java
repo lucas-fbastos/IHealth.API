@@ -38,22 +38,22 @@ public class AlergiaResource {
 		
 	}
 	
-	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody List<AlergiaDTO> alergias){
-		List<Alergia> list = this.alergiaService.addAlergia(alergias);
+	@PostMapping("/{idPaciente}")
+	public ResponseEntity<?> save(@Valid @RequestBody List<AlergiaDTO> alergias,@PathVariable Long idPaciente){
+		List<Alergia> list = this.alergiaService.addAlergia(alergias,idPaciente);
 		return ResponseEntity.ok(list);
 	}
 	
-	@PutMapping
-	public ResponseEntity<List<Alergia>> updateAlergia(@RequestBody @Valid List<AlergiaDTO> alergias){
-		List<Alergia> list = this.alergiaService.update(alergias);
+	@PutMapping("/{idPaciente}")
+	public ResponseEntity<List<Alergia>> updateAlergia(@RequestBody @Valid List<AlergiaDTO> alergias,@PathVariable Long idPaciente){
+		List<Alergia> list = this.alergiaService.update(alergias,idPaciente);
 		return ResponseEntity.ok(list);
 	}
 	
 	@DeleteMapping
-	@RequestMapping("/{id}")
-	public ResponseEntity<Void> deleteAlergia(@PathVariable Long id){
-		this.alergiaService.deleteAlergia(id);
+	@RequestMapping("/{id}/{idPaciente}")
+	public ResponseEntity<Void> deleteAlergia(@PathVariable Long id,@PathVariable Long idPaciente){
+		this.alergiaService.deleteAlergia(id,idPaciente);
 		return ResponseEntity.noContent().build();
 	}
 }

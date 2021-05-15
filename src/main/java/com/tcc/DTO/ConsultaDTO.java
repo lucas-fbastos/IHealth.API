@@ -13,14 +13,14 @@ public class ConsultaDTO {
 	private MedicoDTO medico;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dtInicio;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dtFim;
 	private TipoProcedimento procedimento;
 	private String observacao;
 	private Long idTipoProcedimento;
-	
 	private Long idPaciente;
-	
 	private Long idMedico;
+	private String status;
 	
 	public Long getId() {
 		return id;
@@ -107,6 +107,14 @@ public class ConsultaDTO {
 		this.idMedico = idMedico;
 	}
 		
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
 			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento) {
 		
@@ -122,7 +130,7 @@ public class ConsultaDTO {
 	
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
-			TipoProcedimento procedimento, String observacao) {
+			TipoProcedimento procedimento, String observacao, String status) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -132,6 +140,24 @@ public class ConsultaDTO {
 		this.procedimento = procedimento;
 		this.observacao = observacao;
 		this.procedimento = procedimento;
+		this.status = status;
+	}
+	
+	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
+			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento, Long idPaciente, Long idMedico,
+			String status) {
+		super();
+		this.id = id;
+		this.paciente = paciente;
+		this.medico = medico;
+		this.dtInicio = dtInicio;
+		this.dtFim = dtFim;
+		this.procedimento = procedimento;
+		this.observacao = observacao;
+		this.idTipoProcedimento = idTipoProcedimento;
+		this.idPaciente = idPaciente;
+		this.idMedico = idMedico;
+		this.status = status;
 	}
 	
 	public ConsultaDTO(Consulta c) {
@@ -142,6 +168,8 @@ public class ConsultaDTO {
 		this.dtInicio = c.getDtIncio();
 		this.observacao = c.getObservacao();
 		this.procedimento = c.getTipoProcedimento();
+		if(c.getStatusConsulta()!=null)
+			this.status = c.getStatusConsulta().getDescStatus();
 	}
 	
 	

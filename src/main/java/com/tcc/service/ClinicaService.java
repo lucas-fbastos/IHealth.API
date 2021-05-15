@@ -43,7 +43,9 @@ public class ClinicaService {
 		c.setDtAbertura(abertura);
 		c.setDtEncerramento(encerramento);
 		c.setNome(dto.getNome());
-		
+		c.setDescMissao(dto.getMissao());
+		c.setDescValores(dto.getValores());
+		c.setDescVisao(dto.getValores());
 		try {
 			this.repository.save(c);
 			if(dto.getEndereco()!=null) {
@@ -64,6 +66,9 @@ public class ClinicaService {
 		c.setDtAbertura(abertura);
 		c.setDtEncerramento(encerramento);
 		c.setNome(dto.getNome());
+		c.setDescMissao(dto.getMissao());
+		c.setDescValores(dto.getValores());
+		c.setDescVisao(dto.getValores());
 		Endereco endereco = c.getEndereco();
 		if(dto.getEndereco()!=null) {	
 			if(c.getEndereco()!= null && dto.getEndereco().getId() == null)

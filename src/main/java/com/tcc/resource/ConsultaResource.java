@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.DTO.AgendamentoDTO;
 import com.tcc.DTO.ConsultaDTO;
+import com.tcc.DTO.filter.ConsultaFilter;
 import com.tcc.service.ConsultaService;
 
 @RestController
@@ -47,6 +48,13 @@ public class ConsultaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PutMapping("/cancelaConsulta/{id}")
+	public ResponseEntity<Void> cancelaConsulta(@PathVariable Long id){
+		this.service.cancelaConsulta(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	
 	@GetMapping("/temporalidade/{indiceTemporalidade}")
 	public ResponseEntity<List<ConsultaDTO>> getConsultasTemporalidade(@PathVariable Integer indiceTemporalidade){
 		return ResponseEntity.ok(this.service.getConsultasPorTempo(indiceTemporalidade));
@@ -65,5 +73,9 @@ public class ConsultaResource {
 		return ResponseEntity.ok(this.service.findAllByMedico(p, idMedico, indiceTemporalidade));
 	}
 	
+	@GetMapping("/filtrar")
+	public ResponseEntity<Page<ConsultaDTO>> filtrar(ConsultaFilter filter, @PageableDefault(value = 10) Pageable page){
+		return ResponseEntity.ok(this.service.filter(page, filter));
+	}
 	
 }

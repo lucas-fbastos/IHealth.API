@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tcc.DTO.DadosMedicosDTO;
 import com.tcc.DTO.DadosMedicosUserDTO;
 import com.tcc.domain.DadosMedicos;
+import com.tcc.domain.Paciente;
 import com.tcc.domain.TipoSanguineo;
 import com.tcc.domain.Usuario;
 import com.tcc.enums.IMCEnum;
@@ -34,12 +35,15 @@ public class DadosMedicosService {
 	private TipoSanguineoRepository tipoSanguineoRepository;
 	
 	@Autowired
+	private PacienteService pacienteService;
+	
+	@Autowired
 	private UsuarioService userService;
-	
-	public DadosMedicos update(DadosMedicosDTO dto) {
+		
+	public DadosMedicos update(DadosMedicosDTO dto, Long idPaciente) {
 		try {
-			Usuario user = this.userService.getUserLogado();
-			DadosMedicos dados = this.dadosMedicosRepository.findByUser(user).orElseThrow();
+			Paciente p = pacienteService.getById(idPaciente);
+			DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
 				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
@@ -47,45 +51,17 @@ public class DadosMedicosService {
 			}
 			dados.setAltura(dto.getAltura());
 			dados.setPeso(dto.getPeso());
-			dados.setProfissionalSaude(null);
 			this.calculaImc(dados);
 			this.dadosMedicosRepository.save(dados);
+			Usuario u = p.getUsuario();
 			if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
-				user.addPerfil(PerfilEnum.ATIVO);
-				user.removePerfil(PerfilEnum.PENDENTE);
+				u.addPerfil(PerfilEnum.ATIVO);
+				u.getPerfis().remove(PerfilEnum.PENDENTE);
 			}else{
-				user.addPerfil(PerfilEnum.PENDENTE);
-				user.removePerfil(PerfilEnum.ATIVO);
+				u.addPerfil(PerfilEnum.PENDENTE);
+				u.getPerfis().remove(PerfilEnum.ATIVO);
 			}
-			this.userRepository.save(user);
-			return dados;
-		}catch(NoSuchElementException e) {
-			throw new NoElementException("informação não encontrada");
-		}
-	}
-	
-	public DadosMedicos update(DadosMedicosDTO dto, Usuario paciente) {
-		try {
-			Usuario user = this.userService.getUserLogado();
-			DadosMedicos dados = this.dadosMedicosRepository.findByUser(paciente).orElseThrow();
-			dados.setDtAtualizacao(LocalDateTime.now());
-			if(dto.getTipoSanguineo()!=null) {
-				TipoSanguineo tipoSanguineo =  this.tipoSanguineoRepository.findById(dto.getTipoSanguineo()).orElseThrow();
-				dados.setTipoSanguineo(tipoSanguineo);					
-			}
-			dados.setAltura(dto.getAltura());
-			dados.setPeso(dto.getPeso());
-			dados.setProfissionalSaude(user);
-			this.calculaImc(dados);
-			this.dadosMedicosRepository.save(dados);
-			if(dados.getPeso() != null && dados.getAltura() != null && dados.getTipoSanguineo() != null) {
-				paciente.addPerfil(PerfilEnum.ATIVO);
-				paciente.getPerfis().remove(PerfilEnum.PENDENTE);
-			}else{
-				paciente.addPerfil(PerfilEnum.PENDENTE);
-				paciente.getPerfis().remove(PerfilEnum.ATIVO);
-			}
-			this.userRepository.save(paciente);
+			this.userRepository.save(u);
 			return dados;
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("informação não encontrada");
@@ -94,21 +70,16 @@ public class DadosMedicosService {
 	
 
 	public DadosMedicosUserDTO getDadosMedicos() {
-		
 		try {
 			Usuario user = this.userService.getUserLogado();
-			DadosMedicos dm = this.dadosMedicosRepository.findByUser(user).orElseThrow();
+			DadosMedicos dm = this.dadosMedicosRepository.findByPaciente(user.getPaciente()).orElseThrow();
 			DadosMedicosUserDTO dto = new DadosMedicosUserDTO();
 			dto.setAlergias(dm.getAlergias());
 			dto.setAltura(dm.getAltura());
 			dto.setDescImc(dm.getDescImc());
 			dto.setDoencasCronicas(dm.getDoencasCronicas());
 			dto.setDtAtualizacao(dm.getDtAtualizacao());
-			if(dm.getProfissionalSaude()!=null) {
-				dto.setNomeProfissionalSaude(dm.getProfissionalSaude().getNome());					
-			}
 			dto.setId(dm.getId());
-			
 			Integer idade =  LocalDate.now().getYear() - user.getDtNascimento().getYear();
 			dto.setIdade(idade);
 			dto.setMedicamentos(dm.getMedicamentos());

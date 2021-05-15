@@ -26,22 +26,22 @@ public class MedicamentoResource {
 	@Autowired
 	private MedicamentoService medicamentoService;
 	
-	@PostMapping
-	public ResponseEntity<List<Medicamento>> addMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos){
-		List<Medicamento> list = this.medicamentoService.addMedicamentos(medicamentos);
+	@PostMapping("/{idPaciente}")
+	public ResponseEntity<List<Medicamento>> addMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos, @PathVariable Long idPaciente){
+		List<Medicamento> list = this.medicamentoService.addMedicamentos(medicamentos,idPaciente);
 		return ResponseEntity.status(HttpStatus.CREATED).body(list);
 	}
 	
-	@PutMapping
-	public ResponseEntity<List<Medicamento>> updateMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos){
-		List<Medicamento> list = this.medicamentoService.update(medicamentos);
+	@PutMapping("/{idPaciente}")
+	public ResponseEntity<List<Medicamento>> updateMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos,@PathVariable Long idPaciente){
+		List<Medicamento> list = this.medicamentoService.update(medicamentos,idPaciente);
 		return ResponseEntity.ok(list);
 	}
 	
 	@DeleteMapping
-	@RequestMapping("/{id}")
-	public ResponseEntity<Void> deleteMedicamento(@PathVariable Long id){
-		this.medicamentoService.deleteMedicamento(id);
+	@RequestMapping("/{id}/{idPaciente}")
+	public ResponseEntity<Void> deleteMedicamento(@PathVariable Long id,@PathVariable Long idPaciente){
+		this.medicamentoService.deleteMedicamento(id,idPaciente);
 		return ResponseEntity.noContent().build();
 	}
 }

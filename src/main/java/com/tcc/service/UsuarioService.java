@@ -69,9 +69,8 @@ public class UsuarioService {
 			this.userRepository.save(user);
 			
 			if(user.getPerfis().contains(PerfilEnum.PACIENTE)) {
-				
 				DadosMedicos dados = new DadosMedicos();
-				dados.setUser(user);
+				dados.setPaciente(user.getPaciente());
 				dados.setDtAtualizacao(LocalDateTime.now());
 				this.dadosMedicosRepository.save(dados);
 			}
