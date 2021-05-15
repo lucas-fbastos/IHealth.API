@@ -5,7 +5,9 @@ public enum StatusConsultaEnum {
 	PENDENTE(1,"Pendente"),
 	CONFIRMADA(2,"Confirmada"),
 	CANCELADA(3,"Cancelada"),
-	EM_ANDAMENTO(4, "Em Andamento");
+	EM_ANDAMENTO(4, "Em Andamento"),
+	FINALIZADA(5, "Finalizada");
+	
 	
 	private Integer id;
 	private String descStatus;

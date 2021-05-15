@@ -45,6 +45,13 @@ public class ProntuarioService {
 		return repository.save(p);
 	}
 	
+	public Prontuario finalizaAtendimento(ProntuarioDTO prontuario) {
+		Prontuario p = save(prontuario);
+		Consulta consulta = this.consultaService.finalizaConsulta(p.getConsulta());
+		p.setConsulta(consulta);
+		return p;
+	}
+	
 	public Prontuario getById(Long id) {
 		Optional<Prontuario> p = repository.findById(id);
 		if(p.isPresent())

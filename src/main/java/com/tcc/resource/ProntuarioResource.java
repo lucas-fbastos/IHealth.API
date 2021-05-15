@@ -29,4 +29,9 @@ public class ProntuarioResource {
 	private ResponseEntity<Prontuario> salvar(@RequestBody ProntuarioDTO prontuario){
 		return ResponseEntity.ok(prontuarioService.save(prontuario));
 	}
+	
+	@PutMapping("/finalizar")
+	private ResponseEntity<Prontuario> finalizar(@RequestBody ProntuarioDTO prontuario){
+		return ResponseEntity.ok(prontuarioService.finalizaAtendimento(prontuario));
+	}
 }

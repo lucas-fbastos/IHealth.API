@@ -223,11 +223,10 @@ public class ConsultaService {
 	}
 
 	public void cancelaConsulta(Long id) {
-		Consulta c = getById(id);
-		c.setConfirmada(false);
-		c.setStatusConsulta(StatusConsultaEnum.CANCELADA.getId());
-		this.consultaRepository.save(c);
-		
+		Consulta consulta = getById(id);
+		consulta.setConfirmada(false);
+		consulta.setStatusConsulta(StatusConsultaEnum.CANCELADA.getId());
+		this.consultaRepository.save(consulta);
 	}
 	
 	public Page<ConsultaDTO> filter(Pageable page, ConsultaFilter filter ) {
@@ -236,28 +235,29 @@ public class ConsultaService {
 	}
 
 	public Consulta verificaAtendimento(Long idConsulta){
-		Consulta c = getById(idConsulta);
-		switch(c.getStatusConsulta()) {
+		Consulta consulta = getById(idConsulta);
+		switch(consulta.getStatusConsulta()) {
 			case PENDENTE:
 				throw new ObjetoInvalidoException("Consulta precisa ser confirmada");
 			case CANCELADA:
 				throw new ObjetoInvalidoException("a consulta se encontra cancelada");
 			case EM_ANDAMENTO:
-				return c;
+				return consulta;
 			case CONFIRMADA:
-				return iniciarConsulta(c);
+				return iniciarConsulta(consulta);
 			default:
 				throw new ObjetoInvalidoException("Consulta não possui um status válido");
 		}
 	}
 
-	private Consulta iniciarConsulta(Consulta c) {
-		c.setStatusConsulta(StatusConsultaEnum.EM_ANDAMENTO.getId());
-		return consultaRepository.save(c);
+	private Consulta iniciarConsulta(Consulta consulta) {
+		consulta.setStatusConsulta(StatusConsultaEnum.EM_ANDAMENTO.getId());
+		return consultaRepository.save(consulta);
 	}
 
+	public Consulta finalizaConsulta(Consulta consulta) {
+		consulta.setStatusConsulta(StatusConsultaEnum.FINALIZADA.getId());
+		return consultaRepository.save(consulta);
+	}
 
-
-	
-	
 }
