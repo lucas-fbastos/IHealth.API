@@ -30,8 +30,7 @@ public class MedicamentoService {
 	private PacienteService pacienteService;
 	
 
-	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos, Long idPaciente) {
-		Paciente p = pacienteService.getById(idPaciente);
+	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos, Paciente p) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 		List<Medicamento> list = new ArrayList<>();
 		for(MedicamentoDTO dto : medicamentos) {

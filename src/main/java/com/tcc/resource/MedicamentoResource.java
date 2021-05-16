@@ -5,11 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +23,6 @@ public class MedicamentoResource {
 
 	@Autowired
 	private MedicamentoService medicamentoService;
-	
-	@PostMapping("/{idPaciente}")
-	public ResponseEntity<List<Medicamento>> addMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos, @PathVariable Long idPaciente){
-		List<Medicamento> list = this.medicamentoService.addMedicamentos(medicamentos,idPaciente);
-		return ResponseEntity.status(HttpStatus.CREATED).body(list);
-	}
 	
 	@PutMapping("/{idPaciente}")
 	public ResponseEntity<List<Medicamento>> updateMedicamentos(@RequestBody @Valid List<MedicamentoDTO> medicamentos,@PathVariable Long idPaciente){

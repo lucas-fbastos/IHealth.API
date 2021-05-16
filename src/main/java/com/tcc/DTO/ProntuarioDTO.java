@@ -1,5 +1,7 @@
 package com.tcc.DTO;
 
+import java.util.List;
+
 public class ProntuarioDTO {
 
 	private Long id;
@@ -9,6 +11,9 @@ public class ProntuarioDTO {
 	private Boolean concordaTermos;
 	private Boolean temAlergia;
 	private Boolean temDoencaCronica;
+	private List<AlergiaDTO> alergias;
+	private List<MedicamentoDTO> medicamentos;
+	private List<DoencaCronicaDTO> doencas;
 	
 	public Long getId() {
 		return id;
@@ -52,7 +57,25 @@ public class ProntuarioDTO {
 	public void setTemDoencaCronica(Boolean temDoencaCronica) {
 		this.temDoencaCronica = temDoencaCronica;
 	}
-
+	
+	public List<AlergiaDTO> getAlergias() {
+		return alergias;
+	}
+	public void setAlergias(List<AlergiaDTO> alergias) {
+		this.alergias = alergias;
+	}
+	public List<MedicamentoDTO> getMedicamentos() {
+		return medicamentos;
+	}
+	public void setMedicamentos(List<MedicamentoDTO> medicamentos) {
+		this.medicamentos = medicamentos;
+	}
+	public List<DoencaCronicaDTO> getDoencas() {
+		return doencas;
+	}
+	public void setDoencas(List<DoencaCronicaDTO> doencas) {
+		this.doencas = doencas;
+	}
 	public ProntuarioDTO(Long id, Long idConsulta, String desc, String sumario, Boolean concordaTermos,
 			Boolean temAlergia, Boolean temDoencaCronica) {
 		this.id = id;

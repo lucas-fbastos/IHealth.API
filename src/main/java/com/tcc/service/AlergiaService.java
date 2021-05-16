@@ -35,9 +35,8 @@ public class AlergiaService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
-	public List<Alergia> addAlergia(List<AlergiaDTO> alergias, Long idPaciente) {
-		Paciente p = pacienteService.getById(idPaciente);
-		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
+	public List<Alergia> addAlergia(List<AlergiaDTO> alergias, Paciente paciente) {
+		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(paciente).orElseThrow();
 		List<Alergia> list = new ArrayList<>();
 			
 		try{

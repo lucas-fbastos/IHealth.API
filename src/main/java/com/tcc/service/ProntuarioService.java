@@ -20,6 +20,15 @@ public class ProntuarioService {
 	@Autowired
 	private ConsultaService consultaService;
 	
+	@Autowired
+	private AlergiaService alergiaService;
+	
+	@Autowired
+	private DoencaCronicaService doencaCronicaService;
+	
+	@Autowired
+	private MedicamentoService medicamentoService;
+	
 	public Prontuario inciaAtendimento(Long idConsulta) {
 		Consulta consulta = this.consultaService.verificaAtendimento(idConsulta);
 		Optional<Prontuario> opProntuario = repository.findByConsulta(consulta);
@@ -42,6 +51,15 @@ public class ProntuarioService {
 		p.setTemAlergia(prontuario.getTemAlergia());
 		p.setDescSumario(prontuario.getSumario());
 		p.setTemDoencaCronica(prontuario.getTemDoencaCronica());
+		if(prontuario.getAlergias()!=null && !prontuario.getAlergias().isEmpty()) 
+			this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente());
+		
+		if(prontuario.getMedicamentos()!=null && !prontuario.getMedicamentos().isEmpty()) 
+			this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente());
+		
+		if(prontuario.getDoencas()!=null && !prontuario.getDoencas().isEmpty()) 
+			this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente());
+		
 		return repository.save(p);
 	}
 	

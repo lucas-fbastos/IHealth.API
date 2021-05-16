@@ -28,8 +28,7 @@ public class DoencaCronicaService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
-	public List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO, Long idPaciente) {
-		Paciente p = pacienteService.getById(idPaciente);
+	public List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO, Paciente p) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 		List<DoencaCronica> list = new ArrayList<>();
 		try{
