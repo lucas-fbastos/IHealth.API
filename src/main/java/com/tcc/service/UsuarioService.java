@@ -20,6 +20,7 @@ import com.tcc.DTO.MedicoDTO;
 import com.tcc.DTO.PacienteDTO;
 import com.tcc.DTO.UpdatePasswordFormDTO;
 import com.tcc.DTO.UserDTO;
+import com.tcc.DTO.filter.ColaboradorFilter;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Endereco;
 import com.tcc.domain.Usuario;
@@ -192,6 +193,16 @@ public class UsuarioService {
 		perfils.add(PerfilEnum.AUXILIAR.getId());
 		perfils.add(PerfilEnum.ADMINISTRADOR.getId());
 		Page<Usuario> usuarios = this.userRepository.findAllByPerfisIn(p,perfils);
+		 if(!usuarios.isEmpty()) {
+		    return new PageImpl<UserDTO>(
+		    		usuarios.getContent().stream().map(u -> new UserDTO(u)).collect(Collectors.toList()), p, usuarios.getTotalElements());
+		}else {
+		  	throw new NoElementException("Não existem usuários cadastrados para os parametros informados");
+		}
+	}
+
+	public Page<UserDTO> filtrarColaborador(ColaboradorFilter filter, Pageable p) {
+		Page<Usuario> usuarios = this.userRepository.filterColaborador(filter,p);
 		 if(!usuarios.isEmpty()) {
 		    return new PageImpl<UserDTO>(
 		    		usuarios.getContent().stream().map(u -> new UserDTO(u)).collect(Collectors.toList()), p, usuarios.getTotalElements());

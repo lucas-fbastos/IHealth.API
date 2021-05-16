@@ -35,6 +35,10 @@ public class Paciente implements Serializable{
 	@Column(name="nu_telefone")
 	private String nuTelefone;
 	
+	@OneToOne(mappedBy="paciente")
+	@JsonManagedReference
+	private DadosMedicos dadosmedicos;
+	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
 	@JsonBackReference
@@ -94,6 +98,14 @@ public class Paciente implements Serializable{
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public DadosMedicos getDadosmedicos() {
+		return dadosmedicos;
+	}
+
+	public void setDadosmedicos(DadosMedicos dadosmedicos) {
+		this.dadosmedicos = dadosmedicos;
 	}
 
 	public Paciente(Long id, String nomePaciente, String cpf, String descConvenio,

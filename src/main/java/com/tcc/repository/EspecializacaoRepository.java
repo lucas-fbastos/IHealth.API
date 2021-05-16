@@ -14,5 +14,5 @@ public interface EspecializacaoRepository extends JpaRepository<Especializacao,L
 	
 	List<Especializacao> findByIdIn(Set<Long> id);
 
-	Optional<Especializacao> findbyDescEspecializacao(String descEspecializacao);
+	Optional<Especializacao> findByDescEspecializacao(String descEspecializacao);
 }

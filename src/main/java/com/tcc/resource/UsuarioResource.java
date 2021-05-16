@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tcc.DTO.EnderecoDTO;
 import com.tcc.DTO.UpdatePasswordFormDTO;
 import com.tcc.DTO.UserDTO;
+import com.tcc.DTO.filter.ColaboradorFilter;
 import com.tcc.domain.Usuario;
 import com.tcc.security.JwtUtil;
 import com.tcc.service.UsuarioService;
@@ -66,7 +67,6 @@ public class UsuarioResource {
 		return ResponseEntity.ok(retorno);
 	}
 	
-	
 	@PutMapping("/password")
 	public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordFormDTO dto){
 		this.userService.updatePassword(dto);
@@ -76,5 +76,10 @@ public class UsuarioResource {
 	@GetMapping("/dadosUsuario")
 	public ResponseEntity<UserDTO> getDadosUser(){
 		return ResponseEntity.ok(this.userService.getDadosUser());
+	}
+	
+	@GetMapping("/filtrarColaborador")
+	public ResponseEntity<Page<UserDTO>> filtrarColaborador(ColaboradorFilter filter, @PageableDefault(value = 10) Pageable page){
+		return ResponseEntity.ok(this.userService.filtrarColaborador(filter,page));
 	}
 }

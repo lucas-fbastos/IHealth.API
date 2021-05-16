@@ -28,7 +28,7 @@ public class DashboardService {
 
 	public Map<String, Object> getAlergiasPorTipoGeral(){
 		Usuario usuario = this.userService.getUserLogado();
-		List<Alergia> alergias = this.alergiaRepository.findByDadosMedicos(usuario.getDadosmedicos());
+		List<Alergia> alergias = this.alergiaRepository.findByDadosMedicos(usuario.getPaciente().getDadosmedicos());
 		if(alergias != null && !alergias.isEmpty()) 
 			return this.separaPorTipoAlergia(alergias);
 		else 

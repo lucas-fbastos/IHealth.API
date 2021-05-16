@@ -26,9 +26,9 @@ public class EspecializacaoService {
 	}
 	
 	public Especializacao save(Especializacao especializacao) {
-		Optional<Especializacao> especializacaoSalva = this.repository.findbyDescEspecializacao(especializacao.getDescEspecializacao());
+		Optional<Especializacao> especializacaoSalva = this.repository.findByDescEspecializacao(especializacao.getDescEspecializacao());
 		if(especializacaoSalva.isPresent())
-			throw new ObjetoInvalidoException("Expecialidade já existe");
+			throw new ObjetoInvalidoException("Especialidade já existe");
 		else
 			return this.repository.save(especializacao);
 	}

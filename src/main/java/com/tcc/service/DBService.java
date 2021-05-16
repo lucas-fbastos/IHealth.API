@@ -277,8 +277,8 @@ public class DBService {
 			for(Usuario u : users) {
 				if(u.getEndereco()!=null)
 					this.enderecoRepository.delete(u.getEndereco());
-				if(u.getDadosmedicos()!=null)
-					this.dadosMedicosRepository.delete(u.getDadosmedicos());
+				if(u.getPaciente() !=null && u.getPaciente().getDadosmedicos()!=null)
+					this.dadosMedicosRepository.delete(u.getPaciente().getDadosmedicos());
 				if(u.getMedico()!=null)
 					this.medicoRepository.delete(u.getMedico());
 				if(u.getPaciente()!=null)

@@ -55,10 +55,6 @@ public class Usuario implements Serializable {
 	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 
-	@OneToOne(mappedBy="user")
-	@JsonManagedReference
-	private DadosMedicos dadosmedicos;
-	
 	@OneToOne(mappedBy="usuarioEndereco")
 	@JsonManagedReference
 	private Endereco endereco;
@@ -144,14 +140,6 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public DadosMedicos getDadosmedicos() {
-		return dadosmedicos;
-	}
-
-	public void setDadosmedicos(DadosMedicos dadosmedicos) {
-		this.dadosmedicos = dadosmedicos;
 	}
 
 	public Set<PerfilEnum> getPerfis() {
