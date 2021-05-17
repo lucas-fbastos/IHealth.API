@@ -1,5 +1,6 @@
 package com.tcc.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,12 @@ public class TipoProcedimentoService {
 		}catch(NoSuchElementException e) {
 			throw new NoElementException("Tipo de procedimento não encontrado");
 		}
+	}
+	
+	public List<TipoProcedimento> getAll(){
+		List<TipoProcedimento> tipos = this.repository.findAll();
+		if(tipos!=null && !tipos.isEmpty())
+			return tipos;
+		throw new NoElementException("Não existem tipos de procesimento cadastrados");
 	}
 }
