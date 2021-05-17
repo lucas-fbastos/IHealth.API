@@ -131,7 +131,7 @@ public class ConsultaDTO {
 	
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
-			TipoProcedimento procedimento, String observacao, String status) {
+			TipoProcedimento procedimento, String observacao, StatusConsultaEnum status) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -141,7 +141,8 @@ public class ConsultaDTO {
 		this.procedimento = procedimento;
 		this.observacao = observacao;
 		this.procedimento = procedimento;
-		this.status = status;
+		if(status!=null)
+			this.status = status.getDescStatus();
 	}
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,

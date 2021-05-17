@@ -137,7 +137,7 @@ public class ConsultaService {
 		if(consultas!=null && !consultas.isEmpty())
 			return consultas.stream().map(c -> new ConsultaDTO(c.getId(),
 											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),c.getDtFim(),
-											c.getTipoProcedimento(), c.getObservacao(),c.getStatusConsulta().getDescStatus()))
+											c.getTipoProcedimento(), c.getObservacao(),c.getStatusConsulta()))
 							  .collect(Collectors.toList());
 		else 
 			throw new NoElementException("Não existem consultas para hoje");
