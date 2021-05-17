@@ -36,6 +36,7 @@ public class MedicamentoService {
 		for(MedicamentoDTO dto : medicamentos) {
 			Medicamento m = new Medicamento();
 			m.setId(null);
+			m.setDuracaoTratamento(dto.getDuracaoTratamento());
 			m.setDadosMedicos(dados);
 			m.setDescMedicamento(dto.getDesc());
 			m.setDtRegistro(new Date(System.currentTimeMillis()));

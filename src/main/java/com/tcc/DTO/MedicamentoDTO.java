@@ -17,14 +17,16 @@ public class MedicamentoDTO implements Serializable{
 	
 	private Long id;
 	
-	private String code;
+	private String duracaoTratamento;
 	
-	public String getCode() {
-		return code;
+	
+
+	public String getDuracaoTratamento() {
+		return duracaoTratamento;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setDuracaoTratamento(String duracaoTratamento) {
+		this.duracaoTratamento = duracaoTratamento;
 	}
 
 	public Long getId() {

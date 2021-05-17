@@ -37,6 +37,9 @@ public class Medicamento implements Serializable {
 	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	private Date dtRegistro;
 	
+	@Column(name="desc_duracao_tratamento")
+	private String duracaoTratamento;
+		
 	public Long getId() {
 		return id;
 	}
@@ -74,6 +77,14 @@ public class Medicamento implements Serializable {
 	}
 
 	
+	public String getDuracaoTratamento() {
+		return duracaoTratamento;
+	}
+
+	public void setDuracaoTratamento(String duracaoTratamento) {
+		this.duracaoTratamento = duracaoTratamento;
+	}
+
 	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos, Date dtRegistro) {
 		super();
 		this.id = id;
