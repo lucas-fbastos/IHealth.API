@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.TipoProcedimento;
+import com.tcc.enums.StatusConsultaEnum;
 
 public class ConsultaDTO {
 
@@ -145,7 +146,7 @@ public class ConsultaDTO {
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
 			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento, Long idPaciente, Long idMedico,
-			String status) {
+			StatusConsultaEnum status) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -157,7 +158,8 @@ public class ConsultaDTO {
 		this.idTipoProcedimento = idTipoProcedimento;
 		this.idPaciente = idPaciente;
 		this.idMedico = idMedico;
-		this.status = status;
+		if(status!=null)
+			this.status = status.getDescStatus();
 	}
 	
 	public ConsultaDTO(Consulta c) {
