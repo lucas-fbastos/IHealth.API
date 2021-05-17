@@ -98,15 +98,18 @@ public class UsuarioService {
 			
 			this.userRepository.save(userSalvo);
 			Endereco endereco = userSalvo.getEndereco();
-			endereco.setDescBairro(dto.getEndereco().getDescBairro());
-			endereco.setDescComplemento(dto.getEndereco().getDescComplemento());
-			endereco.setDescRua(dto.getEndereco().getDescRua());
-			endereco.setNoCidade(dto.getEndereco().getNoCidade());
-			endereco.setNoEstado(dto.getEndereco().getNoEstado());
-			endereco.setNuCep(dto.getEndereco().getNuCep());
-			endereco.setNumero(dto.getEndereco().getNumero());
-			
-			this.enderecoRepository.save(endereco);
+			if(endereco!=null) {
+				
+				endereco.setDescBairro(dto.getEndereco().getDescBairro());
+				endereco.setDescComplemento(dto.getEndereco().getDescComplemento());
+				endereco.setDescRua(dto.getEndereco().getDescRua());
+				endereco.setNoCidade(dto.getEndereco().getNoCidade());
+				endereco.setNoEstado(dto.getEndereco().getNoEstado());
+				endereco.setNuCep(dto.getEndereco().getNuCep());
+				endereco.setNumero(dto.getEndereco().getNumero());
+				
+				this.enderecoRepository.save(endereco);
+			}
 			return userSalvo;
 			
 		}catch(NoSuchElementException e) {
