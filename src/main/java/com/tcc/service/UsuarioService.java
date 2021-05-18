@@ -23,10 +23,12 @@ import com.tcc.DTO.UserDTO;
 import com.tcc.DTO.filter.ColaboradorFilter;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Endereco;
+import com.tcc.domain.Paciente;
 import com.tcc.domain.Usuario;
 import com.tcc.enums.PerfilEnum;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.EnderecoRepository;
+import com.tcc.repository.PacienteRepository;
 import com.tcc.repository.UserRepository;
 import com.tcc.security.UserSecurity;
 import com.tcc.service.exceptions.DataIntegrityException;
@@ -49,6 +51,9 @@ public class UsuarioService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	@Autowired
+	private PacienteRepository pacienteRepository;
+	
 	public Usuario saveUser(UserDTO dto) {
 		
 		
@@ -70,8 +75,11 @@ public class UsuarioService {
 			this.userRepository.save(user);
 			
 			if(user.getPerfis().contains(PerfilEnum.PACIENTE)) {
+				Paciente p = new Paciente();
+				p.setUsuario(user);
+				this.pacienteRepository.save(p);
 				DadosMedicos dados = new DadosMedicos();
-				dados.setPaciente(user.getPaciente());
+				dados.setPaciente(p);
 				dados.setDtAtualizacao(LocalDateTime.now());
 				this.dadosMedicosRepository.save(dados);
 			}

@@ -56,16 +56,15 @@ public class PacienteService {
 	
 	public Paciente save(PacienteDTO dto) {
 		Usuario u = this.usuarioService.getById(dto.getIdUser());
-		Paciente p = new Paciente();
+		Paciente p = u.getPaciente();
 		p.setDescConvenio(dto.getDescConvenio());
 		p.setNuInscricaoConvenio(dto.getNuInscricaoConvenio());
 		u = this.usuarioService.removePendente(u);
-		p.setUsuario(u);
 		p.setCompartilhaDados(dto.isCompartilhaDados());
 		try {
 			return this.repository.save(p);
 		}catch(DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Erro ao cadastrar paciente");
+			throw new DataIntegrityException("Erro ao atualizar paciente");
 		}
 	}
 	
