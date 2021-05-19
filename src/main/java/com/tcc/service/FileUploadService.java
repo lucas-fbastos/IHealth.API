@@ -2,6 +2,7 @@ package com.tcc.service;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,10 @@ public class FileUploadService {
 	}
 
 	public void deletFileById(Long id) {
-		if (documentoMedicoRepository.existsById((id)))
-			documentoMedicoRepository.deleteById(id);
-		throw new NoElementException("Arquivo não encontrado");
+		Optional<DocumentoMedico> op = this.documentoMedicoRepository.findById(id);
+		if (op.isPresent())
+			this.documentoMedicoRepository.delete(op.get());
+		else
+			throw new NoElementException("Arquivo não encontrado");
 	}
 }

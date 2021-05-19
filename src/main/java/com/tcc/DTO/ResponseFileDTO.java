@@ -2,6 +2,7 @@ package com.tcc.DTO;
 
 
 public class ResponseFileDTO {
+	private Long id;
 	private String nome;
 	private String url;
 	private String formato;
@@ -9,8 +10,9 @@ public class ResponseFileDTO {
 	private String tipo;
 
 
-	public ResponseFileDTO(String nome, String url, String formato, long size, String tipo) {
+	public ResponseFileDTO(Long id, String nome, String url, String formato, long size, String tipo) {
 		super();
+		this.id = id;
 		this.nome = nome;
 		this.url = url;
 		this.formato = formato;
@@ -57,4 +59,13 @@ public class ResponseFileDTO {
 	public void setSize(long size) {
 		this.size = size;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 }

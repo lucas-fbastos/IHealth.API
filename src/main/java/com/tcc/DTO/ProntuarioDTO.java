@@ -1,50 +1,41 @@
 package com.tcc.DTO;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.tcc.domain.Consulta;
+import com.tcc.domain.Prontuario;
+import com.tcc.enums.TipoArquivoEnum;
 
 public class ProntuarioDTO {
 
 	private Long id;
-	private Long idConsulta;
-	private String desc;
-	private String sumario;
-	private Boolean concordaTermos;
+	private Consulta consulta;
+	private String descProntuario;
 	private Boolean temAlergia;
 	private Boolean temDoencaCronica;
-	private List<AlergiaDTO> alergias;
-	private List<MedicamentoDTO> medicamentos;
-	private List<DoencaCronicaDTO> doencas;
-	private List<ResponseFileDTO> arquivos;
-	
+	private Boolean concordouTermos;
+	private String descSumario;
+	private List<ResponseFileDTO> documentos;
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getIdConsulta() {
-		return idConsulta;
+	public Consulta getConsulta() {
+		return consulta;
 	}
-	public void setIdConsulta(Long idConsulta) {
-		this.idConsulta = idConsulta;
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescProntuario() {
+		return descProntuario;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-	public String getSumario() {
-		return sumario;
-	}
-	public void setSumario(String sumario) {
-		this.sumario = sumario;
-	}
-	public Boolean getConcordaTermos() {
-		return concordaTermos;
-	}
-	public void setConcordaTermos(Boolean concordaTermos) {
-		this.concordaTermos = concordaTermos;
+	public void setDescProntuario(String descProntuario) {
+		this.descProntuario = descProntuario;
 	}
 	public Boolean getTemAlergia() {
 		return temAlergia;
@@ -58,32 +49,41 @@ public class ProntuarioDTO {
 	public void setTemDoencaCronica(Boolean temDoencaCronica) {
 		this.temDoencaCronica = temDoencaCronica;
 	}
+	public Boolean getConcordouTermos() {
+		return concordouTermos;
+	}
+	public void setConcordouTermos(Boolean concordouTermos) {
+		this.concordouTermos = concordouTermos;
+	}
+	public String getDescSumario() {
+		return descSumario;
+	}
+	public void setDescSumario(String descSumario) {
+		this.descSumario = descSumario;
+	}
+	public List<ResponseFileDTO> getDocumentos() {
+		return documentos;
+	}
+	public void setDocumentos(List<ResponseFileDTO> documentos) {
+		this.documentos = documentos;
+	}
 	
-	public List<AlergiaDTO> getAlergias() {
-		return alergias;
-	}
-	public void setAlergias(List<AlergiaDTO> alergias) {
-		this.alergias = alergias;
-	}
-	public List<MedicamentoDTO> getMedicamentos() {
-		return medicamentos;
-	}
-	public void setMedicamentos(List<MedicamentoDTO> medicamentos) {
-		this.medicamentos = medicamentos;
-	}
-	public List<DoencaCronicaDTO> getDoencas() {
-		return doencas;
-	}
-	public void setDoencas(List<DoencaCronicaDTO> doencas) {
-		this.doencas = doencas;
+	public ProntuarioDTO(Prontuario p) {
+		this.id = p.getId();
+		this.consulta = p.getConsulta();
+		this.descProntuario = p.getDescProntuario();
+		this.temAlergia = p.getTemAlergia();
+		this.temDoencaCronica = p.getTemDoencaCronica();
+		this.concordouTermos = p.getConcordouTermos();
+		this.descSumario = p.getDescSumario();
+		if(p.getDocumentos()!=null && !p.getDocumentos().isEmpty())
+			this.documentos = p.getDocumentos().stream().map(dbFile -> {
+				String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
+						.path(dbFile.getId().toString()).toUriString();
+				return new ResponseFileDTO(dbFile.getId(),dbFile.getNomeArquivo(), fileDownloadUri, dbFile.getFormato(), dbFile.getData().length, TipoArquivoEnum.toEnum(dbFile.getTipo()).getDescricao());
+			}).collect(Collectors.toList());
 	}
 	
-	public List<ResponseFileDTO> getArquivos() {
-		return arquivos;
-	}
-	public void setArquivos(List<ResponseFileDTO> arquivos) {
-		this.arquivos = arquivos;
-	}
 	public ProntuarioDTO() {}
 	
 	

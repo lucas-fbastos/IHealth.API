@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.ProntuarioDTO;
+import com.tcc.DTO.ProntuarioformDTO;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.Prontuario;
 import com.tcc.repository.ProntuarioRepository;
@@ -29,13 +30,13 @@ public class ProntuarioService {
 	@Autowired
 	private MedicamentoService medicamentoService;
 	
-	public Prontuario inciaAtendimento(Long idConsulta) {
+	public ProntuarioDTO inciaAtendimento(Long idConsulta) {
 		Consulta consulta = this.consultaService.verificaAtendimento(idConsulta);
 		Optional<Prontuario> opProntuario = repository.findByConsulta(consulta);
 		if(opProntuario.isPresent())
-			return opProntuario.get();
+			return new ProntuarioDTO(opProntuario.get());
 		
-		return cadastraProntuario(consulta);
+		return new ProntuarioDTO(cadastraProntuario(consulta));
 	}
 
 	public Prontuario cadastraProntuario(Consulta consulta) {
@@ -44,7 +45,7 @@ public class ProntuarioService {
 		return repository.save(prontuario);
 	}
 
-	public Prontuario save(ProntuarioDTO prontuario) {
+	public Prontuario save(ProntuarioformDTO prontuario) {
 		Prontuario p = getById(prontuario.getId());
 		p.setConcordouTermos(prontuario.getConcordaTermos());
 		p.setDescProntuario(prontuario.getDesc());
@@ -63,11 +64,11 @@ public class ProntuarioService {
 		return repository.save(p);
 	}
 	
-	public Prontuario finalizaAtendimento(ProntuarioDTO prontuario) {
+	public ProntuarioDTO finalizaAtendimento(ProntuarioformDTO prontuario) {
 		Prontuario p = save(prontuario);
 		Consulta consulta = this.consultaService.finalizaConsulta(p.getConsulta());
 		p.setConsulta(consulta);
-		return p;
+		return new ProntuarioDTO(p);
 	}
 	
 	public Prontuario getById(Long id) {

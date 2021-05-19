@@ -1,8 +1,6 @@
 package com.tcc.resource;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.tcc.DTO.ResponseFileDTO;
 import com.tcc.domain.DocumentoMedico;
-import com.tcc.enums.TipoArquivoEnum;
 import com.tcc.service.FileUploadService;
 
 @RestController
@@ -38,18 +33,6 @@ public class FileResource {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
 		}
-	}
-
-	@GetMapping("/prontuario/{idProntuario}")
-	public ResponseEntity<List<ResponseFileDTO>> getListFiles(@PathVariable Long idProntuario) {
-		List<ResponseFileDTO> files = storageService.getAllFiles(idProntuario).map(dbFile -> {
-			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
-					.path(dbFile.getId().toString()).toUriString();
-
-			return new ResponseFileDTO(dbFile.getNomeArquivo(), fileDownloadUri, dbFile.getFormato(), 1l, TipoArquivoEnum.toEnum(dbFile.getTipo()).getDescricao());
-		}).collect(Collectors.toList());
-
-		return ResponseEntity.status(HttpStatus.OK).body(files);
 	}
 
 	@GetMapping("/download/{id}")

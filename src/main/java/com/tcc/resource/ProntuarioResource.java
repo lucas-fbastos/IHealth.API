@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.DTO.ProntuarioDTO;
-import com.tcc.domain.Prontuario;
+import com.tcc.DTO.ProntuarioformDTO;
 import com.tcc.service.ProntuarioService;
 
 @RestController()
@@ -21,17 +21,12 @@ public class ProntuarioResource {
 	private ProntuarioService prontuarioService;
 	
 	@PostMapping("/{idConsulta}")
-	private ResponseEntity<Prontuario> iniciarProntuario(@PathVariable Long idConsulta){
+	private ResponseEntity<ProntuarioDTO> iniciarProntuario(@PathVariable Long idConsulta){
 		return ResponseEntity.ok(prontuarioService.inciaAtendimento(idConsulta));
 	}
 	
-	@PutMapping("/salvar")
-	private ResponseEntity<Prontuario> salvar(@RequestBody ProntuarioDTO prontuario){
-		return ResponseEntity.ok(prontuarioService.save(prontuario));
-	}
-	
 	@PutMapping("/finalizar")
-	private ResponseEntity<Prontuario> finalizar(@RequestBody ProntuarioDTO prontuario){
+	private ResponseEntity<ProntuarioDTO> finalizar(@RequestBody ProntuarioformDTO prontuario){
 		return ResponseEntity.ok(prontuarioService.finalizaAtendimento(prontuario));
 	}
 }
