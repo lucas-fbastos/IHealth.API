@@ -11,6 +11,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="prontuario",schema="public")
 public class Prontuario {
@@ -37,9 +40,11 @@ public class Prontuario {
 	@Column(name="desc_sumario")
 	private String descSumario;
 
-	@OneToMany
+	@OneToMany(mappedBy="prontuario")
+	@JsonManagedReference
+	@JsonIgnore
 	private List<DocumentoMedico> documentos;
-
+	
 	public Long getId() {
 		return id;
 	}

@@ -14,6 +14,7 @@ public class ProntuarioDTO {
 	private List<AlergiaDTO> alergias;
 	private List<MedicamentoDTO> medicamentos;
 	private List<DoencaCronicaDTO> doencas;
+	private List<ResponseFileDTO> arquivos;
 	
 	public Long getId() {
 		return id;
@@ -76,15 +77,12 @@ public class ProntuarioDTO {
 	public void setDoencas(List<DoencaCronicaDTO> doencas) {
 		this.doencas = doencas;
 	}
-	public ProntuarioDTO(Long id, Long idConsulta, String desc, String sumario, Boolean concordaTermos,
-			Boolean temAlergia, Boolean temDoencaCronica) {
-		this.id = id;
-		this.idConsulta = idConsulta;
-		this.desc = desc;
-		this.sumario = sumario;
-		this.concordaTermos = concordaTermos;
-		this.temAlergia = temAlergia;
-		this.temDoencaCronica = temDoencaCronica;
+	
+	public List<ResponseFileDTO> getArquivos() {
+		return arquivos;
+	}
+	public void setArquivos(List<ResponseFileDTO> arquivos) {
+		this.arquivos = arquivos;
 	}
 	public ProntuarioDTO() {}
 	

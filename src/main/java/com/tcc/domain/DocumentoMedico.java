@@ -19,17 +19,22 @@ public class DocumentoMedico {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="path_arquivo")
-	private String pathFile;
-	
-	@Column(name="desc_arquivo")
-	private String descArquivo;
+	@Column(name="nome_arquivo")
+	private String nomeArquivo;
 	
 	@ManyToOne
-	@JoinColumn(name="id_paciente")
+	@JoinColumn(name="id_prontuario")
 	@JsonBackReference
-	private Paciente paciente;
+	private Prontuario prontuario;
 
+	@Column(name="data")
+	private byte[] data;
+
+	@Column(name="tp_documento")
+	private Integer tipo;
+	
+	private String formato;
+	
 	public Long getId() {
 		return id;
 	}
@@ -38,29 +43,48 @@ public class DocumentoMedico {
 		this.id = id;
 	}
 
-	public String getPathFile() {
-		return pathFile;
+	public String getNomeArquivo() {
+		return nomeArquivo;
 	}
 
-	public void setPathFile(String pathFile) {
-		this.pathFile = pathFile;
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
 	}
 
-	public String getDescArquivo() {
-		return descArquivo;
+	public Prontuario getProntuario() {
+		return prontuario;
 	}
 
-	public void setDescArquivo(String descArquivo) {
-		this.descArquivo = descArquivo;
+	public void setProntuario(Prontuario prontuario) {
+		this.prontuario = prontuario;
 	}
 
-	public Paciente getPaciente() {
-		return paciente;
+	public byte[] getData() {
+		return data;
 	}
 
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public void setData(byte[] data) {
+		this.data = data;
 	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getFormato() {
+		return formato;
+	}
+
+	public void setFormato(String formato) {
+		this.formato = formato;
+	}
+
+	public DocumentoMedico() {	}
+
 	
 	
 }
