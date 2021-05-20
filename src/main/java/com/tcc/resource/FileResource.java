@@ -1,6 +1,9 @@
 package com.tcc.resource;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tcc.DTO.TipoArquivoDTO;
 import com.tcc.domain.DocumentoMedico;
+import com.tcc.enums.TipoArquivoEnum;
 import com.tcc.service.FileUploadService;
 
 @RestController
@@ -48,6 +53,14 @@ public class FileResource {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping("/tipos")
+	public ResponseEntity<List<TipoArquivoDTO>> getTipos(){
+		return ResponseEntity.ok(Stream.of(TipoArquivoEnum.values())
+					.map(x -> new TipoArquivoDTO(x.getTipo(),x.getDescricao()))
+					.collect(Collectors.toList()));
+	}
+	
 	
 	@DeleteMapping("{id}")
 	public ResponseEntity<Void> deletFileById(@PathVariable Long id) {
