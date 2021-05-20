@@ -21,6 +21,7 @@ import com.tcc.DTO.AgendamentoDTO;
 import com.tcc.DTO.ConsultaDTO;
 import com.tcc.DTO.MedicoDTO;
 import com.tcc.DTO.PacienteDTO;
+import com.tcc.DTO.ProntuarioDTO;
 import com.tcc.DTO.filter.ConsultaFilter;
 import com.tcc.domain.Clinica;
 import com.tcc.domain.Consulta;
@@ -135,13 +136,13 @@ public class ConsultaService {
 		List<LocalDateTime> datas = this.getDatasByTemporalidade(TemporalidadeEnum.values()[indiceTemporalidade]);
 		List<Consulta> consultas = this.consultaRepository.getAllBetweenDates(datas.get(0), datas.get(1));
 		if(consultas!=null && !consultas.isEmpty())
-			return consultas.stream().map(c -> new ConsultaDTO(c.getId(),
-											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),c.getDtFim(),
-											c.getTipoProcedimento(), c.getObservacao(),c.getStatusConsulta()))
+			return consultas.stream().map(c -> new ConsultaDTO(c.getConsultaId(),
+											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),
+											c.getDtFim(), c.getTipoProcedimento(), c.getObservacao(), 
+											c.getStatusConsulta(), new ProntuarioDTO(c.getProntuario())))
 							  .collect(Collectors.toList());
 		else 
 			throw new NoElementException("Não existem consultas para hoje");
-		
 	}
 
 
@@ -231,6 +232,7 @@ public class ConsultaService {
 	
 	public Page<ConsultaDTO> filter(Pageable page, ConsultaFilter filter ) {
 		Page<Consulta> consultas = this.consultaRepository.findByPacienteAndDates(filter, page);
+		consultas.getContent().forEach(c->{if(c.getProntuario()!=null) c.getProntuario().setConsulta(null);});
 		return toPageDTO(page,consultas);
 	}
 

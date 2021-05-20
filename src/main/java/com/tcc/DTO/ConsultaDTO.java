@@ -22,6 +22,7 @@ public class ConsultaDTO {
 	private Long idPaciente;
 	private Long idMedico;
 	private String status;
+	private ProntuarioDTO prontuario;
 	
 	public Long getId() {
 		return id;
@@ -88,10 +89,6 @@ public class ConsultaDTO {
 		this.idTipoProcedimento = idTipoProcedimento;
 	}
 	
-	public ConsultaDTO() {
-		
-	}
-	
 	public Long getIdPaciente() {
 		return idPaciente;
 	}
@@ -115,6 +112,20 @@ public class ConsultaDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public ProntuarioDTO getProntuario() {
+		return prontuario;
+	}
+
+	public void setProntuario(ProntuarioDTO prontuario) {
+		this.prontuario = prontuario;
+	}
+	
+	public ConsultaDTO() {
+		
+	}
+	
+
 
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
 			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento) {
@@ -131,7 +142,7 @@ public class ConsultaDTO {
 	
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
-			TipoProcedimento procedimento, String observacao, StatusConsultaEnum status) {
+			TipoProcedimento procedimento, String observacao, StatusConsultaEnum status, ProntuarioDTO prontuario) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -143,11 +154,12 @@ public class ConsultaDTO {
 		this.procedimento = procedimento;
 		if(status!=null)
 			this.status = status.getDescStatus();
+		this.prontuario = prontuario;
 	}
 	
 	public ConsultaDTO(Long id, PacienteDTO paciente, MedicoDTO medico, LocalDateTime dtInicio, LocalDateTime dtFim,
 			TipoProcedimento procedimento, String observacao, Long idTipoProcedimento, Long idPaciente, Long idMedico,
-			StatusConsultaEnum status) {
+			StatusConsultaEnum status, ProntuarioDTO prontuario) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -161,10 +173,11 @@ public class ConsultaDTO {
 		this.idMedico = idMedico;
 		if(status!=null)
 			this.status = status.getDescStatus();
+		this.prontuario = prontuario;
 	}
 	
 	public ConsultaDTO(Consulta c) {
-		this.id = c.getId();
+		this.id = c.getConsultaId();
 		this.medico = new MedicoDTO(c.getMedico());
 		this.paciente = new PacienteDTO(c.getPaciente());
 		this.dtFim = c.getDtFim();
@@ -173,6 +186,8 @@ public class ConsultaDTO {
 		this.procedimento = c.getTipoProcedimento();
 		if(c.getStatusConsulta()!=null)
 			this.status = c.getStatusConsulta().getDescStatus();
+		if(c.getProntuario()!=null)
+			this.prontuario = new ProntuarioDTO(c.getProntuario());
 	}
 	
 	

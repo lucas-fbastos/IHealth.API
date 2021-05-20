@@ -3,6 +3,7 @@ package com.tcc.domain;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,53 +11,60 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tcc.enums.StatusConsultaEnum;
 
 @Entity
-@Table(name="consulta",schema="public")
+@Table(name = "consulta", schema = "public")
 public class Consulta implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long consultaId;
+
 	@ManyToOne()
-	@JoinColumn(name="id_tipo_procedimento")
+	@JoinColumn(name = "id_tipo_procedimento")
 	private TipoProcedimento tipoProcedimento;
-	
+
 	@ManyToOne()
-	@JoinColumn(name="id_medico")
-	private Medico medico ;
-	
+	@JoinColumn(name = "id_medico")
+	private Medico medico;
+
 	@ManyToOne()
-	@JoinColumn(name="id_paciente")
+	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
-	
-	@Column(name="dt_consulta_inicio")
+
+	@Column(name = "dt_consulta_inicio")
 	private LocalDateTime dtInicio;
-	
-	@Column(name="dt_consulta_fim")
+
+	@Column(name = "dt_consulta_fim")
 	private LocalDateTime dtFim;
-	
-	@Column(name="status_consulta")
+
+	@Column(name = "status_consulta")
 	private Integer statusConsulta;
-	
-	@Column(name="bol_confirmada")
+
+	@Column(name = "bol_confirmada")
 	private Boolean confirmada;
 
-	@Column(name="observacao")
+	@Column(name = "observacao")
 	private String observacao;
-	
-	public Long getId() {
-		return id;
+
+	@OneToOne(mappedBy="consulta", cascade=CascadeType.ALL)
+	@JsonBackReference
+	private Prontuario prontuario;
+
+	public Long getConsultaId() {
+		return consultaId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setConsultaId(Long id) {
+		this.consultaId = id;
 	}
 
 	public TipoProcedimento getTipoProcedimento() {
@@ -114,37 +122,45 @@ public class Consulta implements Serializable {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	
+
 	public StatusConsultaEnum getStatusConsulta() {
 		return StatusConsultaEnum.toEnum(this.statusConsulta);
 	}
 
-	
 	public void setStatusConsulta(Integer statusConsulta) {
 		this.statusConsulta = statusConsulta;
+	}
+
+	public Prontuario getProntuario() {
+		return prontuario;
+	}
+
+	public void setProntuario(Prontuario prontuario) {
+		this.prontuario = prontuario;
 	}
 
 	public Consulta() {
 		super();
 	}
 
-	public Consulta(Long id, TipoProcedimento tipoProcedimento, Medico medico, Paciente paciente, LocalDateTime dtInicio,
-			LocalDateTime dtFim, Boolean confirmada) {
+	public Consulta(Long id, TipoProcedimento tipoProcedimento, Medico medico, Paciente paciente,
+			LocalDateTime dtInicio, LocalDateTime dtFim, Boolean confirmada, Prontuario p) {
 		super();
-		this.id = id;
+		this.consultaId = id;
 		this.tipoProcedimento = tipoProcedimento;
 		this.medico = medico;
 		this.paciente = paciente;
 		this.dtInicio = dtInicio;
 		this.dtFim = dtFim;
 		this.confirmada = confirmada;
+		this.prontuario = p;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((consultaId == null) ? 0 : consultaId.hashCode());
 		return result;
 	}
 
@@ -157,12 +173,12 @@ public class Consulta implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Consulta other = (Consulta) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (consultaId == null) {
+			if (other.consultaId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!consultaId.equals(other.consultaId))
 			return false;
 		return true;
 	}
-	
+
 }
