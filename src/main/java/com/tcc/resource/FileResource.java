@@ -47,7 +47,8 @@ public class FileResource {
 			DocumentoMedico fileDB = storageService.getFile(id);
 
 			return ResponseEntity.ok()
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getNomeArquivo() + "\"")
+					.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
+					.header(HttpHeaders.CONTENT_DISPOSITION,  fileDB.getNomeArquivo())
 					.body(fileDB.getData());
 		} catch (NoSuchElementException e) {
 			return ResponseEntity.notFound().build();
