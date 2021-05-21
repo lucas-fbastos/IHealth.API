@@ -2,6 +2,7 @@ package com.tcc.DTO;
 
 import java.io.Serializable;
 
+import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Paciente;
 
 
@@ -20,6 +21,16 @@ public class PacienteDTO implements Serializable{
 	private String telefone;
 	private String sexo;
 	private Boolean compartilhaDados;
+	private DadosMedicos dadosMedicos;
+	
+
+	public DadosMedicos getDadosMedicos() {
+		return dadosMedicos;
+	}
+
+	public void setDadosMedicos(DadosMedicos dadosMedicos) {
+		this.dadosMedicos = dadosMedicos;
+	}
 	
 	public Boolean isCompartilhaDados() {
 		return compartilhaDados;
@@ -98,6 +109,9 @@ public class PacienteDTO implements Serializable{
 		this.telefone = paciente.getUsuario().getTelefone();
 		this.sexo = String.valueOf(paciente.getUsuario().getSexo());
 		this.compartilhaDados = paciente.isCompartilhaDados();
+		if(paciente.getDadosmedicos()!=null && this.compartilhaDados) {
+			this.dadosMedicos = paciente.getDadosmedicos();
+		}
 	}
 	
 	
