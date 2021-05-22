@@ -33,7 +33,6 @@ public class DadosMedicos implements Serializable{
 
 	@ManyToOne
 	@JoinColumn(name="id_tipo_sanguineo")
-	@JsonManagedReference
 	private TipoSanguineo tipoSanguineo;
 	
 	@Column(name="dt_atualizacao")
@@ -42,15 +41,15 @@ public class DadosMedicos implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="id_paciente", referencedColumnName="id")
-	@JsonBackReference
+	@JsonBackReference("paciente-dados")
 	private Paciente paciente;
 
 	@OneToMany(mappedBy="dadosMedicos")
-	@JsonManagedReference
+	@JsonManagedReference("doenca-dados")
 	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
 	
 	@OneToMany(mappedBy="dadosMedicos")
-	@JsonManagedReference
+	@JsonManagedReference("medicamento-dados")
 	private Set<Medicamento> medicamentos = new HashSet<>();
 	
 	@Column(name="peso")
@@ -66,7 +65,7 @@ public class DadosMedicos implements Serializable{
 	private String descImc;
 
 	@OneToMany(mappedBy="dadosMedicos")
-	@JsonManagedReference
+	@JsonManagedReference("alergia-dados")
 	private Set<Alergia> alergias = new HashSet<>();
 	
 	public Long getId() {

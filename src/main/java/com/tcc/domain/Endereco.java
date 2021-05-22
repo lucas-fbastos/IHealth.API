@@ -26,12 +26,12 @@ public class Endereco implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
-	@JsonBackReference
+	@JsonBackReference("usuario-endereco")
 	private Usuario usuarioEndereco;
 	
 	@OneToOne
 	@JoinColumn(name="id_clinica", referencedColumnName="id")
-	@JsonBackReference
+	@JsonBackReference("clinica-endereco")
 	private Clinica clinicaEndereco;
 			
 	@Column(name="nu_cep")

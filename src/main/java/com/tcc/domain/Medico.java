@@ -28,7 +28,7 @@ public class Medico {
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
-	@JsonBackReference
+	@JsonBackReference("medico-usuario")
 	private Usuario usuario;
 	
 	@Column(name="hr_entrada")

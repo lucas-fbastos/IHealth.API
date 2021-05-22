@@ -41,7 +41,7 @@ public class Clinica {
 	
 	
 	@OneToOne(mappedBy="clinicaEndereco",cascade=CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference("clinica-endereco")
 	private Endereco endereco;
 
 	public Long getId() {

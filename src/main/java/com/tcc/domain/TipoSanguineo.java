@@ -27,10 +27,6 @@ public class TipoSanguineo implements Serializable{
 	@Column(name="desc_tipo_sanguineo")
 	private String descricaoTipoSanguineo;
 	
-	@OneToMany(mappedBy="tipoSanguineo")
-	@JsonBackReference
-	private Set<DadosMedicos> dadosMedicos = new HashSet<>();
-
 	public Integer getId() {
 		return id;
 	}
@@ -39,14 +35,6 @@ public class TipoSanguineo implements Serializable{
 		this.id = id;
 	}
 	
-	public Set<DadosMedicos> getDadosMedicos() {
-		return dadosMedicos;
-	}
-
-	public void setDadosMedicos(Set<DadosMedicos> dadosMedicos) {
-		this.dadosMedicos = dadosMedicos;
-	}
-
 	public String getDescricaoTipoSanguineo() {
 		return descricaoTipoSanguineo;
 	}

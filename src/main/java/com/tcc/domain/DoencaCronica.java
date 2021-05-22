@@ -28,7 +28,7 @@ public class DoencaCronica implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="id_dados_medicos")
-	@JsonBackReference
+	@JsonBackReference("doenca-dados")
 	private DadosMedicos dadosMedicos;
 	
 	public Long getId() {

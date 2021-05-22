@@ -34,12 +34,12 @@ public class Paciente implements Serializable{
 	private String nuTelefone;
 	
 	@OneToOne(mappedBy="paciente")
-	@JsonManagedReference
+	@JsonManagedReference("paciente-dados")
 	private DadosMedicos dadosmedicos;
 	
 	@OneToOne
 	@JoinColumn(name="id_user", referencedColumnName="id")
-	@JsonBackReference
+	@JsonBackReference("paciente-usuario")
 	private Usuario usuario;
 	
 	@Column(name="bol_compartilha_dados")

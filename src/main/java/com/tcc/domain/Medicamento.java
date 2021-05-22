@@ -30,7 +30,7 @@ public class Medicamento implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name="id_dados_medicos")
-	@JsonBackReference
+	@JsonBackReference("medicamento-dados")
 	private DadosMedicos dadosMedicos;
 
 	@Column(name="dt_registro")

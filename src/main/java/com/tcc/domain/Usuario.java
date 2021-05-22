@@ -56,15 +56,15 @@ public class Usuario implements Serializable {
 	private Set<Integer> perfis = new HashSet<>();
 
 	@OneToOne(mappedBy="usuarioEndereco")
-	@JsonManagedReference
+	@JsonManagedReference("usuario-endereco")
 	private Endereco endereco;
 	
 	@OneToOne(mappedBy="usuario")
-	@JsonManagedReference
+	@JsonManagedReference("medico-usuario")
 	private Medico medico;
 	
 	@OneToOne(mappedBy="usuario")
-	@JsonManagedReference
+	@JsonManagedReference("paciente-usuario")
 	private Paciente paciente;
 	
 	@Column(name="nu_cpf")

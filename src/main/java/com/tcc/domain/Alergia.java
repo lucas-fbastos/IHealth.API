@@ -22,7 +22,7 @@ public class Alergia {
 	
 	@ManyToOne
 	@JoinColumn(name="id_dados_medicos")
-	@JsonBackReference
+	@JsonBackReference("alergia-dados")
 	private DadosMedicos dadosMedicos;
 	
 	@Column(name="desc_alergia")
