@@ -26,9 +26,6 @@ public class TipoAlergia implements Serializable {
 	@Column(name="desc_tipo")
 	private String descTipo;
 
-	@OneToMany(mappedBy="tipoAlergia")
-	@JsonBackReference
-	private List<Alergia> alergia;
 	
 	public Integer getId() {
 		return id;

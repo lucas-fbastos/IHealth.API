@@ -30,7 +30,6 @@ public class Alergia {
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo")
-	@JsonManagedReference
 	private TipoAlergia tipoAlergia;
 
 	public Long getId() {
