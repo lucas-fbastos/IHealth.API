@@ -136,7 +136,7 @@ public class ConsultaService {
 		List<LocalDateTime> datas = this.getDatasByTemporalidade(TemporalidadeEnum.values()[indiceTemporalidade]);
 		List<Consulta> consultas = this.consultaRepository.getAllBetweenDates(datas.get(0), datas.get(1));
 		if(consultas!=null && !consultas.isEmpty())
-			return consultas.stream().map(c -> new ConsultaDTO(c.getConsultaId(),
+			return consultas.stream().map(c -> new ConsultaDTO(c.getId(),
 											new PacienteDTO(c.getPaciente()), new MedicoDTO(c.getMedico()),c.getDtIncio(),
 											c.getDtFim(), c.getTipoProcedimento(), c.getObservacao(), 
 											c.getStatusConsulta(), new ProntuarioDTO(c.getProntuario())))

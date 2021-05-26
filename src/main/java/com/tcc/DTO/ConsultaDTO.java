@@ -177,7 +177,7 @@ public class ConsultaDTO {
 	}
 	
 	public ConsultaDTO(Consulta c) {
-		this.id = c.getConsultaId();
+		this.id = c.getId();
 		this.medico = new MedicoDTO(c.getMedico());
 		this.paciente = new PacienteDTO(c.getPaciente());
 		this.dtFim = c.getDtFim();

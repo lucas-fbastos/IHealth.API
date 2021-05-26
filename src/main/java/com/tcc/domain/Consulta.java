@@ -26,7 +26,7 @@ public class Consulta implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long consultaId;
+	private Long id;
 
 	@ManyToOne()
 	@JoinColumn(name = "id_tipo_procedimento")
@@ -59,12 +59,12 @@ public class Consulta implements Serializable {
 	@JsonBackReference
 	private Prontuario prontuario;
 
-	public Long getConsultaId() {
-		return consultaId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setConsultaId(Long id) {
-		this.consultaId = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public TipoProcedimento getTipoProcedimento() {
@@ -146,7 +146,7 @@ public class Consulta implements Serializable {
 	public Consulta(Long id, TipoProcedimento tipoProcedimento, Medico medico, Paciente paciente,
 			LocalDateTime dtInicio, LocalDateTime dtFim, Boolean confirmada, Prontuario p) {
 		super();
-		this.consultaId = id;
+		this.id = id;
 		this.tipoProcedimento = tipoProcedimento;
 		this.medico = medico;
 		this.paciente = paciente;
@@ -160,7 +160,7 @@ public class Consulta implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((consultaId == null) ? 0 : consultaId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -173,10 +173,10 @@ public class Consulta implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Consulta other = (Consulta) obj;
-		if (consultaId == null) {
-			if (other.consultaId != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!consultaId.equals(other.consultaId))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
