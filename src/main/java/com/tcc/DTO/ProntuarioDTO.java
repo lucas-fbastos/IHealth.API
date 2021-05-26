@@ -69,19 +69,21 @@ public class ProntuarioDTO {
 	}
 	
 	public ProntuarioDTO(Prontuario p) {
-		this.id = p.getId();
-		this.consulta = p.getConsulta();
-		this.descProntuario = p.getDescProntuario();
-		this.temAlergia = p.getTemAlergia();
-		this.temDoencaCronica = p.getTemDoencaCronica();
-		this.concordouTermos = p.getConcordouTermos();
-		this.descSumario = p.getDescSumario();
-		if(p.getDocumentos()!=null && !p.getDocumentos().isEmpty())
-			this.documentos = p.getDocumentos().stream().map(dbFile -> {
-				String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
-						.path(dbFile.getId().toString()).toUriString();
-				return new ResponseFileDTO(dbFile.getId(),dbFile.getNomeArquivo(), fileDownloadUri, dbFile.getFormato(), dbFile.getData().length, TipoArquivoEnum.toEnum(dbFile.getTipo()).getDescricao());
-			}).collect(Collectors.toList());
+		if(p!=null) {
+			this.id = p.getId();
+			this.consulta = p.getConsulta();
+			this.descProntuario = p.getDescProntuario();
+			this.temAlergia = p.getTemAlergia();
+			this.temDoencaCronica = p.getTemDoencaCronica();
+			this.concordouTermos = p.getConcordouTermos();
+			this.descSumario = p.getDescSumario();
+			if(p.getDocumentos()!=null && !p.getDocumentos().isEmpty())
+				this.documentos = p.getDocumentos().stream().map(dbFile -> {
+					String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
+							.path(dbFile.getId().toString()).toUriString();
+					return new ResponseFileDTO(dbFile.getId(),dbFile.getNomeArquivo(), fileDownloadUri, dbFile.getFormato(), dbFile.getData().length, TipoArquivoEnum.toEnum(dbFile.getTipo()).getDescricao());
+				}).collect(Collectors.toList());
+		}
 	}
 	
 	public ProntuarioDTO() {}
