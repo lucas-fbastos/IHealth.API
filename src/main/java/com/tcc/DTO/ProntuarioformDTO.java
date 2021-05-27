@@ -6,8 +6,8 @@ public class ProntuarioformDTO {
 
 	private Long id;
 	private Long idConsulta;
-	private String desc;
-	private String sumario;
+	private String descConsulta;
+	private String descSumario;
 	private Boolean concordaTermos;
 	private Boolean temAlergia;
 	private Boolean temDoencaCronica;
@@ -29,17 +29,17 @@ public class ProntuarioformDTO {
 	public void setIdConsulta(Long idConsulta) {
 		this.idConsulta = idConsulta;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescConsulta() {
+		return descConsulta;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescConsulta(String desc) {
+		this.descConsulta = desc;
 	}
-	public String getSumario() {
-		return sumario;
+	public String getDescSumario() {
+		return descSumario;
 	}
-	public void setSumario(String sumario) {
-		this.sumario = sumario;
+	public void setDescSumario(String sumario) {
+		this.descSumario = sumario;
 	}
 	public Boolean getConcordaTermos() {
 		return concordaTermos;

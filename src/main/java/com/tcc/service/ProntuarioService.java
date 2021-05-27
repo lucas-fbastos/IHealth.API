@@ -48,9 +48,9 @@ public class ProntuarioService {
 	public Prontuario save(ProntuarioformDTO prontuario) {
 		Prontuario p = getById(prontuario.getId());
 		p.setConcordouTermos(prontuario.getConcordaTermos());
-		p.setDescProntuario(prontuario.getDesc());
+		p.setDescProntuario(prontuario.getDescConsulta());
 		p.setTemAlergia(prontuario.getTemAlergia());
-		p.setDescSumario(prontuario.getSumario());
+		p.setDescSumario(prontuario.getDescSumario());
 		p.setTemDoencaCronica(prontuario.getTemDoencaCronica());
 		p.setDiagnostico(prontuario.getDiagnostico());
 		p = repository.save(p);
