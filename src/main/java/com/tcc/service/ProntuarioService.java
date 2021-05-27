@@ -1,14 +1,17 @@
 package com.tcc.service;
 
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.ProntuarioDTO;
 import com.tcc.DTO.ProntuarioformDTO;
+import com.tcc.domain.Alergia;
 import com.tcc.domain.Consulta;
+import com.tcc.domain.DoencaCronica;
+import com.tcc.domain.Medicamento;
 import com.tcc.domain.Prontuario;
 import com.tcc.repository.ProntuarioRepository;
 import com.tcc.service.exceptions.NoElementException;
@@ -56,13 +59,13 @@ public class ProntuarioService {
 		p.setDiagnostico(prontuario.getDiagnostico());
 		p = repository.save(p);
 		if(prontuario.getAlergias()!=null && !prontuario.getAlergias().isEmpty()) 
-			p.setAlergias(Set.copyOf(this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente(),p)));
+			p.setAlergias(new HashSet<Alergia>(this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente(),p)));
 		
 		if(prontuario.getMedicamentos()!=null && !prontuario.getMedicamentos().isEmpty()) 
-			p.setMedicamentos(Set.copyOf(this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente(),p)));
+			p.setMedicamentos(new HashSet<Medicamento>(this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente(),p)));
 		
 		if(prontuario.getDoencas()!=null && !prontuario.getDoencas().isEmpty()) 
-			p.setDoencasCronicas(Set.copyOf(this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente(),p)));
+			p.setDoencasCronicas(new HashSet<DoencaCronica>(this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente(),p)));
 		
 		return p;
 	}
