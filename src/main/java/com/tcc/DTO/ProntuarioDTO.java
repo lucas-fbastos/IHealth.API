@@ -1,11 +1,16 @@
 package com.tcc.DTO;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.tcc.domain.Alergia;
 import com.tcc.domain.Consulta;
+import com.tcc.domain.DoencaCronica;
+import com.tcc.domain.Medicamento;
 import com.tcc.domain.Prontuario;
 import com.tcc.enums.TipoArquivoEnum;
 
@@ -18,7 +23,12 @@ public class ProntuarioDTO {
 	private Boolean temDoencaCronica;
 	private Boolean concordouTermos;
 	private String descSumario;
+	private String diagnostico;
 	private List<ResponseFileDTO> documentos;
+	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
+	private Set<Medicamento> medicamentos = new HashSet<>();
+	private Set<Alergia> alergias = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
@@ -68,6 +78,31 @@ public class ProntuarioDTO {
 		this.documentos = documentos;
 	}
 	
+	public Set<DoencaCronica> getDoencasCronicas() {
+		return doencasCronicas;
+	}
+	public void setDoencasCronicas(Set<DoencaCronica> doencasCronicas) {
+		this.doencasCronicas = doencasCronicas;
+	}
+	public Set<Medicamento> getMedicamentos() {
+		return medicamentos;
+	}
+	public void setMedicamentos(Set<Medicamento> medicamentos) {
+		this.medicamentos = medicamentos;
+	}
+	public Set<Alergia> getAlergias() {
+		return alergias;
+	}
+	public void setAlergias(Set<Alergia> alergias) {
+		this.alergias = alergias;
+	}
+	
+	public String getDiagnostico() {
+		return diagnostico;
+	}
+	public void setDiagnostico(String diagnostico) {
+		this.diagnostico = diagnostico;
+	}
 	public ProntuarioDTO(Prontuario p) {
 		if(p!=null) {
 			this.id = p.getId();
@@ -83,6 +118,10 @@ public class ProntuarioDTO {
 							.path(dbFile.getId().toString()).toUriString();
 					return new ResponseFileDTO(dbFile.getId(),dbFile.getNomeArquivo(), fileDownloadUri, dbFile.getFormato(), dbFile.getData().length, TipoArquivoEnum.toEnum(dbFile.getTipo()).getDescricao());
 				}).collect(Collectors.toList());
+			this.alergias = p.getAlergias();
+			this.medicamentos = p.getMedicamentos();
+			this.doencasCronicas = p.getDoencasCronicas();
+			this.diagnostico = p.getDiagnostico();
 		}
 	}
 	

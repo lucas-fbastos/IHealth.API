@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="alergia", schema="public")
@@ -24,6 +23,11 @@ public class Alergia {
 	@JoinColumn(name="id_dados_medicos")
 	@JsonBackReference("alergia-dados")
 	private DadosMedicos dadosMedicos;
+	
+	@ManyToOne
+	@JoinColumn(name="id_prontuario")
+	@JsonBackReference("alergia-prontuario")
+	private Prontuario prontuario;
 	
 	@Column(name="desc_alergia")
 	private String descAlergia;
@@ -62,6 +66,14 @@ public class Alergia {
 
 	public void setTipoAlergia(TipoAlergia tipoAlergia) {
 		this.tipoAlergia = tipoAlergia;
+	}
+	
+	public Prontuario getProntuario() {
+		return prontuario;
+	}
+
+	public void setProntuario(Prontuario prontuario) {
+		this.prontuario = prontuario;
 	}
 
 	public Alergia(Long id, DadosMedicos dadosMedicos, String descAlergia, TipoAlergia tipoAlergia) {

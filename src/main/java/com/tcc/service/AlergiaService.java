@@ -14,6 +14,7 @@ import com.tcc.DTO.AlergiaDTO;
 import com.tcc.domain.Alergia;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Paciente;
+import com.tcc.domain.Prontuario;
 import com.tcc.domain.TipoAlergia;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.DadosMedicosRepository;
@@ -35,7 +36,7 @@ public class AlergiaService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
-	public List<Alergia> addAlergia(List<AlergiaDTO> alergias, Paciente paciente) {
+	public List<Alergia> addAlergia(List<AlergiaDTO> alergias, Paciente paciente, Prontuario p) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(paciente).orElseThrow();
 		List<Alergia> list = new ArrayList<>();
 			
@@ -47,6 +48,7 @@ public class AlergiaService {
 				a.setDescAlergia(dto.getDescAlergia());
 				TipoAlergia tipoAlergia = this.tipoAlergiaRepository.findById(dto.getIdTipoAlergia()).orElseThrow();
 				a.setTipoAlergia(tipoAlergia);
+				a.setProntuario(p);
 				list.add(a);
 			}
 		}catch(NoSuchElementException e) {

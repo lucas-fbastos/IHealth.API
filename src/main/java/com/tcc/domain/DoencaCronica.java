@@ -31,6 +31,11 @@ public class DoencaCronica implements Serializable{
 	@JsonBackReference("doenca-dados")
 	private DadosMedicos dadosMedicos;
 	
+	@ManyToOne
+	@JoinColumn(name="id_prontuario")
+	@JsonBackReference("doenca-prontuario")
+	private Prontuario prontuario;
+	
 	public Long getId() {
 		return id;
 	}
@@ -53,6 +58,14 @@ public class DoencaCronica implements Serializable{
 
 	public void setDadosMedicos(DadosMedicos dadosMedicos) {
 		this.dadosMedicos = dadosMedicos;
+	}
+
+	public Prontuario getProntuario() {
+		return prontuario;
+	}
+
+	public void setProntuario(Prontuario prontuario) {
+		this.prontuario = prontuario;
 	}
 
 	public DoencaCronica() {

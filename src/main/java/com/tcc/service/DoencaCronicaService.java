@@ -12,6 +12,7 @@ import com.tcc.DTO.DoencaCronicaDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.DoencaCronica;
 import com.tcc.domain.Paciente;
+import com.tcc.domain.Prontuario;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.DoencaCronicaRepository;
 import com.tcc.service.exceptions.NoElementException;
@@ -28,7 +29,7 @@ public class DoencaCronicaService {
 	@Autowired
 	private DadosMedicosRepository dadosMedicosRepository;
 	
-	public List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO, Paciente p) {
+	public List<DoencaCronica> save(List<DoencaCronicaDTO> listDTO, Paciente p, Prontuario prontuario) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 		List<DoencaCronica> list = new ArrayList<>();
 		try{
@@ -37,6 +38,7 @@ public class DoencaCronicaService {
 				doenca.setId(null);
 				doenca.setDadosMedicos(dados);
 				doenca.setDescDoenca(dto.getDescDoenca());
+				doenca.setProntuario(prontuario);
 				list.add(doenca);
 			}
 		return this.doencaCronicaRepository.saveAll(list);

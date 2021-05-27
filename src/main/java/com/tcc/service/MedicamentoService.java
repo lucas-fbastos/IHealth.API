@@ -12,9 +12,9 @@ import com.tcc.DTO.MedicamentoDTO;
 import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Medicamento;
 import com.tcc.domain.Paciente;
+import com.tcc.domain.Prontuario;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.MedicamentoRepository;
-
 import com.tcc.service.exceptions.NoElementException;
 
 @Service
@@ -30,7 +30,7 @@ public class MedicamentoService {
 	private PacienteService pacienteService;
 	
 
-	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos, Paciente p) {
+	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos, Paciente p, Prontuario prontuario) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 		List<Medicamento> list = new ArrayList<>();
 		for(MedicamentoDTO dto : medicamentos) {
@@ -38,8 +38,10 @@ public class MedicamentoService {
 			m.setId(null);
 			m.setDuracaoTratamento(dto.getDuracaoTratamento());
 			m.setDadosMedicos(dados);
+			m.setDosagem(dto.getDosagem());
 			m.setDescMedicamento(dto.getDesc());
 			m.setDtRegistro(new Date(System.currentTimeMillis()));
+			m.setProntuario(prontuario);
 			list.add(m);
 		}
 		this.medicamentoRepository.saveAll(list);

@@ -39,7 +39,15 @@ public class Medicamento implements Serializable {
 	
 	@Column(name="desc_duracao_tratamento")
 	private String duracaoTratamento;
-		
+	
+	@Column(name="desc_dosagem")
+	private String dosagem;
+	
+	@ManyToOne
+	@JoinColumn(name="id_prontuario")
+	@JsonBackReference("medicamento-prontuario")
+	private Prontuario prontuario;
+	
 	public Long getId() {
 		return id;
 	}
@@ -83,6 +91,22 @@ public class Medicamento implements Serializable {
 
 	public void setDuracaoTratamento(String duracaoTratamento) {
 		this.duracaoTratamento = duracaoTratamento;
+	}
+
+	public String getDosagem() {
+		return dosagem;
+	}
+
+	public void setDosagem(String dosagem) {
+		this.dosagem = dosagem;
+	}
+
+	public Prontuario getProntuario() {
+		return prontuario;
+	}
+
+	public void setProntuario(Prontuario prontuario) {
+		this.prontuario = prontuario;
 	}
 
 	public Medicamento(Long id, String descMedicamento, DadosMedicos dadosMedicos, Date dtRegistro) {

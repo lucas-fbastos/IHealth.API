@@ -11,6 +11,7 @@ public class ProntuarioformDTO {
 	private Boolean concordaTermos;
 	private Boolean temAlergia;
 	private Boolean temDoencaCronica;
+	private String diagnostico;
 	private List<AlergiaDTO> alergias;
 	private List<MedicamentoDTO> medicamentos;
 	private List<DoencaCronicaDTO> doencas;
@@ -83,6 +84,13 @@ public class ProntuarioformDTO {
 	}
 	public void setArquivos(List<ResponseFileDTO> arquivos) {
 		this.arquivos = arquivos;
+	}
+	
+	public String getDiagnostico() {
+		return diagnostico;
+	}
+	public void setDiagnostico(String diagnostico) {
+		this.diagnostico = diagnostico;
 	}
 	public ProntuarioformDTO() {}
 	

@@ -23,11 +23,11 @@ public class DadosMedicosUserDTO implements Serializable{
 	
 	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
 	private Set<Medicamento> medicamentos = new HashSet<>();
+	private Set<Alergia> alergias = new HashSet<>();
 	private Double peso;
 	private Double altura;
 	private Double vlImc;
 	private String descImc;
-	private Set<Alergia> alergias = new HashSet<>();
 	private Integer idade;
 
 	public Long getId() {

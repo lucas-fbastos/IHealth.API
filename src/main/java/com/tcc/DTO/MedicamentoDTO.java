@@ -19,7 +19,7 @@ public class MedicamentoDTO implements Serializable{
 	
 	private String duracaoTratamento;
 	
-	
+	private String dosagem;
 
 	public String getDuracaoTratamento() {
 		return duracaoTratamento;
@@ -44,6 +44,16 @@ public class MedicamentoDTO implements Serializable{
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+	
+	
+
+	public String getDosagem() {
+		return dosagem;
+	}
+
+	public void setDosagem(String dosagem) {
+		this.dosagem = dosagem;
+	}
 
 	public MedicamentoDTO() {
 		super();
@@ -52,6 +62,7 @@ public class MedicamentoDTO implements Serializable{
 	public MedicamentoDTO(Medicamento m) {
 		this.desc = m.getDescMedicamento();
 		this.id = m.getId();
+		this.dosagem = m.getDosagem();
 	}
 	
 	

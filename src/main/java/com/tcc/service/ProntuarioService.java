@@ -52,16 +52,18 @@ public class ProntuarioService {
 		p.setTemAlergia(prontuario.getTemAlergia());
 		p.setDescSumario(prontuario.getSumario());
 		p.setTemDoencaCronica(prontuario.getTemDoencaCronica());
+		p.setDiagnostico(prontuario.getDiagnostico());
+		p = repository.save(p);
 		if(prontuario.getAlergias()!=null && !prontuario.getAlergias().isEmpty()) 
-			this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente());
+			this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente(),p);
 		
 		if(prontuario.getMedicamentos()!=null && !prontuario.getMedicamentos().isEmpty()) 
-			this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente());
+			this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente(),p);
 		
 		if(prontuario.getDoencas()!=null && !prontuario.getDoencas().isEmpty()) 
-			this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente());
+			this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente(),p);
 		
-		return repository.save(p);
+		return p;
 	}
 	
 	public ProntuarioDTO finalizaAtendimento(ProntuarioformDTO prontuario) {

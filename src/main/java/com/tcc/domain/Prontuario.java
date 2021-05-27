@@ -1,6 +1,8 @@
 package com.tcc.domain;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +41,9 @@ public class Prontuario {
 	@Column(name="concordou_termos")
 	private Boolean concordouTermos;
 	
+	@Column(name="desc_diagnostico")
+	private String diagnostico;
+	
 	@Column(name="desc_sumario")
 	private String descSumario;
 
@@ -46,6 +51,18 @@ public class Prontuario {
 	@JsonManagedReference
 	@JsonIgnore
 	private List<DocumentoMedico> documentos;
+	
+	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference("doenca-prontuario")
+	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
+	
+	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference("medicamento-prontuario")
+	private Set<Medicamento> medicamentos = new HashSet<>();
+	
+	@OneToMany(mappedBy="dadosMedicos")
+	@JsonManagedReference("alergia-prontuario")
+	private Set<Alergia> alergias = new HashSet<>();
 	
 	public Long getId() {
 		return id;
@@ -109,6 +126,38 @@ public class Prontuario {
 
 	public void setDocumentos(List<DocumentoMedico> documentos) {
 		this.documentos = documentos;
+	}
+
+	public Set<DoencaCronica> getDoencasCronicas() {
+		return doencasCronicas;
+	}
+
+	public void setDoencasCronicas(Set<DoencaCronica> doencasCronicas) {
+		this.doencasCronicas = doencasCronicas;
+	}
+
+	public Set<Medicamento> getMedicamentos() {
+		return medicamentos;
+	}
+
+	public void setMedicamentos(Set<Medicamento> medicamentos) {
+		this.medicamentos = medicamentos;
+	}
+
+	public Set<Alergia> getAlergias() {
+		return alergias;
+	}
+
+	public void setAlergias(Set<Alergia> alergias) {
+		this.alergias = alergias;
+	}
+
+	public String getDiagnostico() {
+		return diagnostico;
+	}
+
+	public void setDiagnostico(String diagnostico) {
+		this.diagnostico = diagnostico;
 	}
 	
 	
