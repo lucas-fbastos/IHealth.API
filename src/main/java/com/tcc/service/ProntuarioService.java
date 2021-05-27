@@ -1,6 +1,7 @@
 package com.tcc.service;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,13 +56,13 @@ public class ProntuarioService {
 		p.setDiagnostico(prontuario.getDiagnostico());
 		p = repository.save(p);
 		if(prontuario.getAlergias()!=null && !prontuario.getAlergias().isEmpty()) 
-			this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente(),p);
+			p.setAlergias(Set.copyOf(this.alergiaService.addAlergia(prontuario.getAlergias(), p.getConsulta().getPaciente(),p)));
 		
 		if(prontuario.getMedicamentos()!=null && !prontuario.getMedicamentos().isEmpty()) 
-			this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente(),p);
+			p.setMedicamentos(Set.copyOf(this.medicamentoService.addMedicamentos(prontuario.getMedicamentos(), p.getConsulta().getPaciente(),p)));
 		
 		if(prontuario.getDoencas()!=null && !prontuario.getDoencas().isEmpty()) 
-			this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente(),p);
+			p.setDoencasCronicas(Set.copyOf(this.doencaCronicaService.save(prontuario.getDoencas(), p.getConsulta().getPaciente(),p)));
 		
 		return p;
 	}
