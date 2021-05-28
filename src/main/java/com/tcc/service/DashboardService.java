@@ -20,6 +20,7 @@ import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.ConsultaRepository;
 import com.tcc.repository.ProntuarioRepository;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.PerfilInvalidoException;
 
 @Service
 public class DashboardService {
@@ -70,6 +71,7 @@ public class DashboardService {
 	public PacienteDashDTO getDashPaciente() {
 		PacienteDashDTO dto = new PacienteDashDTO();
 		Usuario usuario = this.userService.getUserLogado();
+		if(usuario.getPaciente()==null) throw new PerfilInvalidoException("Usuário não é paciente");
 		dto.setQuantitativosPorTipoAlergia(this.alergiaRepository.findTotalAlergiasPorTipo(usuario.getPaciente().getDadosmedicos().getId()));
 		dto.setQuantitativosPorTipoProcedimento(consultaRepository.getQuantitativoTipoConsulta(usuario.getPaciente().getId()));
 		dto.setQuantiativoAlergia((long) usuario.getPaciente().getDadosmedicos().getAlergias().size());
