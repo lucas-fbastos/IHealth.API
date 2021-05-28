@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.tcc.service.exceptions.DataIntegrityException;
 import com.tcc.service.exceptions.NoElementException;
 import com.tcc.service.exceptions.ObjetoInvalidoException;
+import com.tcc.service.exceptions.PerfilInvalidoException;
 import com.tcc.service.exceptions.TemporalidadeException;
 import com.tcc.service.exceptions.UserDeslogadoException;
 
@@ -57,5 +58,13 @@ public class ResourceExceptionHandler {
 		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(),System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
+	
+	@ExceptionHandler(PerfilInvalidoException.class)
+	public ResponseEntity<StandardError> StandardError(PerfilInvalidoException e, HttpServletRequest req){
+		StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(),e.getMessage(),System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
+	
 
 }
