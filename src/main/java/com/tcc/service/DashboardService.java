@@ -1,26 +1,37 @@
 package com.tcc.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tcc.DTO.PacienteDashDTO;
+import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Alergia;
+import com.tcc.domain.Consulta;
+import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
 import com.tcc.repository.AlergiaRepository;
+import com.tcc.repository.ConsultaRepository;
+import com.tcc.repository.ProntuarioRepository;
 import com.tcc.service.exceptions.NoElementException;
 
 @Service
 public class DashboardService {
 
-	
+	@Autowired
+	private ConsultaRepository consultaRepository;
 	
 	@Autowired
 	private AlergiaRepository alergiaRepository;
 	
+	@Autowired
+	private ProntuarioRepository prontuarioRepository;
 	
 	@Autowired
 	private UsuarioService userService;
@@ -56,5 +67,44 @@ public class DashboardService {
 		return result;
 	}
 	
+	public PacienteDashDTO getDashPaciente() {
+		PacienteDashDTO dto = new PacienteDashDTO();
+		Usuario usuario = this.userService.getUserLogado();
+		dto.setQuantitativosPorTipoAlergia(this.alergiaRepository.findTotalAlergiasPorTipo(usuario.getPaciente().getDadosmedicos().getId()));
+		dto.setQuantitativosPorTipoProcedimento(consultaRepository.getQuantitativoTipoConsulta(usuario.getPaciente().getId()));
+		dto.setQuantiativoAlergia((long) usuario.getPaciente().getDadosmedicos().getAlergias().size());
+		dto.setQuantiativoDoencaCronica((long) usuario.getPaciente().getDadosmedicos().getDoencasCronicas().size());
+		dto.setQuantiativoMedicamentos((long) usuario.getPaciente().getDadosmedicos().getMedicamentos().size());
+		dto.setDiagnosticosPorData(this.prontuarioRepository.getDiagnosticosPorPaciente(usuario.getPaciente().getId()));
+		List<Consulta> consultas = this.consultaRepository.findAllByPaciente_id(usuario.getPaciente().getId());
+		dto.setQuantitativosPorTipoEspecializacao(quantificaEspecialidadesPorConsultas(consultas));
+		Long qtd = 0L;
+		for(TipoQuantidade tp : dto.getQuantitativosPorTipoProcedimento())
+			qtd+=tp.getQuantidade();
+		dto.setQuantitativoProcedimento(qtd);
+		return dto;
+	}
+
+	private List<TipoQuantidade> quantificaEspecialidadesPorConsultas(List<Consulta> consultas) {
+		List<TipoQuantidade> tpList  = new ArrayList<>();
+		consultas.forEach(c -> {
+			Medico m = c.getMedico();
+			m.getEspecializacoes().forEach(
+					e -> {
+						if(tpList.stream().filter(
+								x-> x.getDescricao().compareTo(e.getDescEspecializacao())==0)
+									.collect(Collectors.toList()).size()==0) {
+							tpList.add(new TipoQuantidade(e.getDescEspecializacao(),1l));
+						}else {
+							tpList.forEach(i -> {
+								if(i.getDescricao()==e.getDescEspecializacao())
+									i.setQuantidade(i.getQuantidade()+1);
+							});
+						}
+					});
+			
+		});
+		return tpList;
+	}
 	
 }

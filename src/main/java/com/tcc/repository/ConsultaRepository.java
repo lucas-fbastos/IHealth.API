@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Consulta;
 
 
@@ -20,6 +21,9 @@ public interface ConsultaRepository extends JpaRepository<Consulta,Long>, Consul
 	
 	@Query(value = "from Consulta c join fetch c.medico medico where dtInicio BETWEEN :dtI AND :dtF AND medico.id = :idMedico")
 	public List<Consulta> getAllBetweenDatesByMedico(@Param("dtI")LocalDateTime dtIncio,@Param("dtF")LocalDateTime dtFim, @Param("idMedico") Long idMedico );
+	
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(tp.descTipoProcedimento, count(tp)) from Consulta c join  c.tipoProcedimento tp where c.paciente.id = :idPaciente group by tp.descTipoProcedimento")
+	public List<TipoQuantidade> getQuantitativoTipoConsulta(@Param("idPaciente") Long idPaciente );
 
 	public Page<Consulta> findAllByMedico_id(Pageable p, Long idMedico);
 
@@ -27,4 +31,5 @@ public interface ConsultaRepository extends JpaRepository<Consulta,Long>, Consul
 	
 	public Page<Consulta> findAllByMedico_idAndDtInicioGreaterThanEqualAndDtFimLessThanEqual(Pageable p, Long idMedico,LocalDateTime dtIncio, LocalDateTime dtFim);
 
+	public List<Consulta> findAllByPaciente_id(Long idPaciente);
 }
