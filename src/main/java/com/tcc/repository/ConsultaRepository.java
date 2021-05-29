@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Consulta;
+import com.tcc.domain.Medico;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>, ConsultaCriteriaRepository {
 
@@ -37,8 +38,16 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long>, Consu
 	public List<TipoQuantidade> getQuantitativoStatusConsulta(@Param("dtInicio") LocalDateTime dtInicio,
 			@Param("dtFim") LocalDateTime dtFim);
 	
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(cast (c.statusConsulta as text), count(c.statusConsulta)) from Consulta c join c.medico m where c.dtInicio > :dtInicio and c.dtInicio <:dtFim and m.id = :idMedico group by c.statusConsulta")
+	public List<TipoQuantidade> getQuantitativoStatusConsultaMedico(@Param("dtInicio") LocalDateTime dtInicio,
+			@Param("dtFim") LocalDateTime dtFim, @Param("idMedico") Long idMedico);
+	
 	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(cast (c.statusConsulta as text), count(c.statusConsulta)) from Consulta c group by c.statusConsulta")
 	public List<TipoQuantidade> getQuantitativoStatusConsulta();
+	
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(cast (c.statusConsulta as text), count(c.statusConsulta)) from Consulta c join c.medico m  where m.id= :idMedico group by c.statusConsulta")
+	public List<TipoQuantidade> getQuantitativoStatusConsultaMedico(@Param("idMedico") Long idMedico);
+
 
 	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.medico m join m.usuario u where c.dtInicio > :dtInicio and c.dtInicio <:dtFim group by u.nome order by 2 desc")
 	public List<TipoQuantidade> getQuantitativoConsultaMedico(@Param("dtInicio") LocalDateTime dtInicio,
@@ -50,7 +59,14 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long>, Consu
 	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.paciente p join p.usuario u where c.dtInicio > :dtInicio and c.dtInicio <:dtFim group by u.nome order by 2 desc")
 	public List<TipoQuantidade> getQuantitativoConsultaPaciente(@Param("dtInicio") LocalDateTime dtInicio,
 			@Param("dtFim") LocalDateTime dtFim);
+	
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.paciente p  join c.medico m join p.usuario u where c.dtInicio > :dtInicio and c.dtInicio <:dtFim and m.id = :idMedico group by u.nome order by 2 desc")
+	public List<TipoQuantidade> getQuantitativoConsultaPacienteMedico(@Param("dtInicio") LocalDateTime dtInicio,
+			@Param("dtFim") LocalDateTime dtFim, @Param("idMedico") Long idMedico);
 
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.medico m join c.paciente p join p.usuario u where m.id = : idMedico group by u.nome order by 2 desc")
+	public List<TipoQuantidade> getQuantitativoConsultaPacienteMedico(@Param("idMedico") Long idMedico);
+	
 	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.paciente p join p.usuario u group by u.nome order by 2 desc")
 	public List<TipoQuantidade> getQuantitativoConsultaPaciente();
 	

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.AdministradorDashDTO;
+import com.tcc.DTO.AuxiliarDashDTO;
+import com.tcc.DTO.MedicoDashDTO;
 import com.tcc.DTO.PacienteDashDTO;
 import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Alergia;
@@ -176,5 +178,43 @@ public class DashboardService {
 		});
 		return tpList;
 	}
+
+
+	public AuxiliarDashDTO getDashAuxiliar(Integer idTemporalidade) {
+		AuxiliarDashDTO dto = new AuxiliarDashDTO();
+		List<TipoQuantidade> tpList  = new ArrayList<>();
+		if(idTemporalidade < 3) {
+			TemporalidadeEnum temporalidade = TemporalidadeEnum.values()[idTemporalidade];
+			List<LocalDateTime> dates = consultService.getDatasByTemporalidade(temporalidade);
+			tpList = this.consultaRepository.getQuantitativoStatusConsulta(dates.get(0), dates.get(1));
+		}else {
+			tpList = this.consultaRepository.getQuantitativoStatusConsulta();
+		}
+		dto.setConsultaMensalPorStatus(castIdToDescStatus(tpList));
+		dto.setQuantitativoUsuarios(this.quantificaPerfilPorUsuario(this.userRepository.findAll()));
+		return dto;
+	}
+	
+	
+
+	public MedicoDashDTO getDashMedico(Integer idTemporalidade) {
+		MedicoDashDTO dto = new MedicoDashDTO();
+		Usuario usuario = this.userService.getUserLogado();
+		if(usuario.getMedico()==null) throw new PerfilInvalidoException("Usuário não é médico");
+		List<TipoQuantidade> tpList  = new ArrayList<>();
+		if(idTemporalidade < 3) {
+			TemporalidadeEnum temporalidade = TemporalidadeEnum.values()[idTemporalidade];
+			List<LocalDateTime> dates = consultService.getDatasByTemporalidade(temporalidade);
+			tpList = this.consultaRepository.getQuantitativoStatusConsultaMedico(dates.get(0), dates.get(1),usuario.getMedico().getId());
+			dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPacienteMedico(dates.get(0),dates.get(1),usuario.getMedico().getId()));
+		}else {
+			dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPacienteMedico(usuario.getMedico().getId()));
+			tpList = this.consultaRepository.getQuantitativoStatusConsultaMedico(usuario.getMedico().getId());
+		}
+		dto.setConsultaMensalPorStatus(castIdToDescStatus(tpList));
+		return dto;
+	}
+	
+	
 	
 }
