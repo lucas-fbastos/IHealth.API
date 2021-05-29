@@ -19,9 +19,11 @@ import com.tcc.domain.Consulta;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
 import com.tcc.enums.StatusConsultaEnum;
+import com.tcc.enums.TemporalidadeEnum;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.ConsultaRepository;
 import com.tcc.repository.ProntuarioRepository;
+import com.tcc.repository.UserRepository;
 import com.tcc.service.exceptions.NoElementException;
 import com.tcc.service.exceptions.PerfilInvalidoException;
 
@@ -32,6 +34,9 @@ public class DashboardService {
 	private ConsultaRepository consultaRepository;
 	
 	@Autowired
+	private ConsultaService consultService;
+	
+	@Autowired
 	private AlergiaRepository alergiaRepository;
 	
 	@Autowired
@@ -40,7 +45,9 @@ public class DashboardService {
 	@Autowired
 	private UsuarioService userService;
 	
-
+	@Autowired
+	private UserRepository userRepository;
+	
 	public Map<String, Object> getAlergiasPorTipoGeral(){
 		Usuario usuario = this.userService.getUserLogado();
 		List<Alergia> alergias = this.alergiaRepository.findByDadosMedicos(usuario.getPaciente().getDadosmedicos());
@@ -72,22 +79,52 @@ public class DashboardService {
 	}
 	
 	
-	public AdministradorDashDTO getDashAdministrador() {
+	public AdministradorDashDTO getDashAdministrador(Integer idTemporalidade) {
+		
 		AdministradorDashDTO dto = new AdministradorDashDTO();
-		LocalDateTime agora = LocalDateTime.now();
-		LocalDateTime inicio = LocalDateTime.of(agora.getYear(), agora.getMonth(), 1, 0,0);
-		LocalDateTime fim = LocalDateTime.of(agora.getYear(), agora.getMonth(), agora.withDayOfMonth(agora.toLocalDate().lengthOfMonth()).getDayOfMonth(), 23,59);
 		
 		List<TipoQuantidade> tpList  = new ArrayList<>();
-		tpList = this.consultaRepository.getQuantitativoStatusConsulta(inicio, fim);
+		if(idTemporalidade < 3) {
+			TemporalidadeEnum temporalidade = TemporalidadeEnum.values()[idTemporalidade];
+			List<LocalDateTime> dates = consultService.getDatasByTemporalidade(temporalidade);
+			tpList = this.consultaRepository.getQuantitativoStatusConsulta(dates.get(0), dates.get(1));
+			dto.setMedicoAtendimento(this.consultaRepository.getQuantitativoConsultaMedico(dates.get(0), dates.get(1)));
+			dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPaciente(dates.get(0), dates.get(1)));
+			dto.setEspecializacoesMes(this.quantificaEspecialidadesPorConsultas(this.consultaRepository.getAllBetweenDates(dates.get(0), dates.get(1))));
+		}else {
+			tpList = this.consultaRepository.getQuantitativoStatusConsulta();
+			dto.setMedicoAtendimento(this.consultaRepository.getQuantitativoConsultaMedicos());
+			dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPaciente());
+			dto.setEspecializacoesMes(this.quantificaEspecialidadesPorConsultas(this.consultaRepository.findAll()));
+		}
 		dto.setConsultaMensalPorStatus(castIdToDescStatus(tpList));
-		dto.setMedicoAtendimento(this.consultaRepository.getQuantitativoConsultaMedicoMes(inicio, fim));
-		dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPacienteMes(inicio, fim));
-		dto.setEspecializacoesMes(this.quantificaEspecialidadesPorConsultas(this.consultaRepository.getAllBetweenDates(inicio, fim)));
+		dto.setQuantitativoUsuarios(this.quantificaPerfilPorUsuario(this.userRepository.findAll()));
 		return dto;
 	}
 	
 	
+	private List<TipoQuantidade> quantificaPerfilPorUsuario(List<Usuario> users) {
+		List<TipoQuantidade> tpList  = new ArrayList<>();
+		users.forEach(u -> {
+			u.getPerfis().forEach(
+					e -> {
+						if(tpList.stream().filter(
+								x-> x.getDescricao().compareTo(e.getDesc())==0)
+									.collect(Collectors.toList()).size()==0) {
+							tpList.add(new TipoQuantidade(e.getDesc(),1l));
+						}else {
+							tpList.forEach(i -> {
+								if(i.getDescricao()==e.getDesc())
+									i.setQuantidade(i.getQuantidade()+1);
+							});
+						}
+					});
+			
+		});
+		return tpList;
+	}
+
+
 	private List<TipoQuantidade> castIdToDescStatus(List<TipoQuantidade> tpList) {
 		 tpList.forEach(i -> 
 		i.setDescricao(

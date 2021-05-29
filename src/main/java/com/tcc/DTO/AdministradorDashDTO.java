@@ -7,10 +7,18 @@ import com.tcc.DTO.report.TipoQuantidade;
 public class AdministradorDashDTO {
 
 	private List<TipoQuantidade> medicoAtendimento;
+	private List<TipoQuantidade> quantitativoUsuarios;
 	private List<TipoQuantidade> pacienteConsulta;
 	private List<TipoQuantidade> consultaMensalPorStatus;
 	private List<TipoQuantidade> especializacoesMes;
 	
+	
+	public List<TipoQuantidade> getQuantitativoUsuarios() {
+		return quantitativoUsuarios;
+	}
+	public void setQuantitativoUsuarios(List<TipoQuantidade> quantitativoUsuarios) {
+		this.quantitativoUsuarios = quantitativoUsuarios;
+	}
 	public List<TipoQuantidade> getEspecializacoesMes() {
 		return especializacoesMes;
 	}

@@ -3,6 +3,7 @@ package com.tcc.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,8 @@ public class DashboardResource {
 		return ResponseEntity.ok(service.getDashPaciente());
 	}
 	
-	@GetMapping("/administrador")
-	public ResponseEntity<AdministradorDashDTO> getAdministradorReport(){
-		return ResponseEntity.ok(service.getDashAdministrador());
+	@GetMapping("/administrador/{idTemporalidade}")
+	public ResponseEntity<AdministradorDashDTO> getAdministradorReport(@PathVariable Integer idTemporalidade){
+		return ResponseEntity.ok(service.getDashAdministrador(idTemporalidade));
 	}
 }

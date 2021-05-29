@@ -146,7 +146,7 @@ public class ConsultaService {
 	}
 
 
-	private List<LocalDateTime> getDatasByTemporalidade(TemporalidadeEnum temporalidadeEnum) {
+	public List<LocalDateTime> getDatasByTemporalidade(TemporalidadeEnum temporalidadeEnum) {
 		LocalDateTime inicio = null;
 		LocalDateTime fim = null;
 		LocalDateTime agora = LocalDateTime.now();
