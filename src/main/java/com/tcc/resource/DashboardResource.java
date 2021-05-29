@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tcc.DTO.AdministradorDashDTO;
 import com.tcc.DTO.PacienteDashDTO;
 import com.tcc.service.DashboardService;
 
@@ -19,5 +20,10 @@ public class DashboardResource {
 	@GetMapping("/paciente")
 	public ResponseEntity<PacienteDashDTO> getPacienteReport(){
 		return ResponseEntity.ok(service.getDashPaciente());
+	}
+	
+	@GetMapping("/administrador")
+	public ResponseEntity<AdministradorDashDTO> getAdministradorReport(){
+		return ResponseEntity.ok(service.getDashAdministrador());
 	}
 }

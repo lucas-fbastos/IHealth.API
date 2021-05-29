@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tcc.DTO.MedicamentoDTO;
@@ -13,9 +15,11 @@ import com.tcc.domain.DadosMedicos;
 import com.tcc.domain.Medicamento;
 import com.tcc.domain.Paciente;
 import com.tcc.domain.Prontuario;
+import com.tcc.domain.Usuario;
 import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.MedicamentoRepository;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.PerfilInvalidoException;
 
 @Service
 public class MedicamentoService {
@@ -29,7 +33,9 @@ public class MedicamentoService {
 	@Autowired
 	private PacienteService pacienteService;
 	
-
+	@Autowired
+	private UsuarioService usuarioService;
+	
 	public List<Medicamento> addMedicamentos(List<MedicamentoDTO> medicamentos, Paciente p, Prontuario prontuario) {
 		DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 		List<Medicamento> list = new ArrayList<>();
@@ -84,5 +90,12 @@ public class MedicamentoService {
 		}
 		this.medicamentoRepository.saveAll(list);
 		return list;
+	}
+
+	public Page<Medicamento> getByPacientePaged(Pageable page) {
+		Usuario u = this.usuarioService.getUserLogado();
+		Paciente p = u.getPaciente();
+		if(p==null) throw new PerfilInvalidoException("Apenas perfil de paciente pode solicitar tal consulta");
+		return this.medicamentoRepository.findByDadosMedicos(p.getDadosmedicos(), page);
 	}
 }

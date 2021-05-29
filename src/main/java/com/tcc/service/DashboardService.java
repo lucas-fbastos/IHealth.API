@@ -1,5 +1,6 @@
 package com.tcc.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +11,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tcc.DTO.AdministradorDashDTO;
 import com.tcc.DTO.PacienteDashDTO;
 import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Alergia;
 import com.tcc.domain.Consulta;
 import com.tcc.domain.Medico;
 import com.tcc.domain.Usuario;
+import com.tcc.enums.StatusConsultaEnum;
 import com.tcc.repository.AlergiaRepository;
 import com.tcc.repository.ConsultaRepository;
 import com.tcc.repository.ProntuarioRepository;
@@ -68,6 +71,34 @@ public class DashboardService {
 		return result;
 	}
 	
+	
+	public AdministradorDashDTO getDashAdministrador() {
+		AdministradorDashDTO dto = new AdministradorDashDTO();
+		LocalDateTime agora = LocalDateTime.now();
+		LocalDateTime inicio = LocalDateTime.of(agora.getYear(), agora.getMonth(), 1, 0,0);
+		LocalDateTime fim = LocalDateTime.of(agora.getYear(), agora.getMonth(), agora.withDayOfMonth(agora.toLocalDate().lengthOfMonth()).getDayOfMonth(), 23,59);
+		
+		List<TipoQuantidade> tpList  = new ArrayList<>();
+		tpList = this.consultaRepository.getQuantitativoStatusConsulta(inicio, fim);
+		dto.setConsultaMensalPorStatus(castIdToDescStatus(tpList));
+		dto.setMedicoAtendimento(this.consultaRepository.getQuantitativoConsultaMedicoMes(inicio, fim));
+		dto.setPacienteConsulta(this.consultaRepository.getQuantitativoConsultaPacienteMes(inicio, fim));
+		dto.setEspecializacoesMes(this.quantificaEspecialidadesPorConsultas(this.consultaRepository.getAllBetweenDates(inicio, fim)));
+		return dto;
+	}
+	
+	
+	private List<TipoQuantidade> castIdToDescStatus(List<TipoQuantidade> tpList) {
+		 tpList.forEach(i -> 
+		i.setDescricao(
+				StatusConsultaEnum.toEnum(
+						Integer.parseInt(i.getDescricao()))
+				.getDescStatus())
+				);
+		return tpList;
+	}
+
+
 	public PacienteDashDTO getDashPaciente() {
 		PacienteDashDTO dto = new PacienteDashDTO();
 		Usuario usuario = this.userService.getUserLogado();
