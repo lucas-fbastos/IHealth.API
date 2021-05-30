@@ -64,7 +64,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long>, Consu
 	public List<TipoQuantidade> getQuantitativoConsultaPacienteMedico(@Param("dtInicio") LocalDateTime dtInicio,
 			@Param("dtFim") LocalDateTime dtFim, @Param("idMedico") Long idMedico);
 
-	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.medico m join c.paciente p join p.usuario u where m.id = : idMedico group by u.nome order by 2 desc")
+	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.medico m join c.paciente p join p.usuario u where m.id = :idMedico group by u.nome order by 2 desc")
 	public List<TipoQuantidade> getQuantitativoConsultaPacienteMedico(@Param("idMedico") Long idMedico);
 	
 	@Query(value = "select new com.tcc.DTO.report.TipoQuantidade(u.nome, count(c)) from Consulta c join c.paciente p join p.usuario u group by u.nome order by 2 desc")

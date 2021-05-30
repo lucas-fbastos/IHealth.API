@@ -43,7 +43,7 @@ public class Paciente implements Serializable{
 	private Usuario usuario;
 	
 	@Column(name="bol_compartilha_dados")
-	private Boolean compartilhaDados;
+	private Boolean compartilhaDados = Boolean.FALSE;
 	
 	public Boolean isCompartilhaDados() {
 		return compartilhaDados;

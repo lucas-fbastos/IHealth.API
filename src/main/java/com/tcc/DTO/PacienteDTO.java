@@ -109,7 +109,7 @@ public class PacienteDTO implements Serializable{
 		this.telefone = paciente.getUsuario().getTelefone();
 		this.sexo = String.valueOf(paciente.getUsuario().getSexo());
 		this.compartilhaDados = paciente.isCompartilhaDados();
-		if(paciente.getDadosmedicos()!=null && this.compartilhaDados) {
+		if(paciente.getDadosmedicos()!=null && paciente.isCompartilhaDados()!=null && paciente.isCompartilhaDados()==true ) {
 			this.dadosMedicos = paciente.getDadosmedicos();
 		}
 	}
