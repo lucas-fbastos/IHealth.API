@@ -68,7 +68,7 @@ public class ClinicaService {
 		c.setNome(dto.getNome());
 		c.setDescMissao(dto.getMissao());
 		c.setDescValores(dto.getValores());
-		c.setDescVisao(dto.getValores());
+		c.setDescVisao(dto.getVisao());
 		Endereco endereco = c.getEndereco();
 		if(dto.getEndereco()!=null) {	
 			if(c.getEndereco()!= null && dto.getEndereco().getId() == null)
