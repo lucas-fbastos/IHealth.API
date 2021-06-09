@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,9 +29,14 @@ public class ClinicaService {
 	
 	
 	public Clinica getDadosClinica() {
-		List<Clinica> clinicas = this.repository.findAll();
-		if(clinicas!=null && !clinicas.isEmpty())
-			return clinicas.get(0);
+		Optional<Clinica> clinicas = this.repository.findById(1l);
+		if(clinicas.isPresent()) {
+				Clinica c = clinicas.get();
+				Optional<Endereco> endereco = this.enderecoRepository.findByClinicaEndereco(c);
+				if(endereco.isPresent())
+					c.setEndereco(endereco.get());
+				return c;
+		}
 		else 
 			throw new NoElementException("Os dados da clínica não foram cadastrados");
 	}
@@ -73,14 +79,17 @@ public class ClinicaService {
 		if(dto.getEndereco()!=null) {	
 			if(c.getEndereco()!= null && dto.getEndereco().getId() == null)
 				throw new DataIntegrityException("Violação na atualização de endereço");
-			c.setEndereco(new Endereco(dto.getEndereco()));
-		}else {
-			c.setEndereco(null);
 		}
 		try {
 			c = this.repository.save(c);
 			if(c.getEndereco()==null && endereco !=null)
 				this.enderecoRepository.delete(endereco);
+			
+			if(dto.getEndereco()!=null) {
+				Endereco e = new Endereco(dto.getEndereco());
+				e.setClinicaEndereco(c);
+				this.enderecoRepository.save(e);
+			}
 			return c;	
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Erro ao salvar Clinica");

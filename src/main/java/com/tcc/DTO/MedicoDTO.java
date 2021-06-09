@@ -1,7 +1,10 @@
 package com.tcc.DTO;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Set;
+
+import javax.persistence.Column;
 
 import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medico;
@@ -18,7 +21,10 @@ public class MedicoDTO implements Serializable{
 	private String telefone;
 	private String cpf;
 	private Long idUser;
+	private LocalTime hrEntrada;
+	private LocalTime hrSaida;
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +72,19 @@ public class MedicoDTO implements Serializable{
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
 	}
+	
+	public LocalTime getHrEntrada() {
+		return hrEntrada;
+	}
+	public void setHrEntrada(LocalTime hrEntrada) {
+		this.hrEntrada = hrEntrada;
+	}
+	public LocalTime getHrSaida() {
+		return hrSaida;
+	}
+	public void setHrSaida(LocalTime hrSaida) {
+		this.hrSaida = hrSaida;
+	}
 	public MedicoDTO(Long id,Set<Especializacao> especializacoes,String crm, Usuario usuario) {
 		this.id = id;
 		this.nome = usuario.getNome();
@@ -81,6 +100,8 @@ public class MedicoDTO implements Serializable{
 		this.id = medico.getId();
 		this.nome = medico.getUsuario().getNome();
 		this.telefone = medico.getUsuario().getTelefone();
+		this.hrEntrada = medico.getHrEntrada();
+		this.hrSaida = medico.getHrSaida();
 	}
 	
 	
