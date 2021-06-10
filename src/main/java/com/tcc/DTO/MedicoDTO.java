@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Set;
 
-import javax.persistence.Column;
 
 import com.tcc.domain.Especializacao;
 import com.tcc.domain.Medico;

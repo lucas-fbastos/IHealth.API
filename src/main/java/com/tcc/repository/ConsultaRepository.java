@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.tcc.DTO.report.TipoQuantidade;
 import com.tcc.domain.Consulta;
-import com.tcc.domain.Medico;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>, ConsultaCriteriaRepository {
 

@@ -20,6 +20,7 @@ import com.tcc.repository.DadosMedicosRepository;
 import com.tcc.repository.TipoSanguineoRepository;
 import com.tcc.repository.UserRepository;
 import com.tcc.service.exceptions.NoElementException;
+import com.tcc.service.exceptions.PerfilInvalidoException;
 
 
 @Service
@@ -35,14 +36,14 @@ public class DadosMedicosService {
 	private TipoSanguineoRepository tipoSanguineoRepository;
 	
 	@Autowired
-	private PacienteService pacienteService;
-	
-	@Autowired
 	private UsuarioService userService;
 		
-	public DadosMedicos update(DadosMedicosDTO dto, Long idPaciente) {
+	public DadosMedicos update(DadosMedicosDTO dto) {
 		try {
-			Paciente p = pacienteService.getById(idPaciente);
+			Usuario user = this.userService.getUserLogado();
+			
+			Paciente p = user.getPaciente();
+			if(p==null) throw new PerfilInvalidoException("Este não é um perfil válido de paciente");
 			DadosMedicos dados = this.dadosMedicosRepository.findByPaciente(p).orElseThrow();
 			dados.setDtAtualizacao(LocalDateTime.now());
 			if(dto.getTipoSanguineo()!=null) {
