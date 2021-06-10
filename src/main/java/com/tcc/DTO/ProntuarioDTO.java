@@ -25,9 +25,9 @@ public class ProntuarioDTO {
 	private String descSumario;
 	private String diagnostico;
 	private List<ResponseFileDTO> documentos;
-	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
-	private Set<Medicamento> medicamentos = new HashSet<>();
-	private Set<Alergia> alergias = new HashSet<>();
+	private Set<DoencaCronica> doencasCronicas= new HashSet<>();
+	private Set<Medicamento> medicamentos= new HashSet<>();
+	private Set<Alergia> alergias= new HashSet<>();
 
 	public Long getId() {
 		return id;

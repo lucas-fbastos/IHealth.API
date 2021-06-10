@@ -52,15 +52,15 @@ public class Prontuario {
 	@JsonIgnore
 	private List<DocumentoMedico> documentos;
 	
-	@OneToMany(mappedBy="dadosMedicos")
+	@OneToMany(mappedBy="prontuario")
 	@JsonManagedReference("doenca-prontuario")
 	private Set<DoencaCronica> doencasCronicas = new HashSet<>();
 	
-	@OneToMany(mappedBy="dadosMedicos")
+	@OneToMany(mappedBy="prontuario")
 	@JsonManagedReference("medicamento-prontuario")
 	private Set<Medicamento> medicamentos = new HashSet<>();
 	
-	@OneToMany(mappedBy="dadosMedicos")
+	@OneToMany(mappedBy="prontuario")
 	@JsonManagedReference("alergia-prontuario")
 	private Set<Alergia> alergias = new HashSet<>();
 	
