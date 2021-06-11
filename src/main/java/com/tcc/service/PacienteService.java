@@ -69,10 +69,12 @@ public class PacienteService {
 	}
 	
 	public void update(PacienteDTO dto) {
+		Usuario u = this.usuarioService.getById(dto.getIdUser());
 		Paciente p = getById(dto.getIdPaciente());
 		p.setCompartilhaDados(dto.isCompartilhaDados());
 		p.setDescConvenio(dto.getDescConvenio());
 		p.setNuInscricaoConvenio(dto.getNuInscricaoConvenio());
+		u = this.usuarioService.removePendente(u);
 		try {
 			this.repository.save(p);
 		}catch(DataIntegrityViolationException e) {
